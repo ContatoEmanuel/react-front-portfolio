@@ -1,38 +1,84 @@
-# EAM Company - Personal Portfolio
+# React Portfolio
 
-![Status](https://img.shields.io/badge/Status-Live-success) ![Tech](https://img.shields.io/badge/Stack-React_|_Tailwind_|_Vercel-blue)
+Portfólio profissional desenvolvido com React, TypeScript e Tailwind CSS.
 
-The official personal website and professional portfolio of **Emanuel Arrudas de Macêdo**.
-This project serves as a central hub for my professional experience, skills, and software solutions, bridging the gap between Microsoft Dynamics 365 Enterprise architecture and modern frontend development.
+## 🚀 Tecnologias
 
-🔗 **Live URL:** [https://eam-company.com.br](https://eam-company.com.br)
+- **React 18** - Biblioteca para construção de interfaces
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **Vite** - Build tool e dev server
 
-## 🎯 Purpose
-* **Showcase:** Display professional milestones and technical skills.
-* **Centralize:** A single source of truth for my projects (including Micro-SaaS solutions).
-* **Contact:** Direct channel for professional inquiries.
+## 📁 Estrutura do Projeto
 
-## 🛠 Tech Stack
-Built with simplicity and performance in mind:
+```
+src/
+├── assets/              # Imagens importadas no código
+├── components/
+│   ├── layout/          # Navbar, Footer, Container
+│   ├── sections/        # Hero, About, Experience, Projects, Contact
+│   └── ui/              # Button, Card, Badge, SectionTitle
+├── data/                # Dados estáticos (perfil, experiências, projetos)
+├── styles/              # CSS global
+├── types/               # Interfaces TypeScript
+├── App.tsx              # Componente principal
+└── main.tsx             # Entry point
+```
 
-* **Core:** [React 18](https://reactjs.org/) + [Vite](https://vitejs.dev/)
-* **Styling:** [TailwindCSS](https://tailwindcss.com/) (Mobile-first responsive design)
-* **Hosting & CD:** [Vercel](https://vercel.com/)
-* **Icons:** Lucide React / Heroicons
-
-## 🚀 Running Locally
-
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) installed on your computer.
+## 🛠️ Instalação
 
 ```bash
-# Clone this repository
-$ git clone [https://github.com/ContatoEmanuel/react-front-portfolio.git](https://github.com/ContatoEmanuel/react-front-portfolio.git)
+# Instalar dependências
+npm install
 
-# Go into the repository
-$ cd react-front-portfolio
+# Rodar em desenvolvimento
+npm run dev
 
-# Install dependencies
-$ npm install
+# Build para produção
+npm run build
 
-# Run the app
-$ npm run dev
+# Preview da build
+npm run preview
+```
+
+## ✏️ Personalização
+
+### 1. Dados Pessoais
+
+Edite os arquivos em `src/data/`:
+
+- `profile.ts` - Seus links e informações de contato
+- `experiences.ts` - Seu histórico profissional
+- `projects.ts` - Seus projetos
+
+### 2. Imagens
+
+Adicione suas imagens em:
+- `public/resume.pdf` - Seu currículo
+- `public/favicon.ico` - Favicon do site
+- `src/assets/images/profile-pic.jpg` - Sua foto
+- `src/assets/images/project-*-thumb.png` - Thumbnails dos projetos
+
+### 3. Cores
+
+Edite `tailwind.config.js` para customizar as cores primárias e secundárias.
+
+## 📦 Deploy
+
+### Vercel
+
+```bash
+npm install -g vercel
+vercel
+```
+
+### Netlify
+
+```bash
+npm run build
+# Faça upload da pasta dist/
+```
+
+## 📄 Licença
+
+MIT

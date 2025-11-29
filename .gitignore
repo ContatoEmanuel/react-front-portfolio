@@ -24,6 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Arquivos do sistema Windows
+desktop.ini
+Thumbs.db
+
 # Variáveis de Ambiente
 .env
 .env.test
