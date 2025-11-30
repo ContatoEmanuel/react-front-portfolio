@@ -2,6 +2,8 @@
 
 Portfólio profissional desenvolvido com React, TypeScript e Tailwind CSS.
 
+🌐 **[Ver site ao vivo: https://eam-company.com.br](https://eam-company.com.br)**
+
 ## 🚀 Tecnologias
 
 - **React 18** - Biblioteca para construção de interfaces
