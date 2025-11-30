@@ -37,3 +37,6 @@ Thumbs.db
 
 # Vercel
 .vercel
+
+# Documentação (apenas local)
+docs/

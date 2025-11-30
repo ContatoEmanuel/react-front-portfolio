@@ -31,14 +31,6 @@ export default function Contact() {
             >
               🐙 GitHub
             </Button>
-            {profile.whatsapp && (
-              <Button
-                variant="secondary"
-                onClick={() => window.open(`https://wa.me/${profile.whatsapp}`, '_blank')}
-              >
-                💬 WhatsApp
-              </Button>
-            )}
           </div>
         </div>
       </Container>

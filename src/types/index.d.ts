@@ -27,5 +27,5 @@ export interface IProfile {
   email: string;
   linkedin: string;
   github: string;
-  whatsapp?: string;
+  bio: string;
 }
