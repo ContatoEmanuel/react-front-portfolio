@@ -1,5 +1,5 @@
 export const profile = {
-  name: 'Emanuel Arrudas de Macêdo',
+  name: 'Emanuel A Macêdo',
   title: 'Senior Software Engineer | Dynamics 365 | Power Platform | .NET C# | Azure',
   email: 'contato.emanuel97@gmail.com',
   linkedin: 'https://www.linkedin.com/in/emanuel-a-macedo/',
