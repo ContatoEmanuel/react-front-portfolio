@@ -10,9 +10,16 @@ export default function Hero() {
           {/* Foto de Perfil */}
           <div className="mb-8">
             <div className="relative inline-block">
-              <div className="w-48 h-48 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white shadow-2xl">
-                <span className="text-6xl font-bold text-white">EM</span>
-              </div>
+              <img
+                src="/assets/profile.jpg"
+                alt={profile.name}
+                className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white shadow-2xl"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.onerror = null;
+                  target.outerHTML = '<div class="w-48 h-48 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white shadow-2xl"><span class="text-6xl font-bold text-white">EM</span></div>';
+                }}
+              />
               <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
             </div>
           </div>
