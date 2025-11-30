@@ -3,20 +3,54 @@ import SectionTitle from '../ui/SectionTitle';
 import { profile } from '../../data/profile';
 
 export default function About() {
-  const skills = [
-    { name: 'Microsoft Dynamics 365', level: 95 },
-    { name: 'React & TypeScript', level: 90 },
-    { name: 'Node.js', level: 85 },
-    { name: 'Azure Cloud', level: 80 },
-    { name: 'API Integration', level: 90 },
-    { name: 'Enterprise Architecture', level: 85 },
+  const expertise = [
+    {
+      title: 'Desenvolvimento Dynamics 365',
+      description: 'Domínio na customização e extensão da plataforma (Sales, Customer Service) utilizando C# .NET para Plugins e Workflows, além de JavaScript para scripts client-side e validações complexas.',
+      icon: '⚙️',
+    },
+    {
+      title: 'Power Platform & Mobilidade',
+      description: 'Criação de aplicações de negócio robustas com Power Apps (Canvas com capacidade offline e Model-Driven) e automação avançada de processos via Power Automate.',
+      icon: '⚡',
+    },
+    {
+      title: 'Integração & Azure',
+      description: 'Experiência na orquestração de dados e processos entre sistemas heterogêneos utilizando Azure Logic Apps, Data Factory e consumo de APIs REST/SOAP.',
+      icon: '☁️',
+    },
+    {
+      title: 'Dados & Segurança',
+      description: 'Modelagem de dados no Dataverse, criação de dashboards em Power BI e gestão granular de perfis de segurança e acessos.',
+      icon: '🔐',
+    },
+    {
+      title: 'Metodologia Ágil',
+      description: 'Atuação consistente em ambientes ágeis (Scrum/Kanban), com foco em entregas de valor e melhoria contínua.',
+      icon: '🎯',
+    },
   ];
 
-  const highlights = [
-    { icon: '🎯', title: 'Especialização', text: 'Dynamics 365 & CRM' },
-    { icon: '💡', title: 'Inovação', text: 'Soluções Enterprise Modernas' },
-    { icon: '🚀', title: 'Experiência', text: 'Projetos de Alto Impacto' },
-    { icon: '🌐', title: 'Full Stack', text: 'Front-end & Back-end' },
+  const technologies = [
+    'Microsoft Dynamics 365',
+    'Microsoft Power Platform',
+    'ASP.NET Core',
+    'C# .NET',
+    'JavaScript',
+    'Azure Cloud',
+    'Power Apps',
+    'Power Automate',
+    'Power BI',
+    'Azure Logic Apps',
+    'Data Factory',
+    'Dataverse',
+  ];
+
+  const clients = [
+    { name: 'Itaú', sector: 'Financeiro' },
+    { name: 'Bradesco Seguros', sector: 'Seguros' },
+    { name: 'Alesat', sector: 'Varejo' },
+    { name: 'Cogna', sector: 'Educação' },
   ];
 
   return (
@@ -26,48 +60,67 @@ export default function About() {
         
         {/* Biografia */}
         <div className="max-w-4xl mx-auto mb-16">
-          <p className="text-lg text-gray-700 leading-relaxed text-center mb-6">
-            {profile.bio}
-          </p>
-          <p className="text-lg text-gray-700 leading-relaxed text-center">
-            Com foco em Microsoft Dynamics 365, desenvolvo soluções que integram tecnologias modernas 
-            com sistemas enterprise, criando experiências eficientes e escaláveis para negócios de todos os tamanhos.
-          </p>
+          <div className="text-lg text-gray-700 leading-relaxed space-y-4">
+            {profile.bio.split('\n\n').map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
         </div>
 
-        {/* Destaques */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {highlights.map((highlight, index) => (
-            <div 
-              key={index}
-              className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-lg transition-shadow"
-            >
-              <div className="text-4xl mb-3">{highlight.icon}</div>
-              <h3 className="font-bold text-gray-900 mb-1">{highlight.title}</h3>
-              <p className="text-sm text-gray-600">{highlight.text}</p>
-            </div>
-          ))}
+        {/* Principais Clientes */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+            Experiência com Grandes Players
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {clients.map((client, index) => (
+              <div 
+                key={index}
+                className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-lg transition-shadow"
+              >
+                <h4 className="font-bold text-gray-900 mb-1">{client.name}</h4>
+                <p className="text-sm text-gray-600">{client.sector}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Skills */}
-        <div className="max-w-3xl mx-auto">
+        {/* Áreas de Expertise */}
+        <div className="max-w-5xl mx-auto mb-16">
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
             Principais Competências
           </h3>
-          <div className="space-y-6">
-            {skills.map((skill) => (
-              <div key={skill.name}>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-semibold text-gray-800">{skill.name}</span>
-                  <span className="text-sm text-gray-600">{skill.level}%</span>
-                </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${skill.level}%` }}
-                  ></div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {expertise.map((item, index) => (
+              <div 
+                key={index}
+                className="bg-white border border-gray-200 rounded-xl p-6 hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="text-3xl flex-shrink-0">{item.icon}</div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-2">{item.title}</h4>
+                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stack Tecnológico */}
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+            Stack Tecnológico
+          </h3>
+          <div className="flex flex-wrap justify-center gap-3">
+            {technologies.map((tech, index) => (
+              <span
+                key={index}
+                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md"
+              >
+                {tech}
+              </span>
             ))}
           </div>
         </div>
