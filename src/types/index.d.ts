@@ -4,7 +4,10 @@ export interface IExperience {
   position: string;
   company: string;
   period: string;
+  location: string;
+  client?: string;
   description: string;
+  achievements: string[];
   technologies: string[];
 }
 
