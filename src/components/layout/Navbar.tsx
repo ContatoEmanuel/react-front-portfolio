@@ -17,7 +17,7 @@ export default function Navbar() {
       <Container>
         <div className="flex justify-between items-center h-16">
           <div className="text-2xl font-bold text-primary">
-            Portfólio
+            EAM Company
           </div>
 
           {/* Desktop Menu */}
@@ -28,11 +28,11 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('about')} className="hover:text-primary transition">
               Sobre
             </button>
-            <button onClick={() => scrollToSection('experience')} className="hover:text-primary transition">
-              Experiência
-            </button>
             <button onClick={() => scrollToSection('projects')} className="hover:text-primary transition">
               Projetos
+            </button>
+            <button onClick={() => scrollToSection('experience')} className="hover:text-primary transition">
+              Experiência
             </button>
             <button onClick={() => scrollToSection('contact')} className="hover:text-primary transition">
               Contato
@@ -63,11 +63,11 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('about')} className="block w-full text-left py-2 hover:text-primary transition">
               Sobre
             </button>
-            <button onClick={() => scrollToSection('experience')} className="block w-full text-left py-2 hover:text-primary transition">
-              Experiência
-            </button>
             <button onClick={() => scrollToSection('projects')} className="block w-full text-left py-2 hover:text-primary transition">
               Projetos
+            </button>
+            <button onClick={() => scrollToSection('experience')} className="block w-full text-left py-2 hover:text-primary transition">
+              Experiência
             </button>
             <button onClick={() => scrollToSection('contact')} className="block w-full text-left py-2 hover:text-primary transition">
               Contato

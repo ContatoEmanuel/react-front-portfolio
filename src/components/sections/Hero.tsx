@@ -11,7 +11,7 @@ export default function Hero() {
           <div className="mb-8">
             <div className="relative inline-block">
               <img
-                src="/src/assets/images/profile-pic.jpg"
+                src="/assets/profile.jpg"
                 alt={profile.name}
                 className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white shadow-2xl"
                 onError={(e) => {
@@ -76,7 +76,7 @@ export default function Hero() {
             <Button 
               variant="secondary"
               size="lg"
-              onClick={() => window.open('/resume.pdf', '_blank')}
+              onClick={() => window.open('/resume.html', '_blank')}
             >
               Download CV
             </Button>
