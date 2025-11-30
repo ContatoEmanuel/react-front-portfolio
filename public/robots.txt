@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://seu-dominio.com/sitemap.xml
+# Sitemaps
+Sitemap: https://eam-company.com.br/sitemap.xml
+
+# Otimizações
+Crawl-delay: 0
