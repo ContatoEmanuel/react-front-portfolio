@@ -108,13 +108,13 @@ export default function Projects() {
                     {project.technologies.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium"
+                        className="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs font-medium"
                       >
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 bg-gray-100 text-gray-500 rounded text-xs">
+                      <span className="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs font-medium">
                         +{project.technologies.length - 3}
                       </span>
                     )}
