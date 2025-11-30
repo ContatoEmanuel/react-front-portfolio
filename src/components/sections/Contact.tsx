@@ -13,8 +13,8 @@ export default function Contact() {
         
         <div className="max-w-3xl mx-auto">
           <p className="text-center text-lg text-gray-700 mb-12">
-            Estou sempre aberto a novas oportunidades e colaborações.
-            Entre em contato comigo através dos canais abaixo!
+            Vamos conversar sobre projetos, ideias ou parcerias? 
+            Escolha o melhor canal para entrar em contato!
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -75,9 +75,6 @@ export default function Contact() {
           <div className="bg-white rounded-xl p-6 shadow-md text-center">
             <p className="text-gray-700">
               📱 <strong>Preferência:</strong> WhatsApp para respostas mais rápidas
-            </p>
-            <p className="text-gray-600 text-sm mt-2">
-              Horário de atendimento: Segunda a Sexta, 9h às 18h (Horário de Brasília)
             </p>
           </div>
         </div>
