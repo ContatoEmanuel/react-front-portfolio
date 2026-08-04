@@ -147,6 +147,305 @@ export const blogPosts: IBlogPost[] = [
     readTimeMinutes: 12,
     imageGradient: 'from-indigo-600 to-violet-500',
   },
+  {
+    id: 4,
+    slug: 'alm-power-platform-azure-devops',
+    title: 'ALM na Power Platform: Estratégias de Deploy Automatizado com Azure DevOps em Cenários Enterprise',
+    excerpt: 'Como tirar a dependência de processos manuais e estruturar uma pipeline CI/CD sólida utilizando o Azure DevOps para a Power Platform.',
+    content: `
+      <p class="lead">Gerenciar o ciclo de vida de aplicações (ALM) na Power Platform em contas Enterprise não é apenas exportar e importar soluções não gerenciadas manualmente. Quando lidamos com dezenas de desenvolvedores, múltiplos ambientes e SLAs críticos (como já vivenciei no Itaú e Bradesco), a governança exige rastreabilidade, versionamento e automação. O objetivo aqui é tirar a dependência de processos manuais e estruturar uma pipeline CI/CD sólida utilizando o Azure DevOps.</p>
+
+      <h2>1. Separação de Ambientes e Soluções</h2>
+      <p>Nunca desenvolva na solução <code>Default</code>. Crie soluções específicas por domínio de negócio e garanta ambientes segregados: DEV (isolados por squad ou desenvolvedor, dependendo da volumetria), UAT, STAGING e PROD. Todas as alterações saem de DEV como <em>Unmanaged</em> e entram nos ambientes subsequentes puramente como <em>Managed</em>.</p>
+
+      <h2>2. Versionamento do Código-Fonte (Git)</h2>
+      <p>A Power Platform não guarda histórico de código de forma nativa. O coração do ALM é transformar sua solução em arquivos de texto. Utilize a tarefa do Power Platform Build Tools para desempacotar a solução (<code>Unpack Solution</code>) e fazer commit do <code>.xml</code>, <code>.json</code> e <code>.cs</code> no repositório.</p>
+
+      <h2>3. Automatizando a Extração (CI)</h2>
+      <p>Configure uma pipeline no Azure DevOps (YAML) que seja triggada diariamente ou via pull requests. Essa pipeline exporta a solução do ambiente DEV, desempacota e commita as alterações automaticamente para a branch <code>main</code> ou <code>develop</code>.</p>
+
+<pre><code class="language-yaml"># Snippet de exemplo: Exportação e Unpack de Solução no Azure DevOps
+steps:
+- task: PowerPlatformToolInstaller@2
+  inputs:
+    DefaultVersion: true
+
+- task: PowerPlatformExportSolution@2
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'ServiceConnection-DEV'
+    SolutionName: 'CoreSystem'
+    SolutionOutputFile: '$(Build.ArtifactStagingDirectory)/CoreSystem_unmanaged.zip'
+
+- task: PowerPlatformUnpackSolution@2
+  inputs:
+    SolutionInputFile: '$(Build.ArtifactStagingDirectory)/CoreSystem_unmanaged.zip'
+    SolutionTargetFolder: '$(Build.SourcesDirectory)/Solutions/CoreSystem'
+</code></pre>
+
+      <h2>4. Pipeline de Release (CD) e Connection References</h2>
+      <p>Na entrega (Release), reempacote a solução como <em>Managed</em>. O grande segredo em enterprise é gerenciar variáveis de ambiente e <em>Connection References</em>. Utilize o arquivo de configurações de deployment (Deployment Settings) para mapear dinamicamente conexões do DEV para STG/PROD sem interagir com a interface.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Fluxo de CI/CD]</strong><br/>
+        <em>Um fluxograma mostrando o caminho do código: O dev altera em DEV -> Pipeline de CI extrai e faz commit no Repo Git -> O Pull Request é aprovado -> Pipeline de CD empacota como Managed -> Aplica Deployment Settings -> Implanta em PROD.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Automatizar o ALM na Power Platform reduz drasticamente as regressões em produção e traz o desenvolvimento low-code/pro-code para o mesmo nível de governança de softwares tradicionais. O investimento de tempo na construção dessas pipelines se paga na primeira semana de operação.</p>
+
+      <hr class="my-8" />
+      <p><strong>Como sua equipe lida com o deploy de dezenas de fluxos e apps em produção? Você ainda importa arquivos zip manualmente? Vamos debater sobre estratégias de governança nos comentários ou no LinkedIn!</strong></p>
+    `,
+    category: blogCategories[1],
+    tags: ['ALM', 'Azure DevOps', 'Power Platform', 'CI/CD', 'Enterprise'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-08-05',
+    readTimeMinutes: 8,
+    imageGradient: 'from-blue-600 to-indigo-600',
+  },
+  {
+    id: 5,
+    slug: 'custom-apis-vs-custom-actions',
+    title: 'Custom APIs vs Custom Actions no Dynamics 365: Qual escolher para arquiteturas escaláveis?',
+    excerpt: 'Descubra a diferença de performance entre Custom Actions e Custom APIs e qual a melhor escolha para integrações massivas no Dynamics 365.',
+    content: `
+      <p class="lead">Por muitos anos, se queríamos expor lógicas complexas do Dataverse para sistemas externos ou plugins, a resposta padrão era "Custom Actions". Com a maturidade da plataforma, as <strong>Custom APIs</strong> entraram no jogo, e a indecisão começou. Em integrações massivas — onde 100 mil requisições por hora não são incomuns —, a escolha errada pode causar gargalos no SQL e estourar os limites da API. Vamos separar o joio do trigo.</p>
+
+      <h2>1. O Paradigma das Custom Actions</h2>
+      <p>Custom Actions são construídas sobre o motor de workflows do Dynamics. Elas podem ou não ter código associado (Plugins). O problema em cenários escaláveis é que, mesmo síncronas, o overhead do motor de workflow existe e pode degradar a performance sob estresse elevado.</p>
+
+      <h2>2. A Evolução: Custom APIs</h2>
+      <p>Custom APIs foram desenhadas especificamente para developers. Elas contornam o motor de workflow, ligando diretamente o endpoint OData a um assembly de Plugin. Sem overhead, execução limpa, rápida e 100% via código (C#).</p>
+
+      <h2>3. Gestão de Privilégios e Segurança</h2>
+      <p>Uma vantagem matadora da Custom API é a habilidade de definir privilégios de execução no nível do endpoint. Você pode definir quem pode executá-la nativamente, em vez de depender apenas da herança de segurança dos workflows.</p>
+
+      <h2>4. OData Routing</h2>
+      <p>Custom APIs expõem o roteamento de forma natural. Se você está construindo uma integração server-to-server onde sistemas como Azure Logic Apps precisam chamar o Dataverse, a Custom API é o caminho mais canônico RESTful atual.</p>
+
+<pre><code class="language-csharp">// Snippet de Plugin lidando com uma Custom API
+public void Execute(IServiceProvider serviceProvider)
+{
+    var context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+    
+    // Recupera os parâmetros de entrada definidos na Custom API
+    string accountIdentifier = (string)context.InputParameters["AccountIdentifier"];
+    
+    // Regra de negócio...
+    string result = ProcessEnterpriseAccount(accountIdentifier);
+    
+    // Retorna os dados pelo OutputParameter da Custom API
+    context.OutputParameters["ProcessResult"] = result;
+}
+</code></pre>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Pipeline Comparativa]</strong><br/>
+        <em>Comparativo visual lado a lado: De um lado a requisição batendo no "Workflow Engine -> Plugin" (Custom Action), e do outro a requisição indo "OData Endpoint -> Plugin" (Custom API), destacando o atalho de performance.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Para integrações de alta volumetria e regras de negócio complexas pro-code, as <strong>Custom APIs</strong> são o novo padrão ouro no Dynamics 365. Mantenha Custom Actions apenas se você precisa dar ao time funcional a capacidade de editar a regra no editor visual.</p>
+
+      <hr class="my-8" />
+      <p><strong>Sua arquitetura de integração já foi modernizada para utilizar Custom APIs ou vocês ainda enfrentam gargalos no motor de workflows legados? Compartilhe suas experiências abaixo!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Dynamics 365', 'Custom API', 'Arquitetura', 'Extensibilidade', 'C#'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-08-12',
+    readTimeMinutes: 7,
+    imageGradient: 'from-cyan-500 to-blue-500',
+  },
+  {
+    id: 6,
+    slug: 'resiliencia-api-aspnet-core-polly',
+    title: 'Implementando Resiliência em APIs ASP.NET Core: Como usar o Polly para tolerância a falhas',
+    excerpt: 'Aprenda como aplicar Retry com Exponential Backoff, Circuit Breaker e Fallbacks para tornar suas APIs inquebráveis.',
+    content: `
+      <p class="lead">Na teoria, microsserviços e integrações em nuvem são perfeitos. Na prática (especialmente integrando sistemas legados com Dynamics 365 ou bases on-premise), as redes falham, limites de rate-limit são atingidos e serviços caem momentaneamente. Um sistema enterprise de verdade não quebra por um <em>timeout</em> isolado; ele respira, tenta novamente e degrada graciosamente. O segredo no .NET para isso se chama <strong>Polly</strong>.</p>
+
+      <h2>1. O Paradoxo do Retentativa Imediata (Retry)</h2>
+      <p>Fazer um simples loop <code>while</code> tentando reconectar a uma API sobrecarregada só fará ela cair mais rápido. O padrão correto é o <em>Retry com Exponential Backoff</em>. Cada tentativa espera progressivamente mais tempo (2s, 4s, 8s...).</p>
+
+      <h2>2. Configurando o HttpClientFactory com Polly</h2>
+      <p>No ASP.NET Core, acoplar as políticas do Polly no pipeline de injeção de dependência do <code>HttpClient</code> garante que toda requisição feita por esse client siga regras estritas de resiliência.</p>
+
+<pre><code class="language-csharp">// Configurando Polly no Program.cs / Startup.cs
+builder.Services.AddHttpClient("EnterpriseAPI", client =>
+{
+    client.BaseAddress = new Uri("https://api.empresa.com/");
+})
+.AddTransientHttpErrorPolicy(policyBuilder =>
+    policyBuilder.WaitAndRetryAsync(3, retryAttempt => 
+        TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))); // 2s, 4s, 8s
+</code></pre>
+
+      <h2>3. O Padrão Circuit Breaker</h2>
+      <p>Se um serviço de pagamento está fora do ar, não há porquê bombardear a rede com novas tentativas. O <em>Circuit Breaker</em> (Disjuntor) "abre" após X falhas consecutivas, bloqueando instantaneamente chamadas futuras e retornando um erro de <em>fail-fast</em> até que o tempo limite expire e um teste (half-open) demonstre que o serviço voltou.</p>
+
+<pre><code class="language-csharp">// Política de Circuit Breaker
+.AddTransientHttpErrorPolicy(policyBuilder =>
+    policyBuilder.CircuitBreakerAsync(
+        handledEventsAllowedBeforeBreaking: 5,
+        durationOfBreak: TimeSpan.FromSeconds(30)
+    ));
+</code></pre>
+
+      <h2>4. Fallbacks Estratégicos</h2>
+      <p>Para dados não críticos, o <em>Fallback</em> é a cereja do bolo. Se a API externa de cotação cair, retorne o último dado armazenado em cache (Redis) em vez de lançar um erro 500 para o front-end.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Funil de Resiliência]</strong><br/>
+        <em>Desenho de um funil de resiliência: Request -> [Fallback] -> [Circuit Breaker] -> [Retry] -> [Timeout] -> API de Destino. Demonstra como a requisição passa pelas blindagens.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Tolerância a falhas não é uma <em>feature</em> opcional em arquiteturas escaláveis. Usar bibliotecas consolidadas como o Polly protege sua infraestrutura de cascatas de falhas e garante uma SLA altíssima para o negócio.</p>
+
+      <hr class="my-8" />
+      <p><strong>Se o seu banco de dados tiver uma instabilidade de 10 segundos agora, suas APIs seguram a onda ou disparam 500 para todos os usuários? Como você lida com retentativas nos seus projetos?</strong></p>
+    `,
+    category: blogCategories[2],
+    tags: ['ASP.NET Core', 'Polly', 'Resiliência', 'API', 'C#'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-08-19',
+    readTimeMinutes: 9,
+    imageGradient: 'from-violet-600 to-fuchsia-600',
+  },
+  {
+    id: 7,
+    slug: 'integracao-serverless-dynamics-365-azure-functions',
+    title: 'Integração Serverless: Conectando o Dynamics 365 ao Azure Functions de forma segura',
+    excerpt: 'Como delegar processamentos pesados do Dataverse para o Azure Functions utilizando Azure Service Bus e Managed Identities.',
+    content: `
+      <p class="lead">Extensibilidade baseada em Plugins no Dynamics 365 tem limites de tempo (2 minutos de execução) e de sandbox. Quando precisamos rodar tarefas pesadas (geração massiva de PDFs, integrações com SAP complexas, machine learning), é hora de sair do Dataverse e ir para o Azure. O casamento perfeito para escalabilidade sob demanda é conectar o Dynamics 365 com o <strong>Azure Functions</strong>, e a chave de ouro é fazer isso sem vazar credenciais.</p>
+
+      <h2>1. Saia do Sandbox com Azure Service Bus</h2>
+      <p>A melhor arquitetura não é uma chamada síncrona HTTP. O Plugin no CRM ou o Power Automate deve postar uma mensagem em uma fila do Azure Service Bus e finalizar sua execução em milissegundos. O Azure Function consome essa fila de forma assíncrona, eliminando gargalos de timeout na interface do usuário.</p>
+
+      <h2>2. A Segurança Nível Enterprise: Managed Identities</h2>
+      <p>Nunca armazene <em>Client Secrets</em> hardcoded ou mesmo em variáveis de ambiente se puder evitar. Ative o <em>System Assigned Managed Identity</em> no Azure Function. Isso permite que a Function se autentique no Dataverse sem senhas de forma 100% nativa.</p>
+
+      <h2>3. Consumindo o Dataverse a partir da Function (C#)</h2>
+      <p>Utilize o pacote <code>Microsoft.PowerPlatform.Dataverse.Client</code>. O construtor do <code>ServiceClient</code> agora aceita Managed Identity nativamente.</p>
+
+<pre><code class="language-csharp">// Configurando o ServiceClient usando Managed Identity na Azure Function
+var options = new DefaultAzureCredentialOptions 
+{ 
+    ExcludeSharedTokenCacheCredential = true 
+};
+var credential = new DefaultAzureCredential(options);
+
+var crmUrl = Environment.GetEnvironmentVariable("DataverseUrl");
+var serviceClient = new ServiceClient(new Uri(crmUrl), credential);
+
+if(serviceClient.IsReady)
+{
+    // Conectado com sucesso, sem nenhuma senha!
+    var entity = new Entity("account", accountId);
+    entity["description"] = "Processado via Azure Function";
+    serviceClient.Update(entity);
+}
+</code></pre>
+
+      <h2>4. Controle de Concorrência (Rate Limits)</h2>
+      <p>Se você enviar 10.000 mensagens na fila e a Function escalar para 100 instâncias simultâneas processando no CRM de volta, você sofrerá <em>API Limits</em> do Dataverse (erros 429). Use a configuração de <code>batchSize</code> do Service Bus no <em>host.json</em> da Function para domar a escalabilidade de acordo com a saúde do Dataverse.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Arquitetura Event-Driven]</strong><br/>
+        <em>Dynamics 365 envia dados para o Service Bus (via Webhook ou Plugin) -> O Azure Functions é triggado pelo barramento, processa dados externamente e atualiza o D365 de forma segura usando Azure Active Directory.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Delegar processos pesados para o Azure Functions mantem a experiência do usuário do Dynamics ágil, livrando-o da carga computacional. Utilizar <em>Managed Identities</em> eleva essa arquitetura ao grau Enterprise de segurança imposto por bancos e seguradoras.</p>
+
+      <hr class="my-8" />
+      <p><strong>Você tem aquele plugin que sempre estoura o timeout de 2 minutos gerando planilhas? Chegou a hora de mover isso para o Azure? Deixe sua dúvida aqui!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Azure Functions', 'Dynamics 365', 'Serverless', 'Integração', 'Segurança'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-08-26',
+    readTimeMinutes: 8,
+    imageGradient: 'from-blue-700 to-indigo-800',
+  },
+  {
+    id: 8,
+    slug: 'otimizacao-avancada-dataverse-fetchxml',
+    title: 'Otimização Avançada no Dataverse: Extraindo o máximo de performance com FetchXML e paginação',
+    excerpt: 'Lidando com milhões de registros? Entenda como Paging Cookies e consultas otimizadas mudam o jogo na plataforma Microsoft.',
+    content: `
+      <p class="lead">Em sistemas Enterprise, é comum lidarmos com milhões de registros em tabelas centrais (como transações, clientes, logs). O momento da verdade não é quando você consulta 100 linhas, mas sim quando você precisa iterar sobre 50.000 registros para um batch noturno. OData e consultas LINQ podem não dar conta; o domínio total sobre <strong>FetchXML</strong> aliado a paginação segura (Paging Cookies) é o que separa o programador júnior do arquiteto.</p>
+
+      <h2>1. Reduza o Payload com Atributos Direcionados</h2>
+      <p>Parece óbvio, mas 80% dos problemas de performance do Dataverse vêm do erro clássico: selecionar colunas que você não precisa (<code>&lt;all-attributes /&gt;</code> ou <code>ColumnSet(true)</code>). Se sua automação só precisa do ID e do Status, solicite estritamente esses dois campos.</p>
+
+      <h2>2. A Arte do Paging Cookie</h2>
+      <p>Quando uma query no FetchXML retorna mais de 5.000 registros, o Dataverse corta o resultado. Recuperar a próxima página apenas pedindo <code>page="2"</code> é ineficiente no lado do banco de dados (SQL Server subjacente). Você deve utilizar o <strong>Paging Cookie</strong> devolvido na primeira requisição para que o SQL vá direto para o ponteiro correto.</p>
+
+      <h2>3. Implementando a Paginação no C#</h2>
+      <p>O SDK facilita a paginação utilizando um loop simples. Veja como construir isso com baixo acoplamento:</p>
+
+<pre><code class="language-csharp">// Snippet C# para Paginação Rápida com FetchXML
+string fetchXmlBase = @"
+&lt;fetch version='1.0' mapping='logical' count='5000'&gt;
+    &lt;entity name='contact'&gt;
+        &lt;attribute name='contactid' /&gt;
+        &lt;attribute name='fullname' /&gt;
+        &lt;filter&gt;
+            &lt;condition attribute='statecode' operator='eq' value='0' /&gt;
+        &lt;/filter&gt;
+    &lt;/entity&gt;
+&lt;/fetch&gt;";
+
+int pageNumber = 1;
+string pagingCookie = null;
+bool moreRecords = true;
+
+while (moreRecords)
+{
+    string xmlToExecute = CreateXml(fetchXmlBase, pagingCookie, pageNumber);
+    
+    var response = (RetrieveMultipleResponse)service.Execute(new RetrieveMultipleRequest
+    {
+        Query = new FetchExpression(xmlToExecute)
+    });
+
+    // Processar os 5000 registros
+    ProcessBatch(response.EntityCollection.Entities);
+
+    moreRecords = response.EntityCollection.MoreRecords;
+    if (moreRecords)
+    {
+        pageNumber++;
+        pagingCookie = response.EntityCollection.PagingCookie;
+    }
+}
+</code></pre>
+
+      <h2>4. Use <code>no-lock="true"</code> para Grandes Consultas</h2>
+      <p>Se você está fazendo consultas de leitura massiva e tem certeza de que não necessita de travas de concorrência nos registros consultados (por exemplo, relatórios noturnos), adicione o atributo <code>no-lock="true"</code> à tag <code>&lt;fetch&gt;</code>. Isso diz ao SQL do Dataverse para usar a diretiva <code>(NOLOCK)</code>, evitando deadlocks graves durante a operação de usuários no dia.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Paging Loop]</strong><br/>
+        <em>Desenho do mecanismo de paginação iterativo: Requisição Inicial (1..5000) -> Retorna Registros + Paging Cookie -> Injeta Cookie na Query (Página 2) -> Pede de 5001..10000.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Tirar o peso do servidor SQL através de paginação eficiente (Paging Cookie) e leitura destravada (no-lock) é fundamental para operações diárias de alto tráfego. No fim do dia, performance de consulta no Dataverse é pura responsabilidade de uma boa estrutura arquitetural no código do cliente.</p>
+
+      <hr class="my-8" />
+      <p><strong>Quais estratégias de processamento em lote você utiliza no Dataverse quando passa da barreira dos 100 mil registros? Compartilhe seus desafios nos comentários!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Dataverse', 'FetchXML', 'Performance', 'Otimização', 'Dynamics 365'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-09-02',
+    readTimeMinutes: 7,
+    imageGradient: 'from-emerald-600 to-teal-500',
+  },
 ];
 
 // Helper to filter out posts scheduled for the future
