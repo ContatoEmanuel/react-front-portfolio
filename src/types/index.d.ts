@@ -32,3 +32,24 @@ export interface IProfile {
   github: string;
   bio: string;
 }
+
+// Tipagem para Categorias do Blog
+export interface IBlogCategory {
+  name: string;
+  color: string;
+}
+
+// Tipagem para Posts do Blog
+export interface IBlogPost {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: IBlogCategory;
+  tags: string[];
+  author: string;
+  publishedAt: string;
+  readTimeMinutes: number;
+  imageGradient?: string;
+}

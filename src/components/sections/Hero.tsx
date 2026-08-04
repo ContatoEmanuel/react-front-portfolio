@@ -4,107 +4,122 @@ import { profile } from '../../data/profile';
 
 export default function Hero() {
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 pt-16">
-      <Container>
+    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50" />
+      
+      {/* Decorative Orbs */}
+      <div className="decorative-orb w-96 h-96 bg-blue-400 top-10 -left-20 animate-float" />
+      <div className="decorative-orb w-80 h-80 bg-indigo-400 bottom-10 -right-20 animate-float-delay" />
+      <div className="decorative-orb w-64 h-64 bg-purple-400 top-1/3 right-1/4 animate-float-slow" />
+      
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.3) 1px, transparent 0)',
+        backgroundSize: '40px 40px'
+      }} />
+
+      <Container className="relative z-10">
         <div className="text-center">
           {/* Foto de Perfil */}
-          <div className="mb-8">
+          <div className="mb-6 animate-fade-in">
             <div className="relative inline-block">
               <img
                 src="/assets/profile.jpg"
                 alt={profile.name}
-                className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white shadow-2xl"
+                className="w-44 h-44 rounded-full mx-auto object-cover border-4 border-white shadow-2xl ring-4 ring-blue-100"
                 onError={(e) => {
                   const target = e.currentTarget;
                   target.onerror = null;
-                  target.outerHTML = '<div class="w-48 h-48 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white shadow-2xl"><span class="text-6xl font-bold text-white">EM</span></div>';
+                  target.outerHTML = '<div class="w-44 h-44 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white shadow-2xl ring-4 ring-blue-100"><span class="text-5xl font-bold text-white">EM</span></div>';
                 }}
               />
-              <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
+              <div className="absolute -bottom-1 -right-1 bg-green-500 w-7 h-7 rounded-full border-4 border-white animate-pulse-soft" />
             </div>
           </div>
 
+
+
           {/* Nome */}
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-3 animate-fade-in-delay tracking-tight">
             {profile.name}
           </h1>
 
           {/* Título/Cargo */}
-          <p className="text-xl md:text-2xl text-gray-700 font-medium mb-8 max-w-3xl mx-auto">
-            {profile.title}
+          <h2 className="text-2xl md:text-3xl font-semibold gradient-text mb-3 animate-fade-in-delay-2">
+            Senior Software Engineer
+          </h2>
+
+          {/* Stack Subtitle */}
+          <p className="text-lg text-gray-500 font-medium mb-8 animate-fade-in-delay-2">
+            Dynamics 365 • Power Platform • .NET C# • Azure
           </p>
 
           {/* Links Sociais */}
-          <div className="flex flex-wrap gap-3 justify-center mb-8 max-w-4xl mx-auto">
+          <div className="flex flex-wrap gap-3 justify-center mb-10 max-w-4xl mx-auto animate-fade-in-delay-3">
             {/* Linktree */}
-            <Button 
-              onClick={() => window.open('https://linktr.ee/emanuel.macedo', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+            <a href="https://linktr.ee/emanuel.macedo" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold text-sm hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M13.5108 5.85343L17.5158 1.73642L19.8404 4.11701L15.6393 8.12199H21.5488V11.4268H15.6113L19.8404 15.5345L17.5158 17.8684L11.7744 12.099L6.03299 17.8684L3.70842 15.5438L7.93745 11.4361H2V8.12199H7.90944L3.70842 4.11701L6.03299 1.73642L10.038 5.85343V0H13.5108V5.85343ZM10.038 16.16H13.5108V24H10.038V16.16Z"/>
               </svg>
               Linktree
-            </Button>
+            </a>
 
             {/* LinkedIn */}
-            <Button 
-              onClick={() => window.open('https://www.linkedin.com/in/emanuel-a-macedo/', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            <a href="https://www.linkedin.com/in/emanuel-a-macedo/" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold text-sm hover:from-blue-700 hover:to-blue-800 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
               LinkedIn
-            </Button>
+            </a>
 
             {/* GitHub */}
-            <Button 
-              onClick={() => window.open('https://github.com/ContatoEmanuel', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900"
+            <a href="https://github.com/ContatoEmanuel" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl font-semibold text-sm hover:from-gray-800 hover:to-gray-900 hover:shadow-lg hover:shadow-gray-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
               </svg>
               GitHub
-            </Button>
+            </a>
 
             {/* YouTube */}
-            <Button 
-              onClick={() => window.open('https://www.youtube.com/channel/UCQbZlecPawGlx0F6Oo56LDw', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+            <a href="https://www.youtube.com/channel/UCQbZlecPawGlx0F6Oo56LDw" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-semibold text-sm hover:from-red-700 hover:to-red-800 hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
               YouTube
-            </Button>
+            </a>
 
             {/* Credly */}
-            <Button 
-              onClick={() => window.open('https://www.credly.com/users/emanuel-a-macedo/badges', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
+            <a href="https://www.credly.com/users/emanuel-a-macedo/badges" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold text-sm hover:from-orange-600 hover:to-amber-600 hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
               </svg>
               Credly
-            </Button>
+            </a>
 
             {/* Microsoft Learn */}
-            <Button 
-              onClick={() => window.open('https://learn.microsoft.com/pt-br/users/emanuelarrudasmacedo-1105/', '_blank')}
-              className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
+            <a href="https://learn.microsoft.com/pt-br/users/emanuelarrudasmacedo-1105/" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-semibold text-sm hover:from-cyan-700 hover:to-blue-700 hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M0 0v11.408h11.408V0zm12.594 0v11.408H24V0zM0 12.594V24h11.408V12.594zm12.594 0V24H24V12.594z"/>
               </svg>
               MS Learn
-            </Button>
+            </a>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center animate-fade-in-delay-3">
             <Button 
               onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               size="lg"
@@ -115,7 +130,11 @@ export default function Hero() {
               variant="secondary"
               size="lg"
               onClick={() => window.open('/resume.html', '_blank')}
+              className="flex items-center gap-2"
             >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
               Download CV
             </Button>
           </div>
