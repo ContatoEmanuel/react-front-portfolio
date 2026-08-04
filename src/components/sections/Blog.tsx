@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Container from '../layout/Container';
 import SectionTitle from '../ui/SectionTitle';
-import BlogPost from './BlogPost';
+
 import { blogCategories, getVisibleBlogPosts } from '../../data/blogPosts';
 import { IBlogPost } from '../../types';
 
