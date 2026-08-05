@@ -24,8 +24,7 @@ export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
   const postUrl = `https://eam-company.com.br/blog.html?id=${post.id}`;
 
   const shareOnLinkedIn = () => {
-    const shareText = `${post.title}\n\n${post.excerpt}\n\n${postUrl}`;
-    const linkedinUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`;
+    const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`;
     window.open(linkedinUrl, '_blank', 'width=600,height=600');
   };
 
