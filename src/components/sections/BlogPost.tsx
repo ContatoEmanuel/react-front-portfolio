@@ -21,7 +21,7 @@ export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
     });
   };
 
-  const postUrl = `https://eam-company.com.br/#blog-${post.slug}`;
+  const postUrl = `https://eam-company.com.br/blog.html?id=${post.id}`;
 
   const shareOnLinkedIn = () => {
     const shareText = `${post.title}\n\n${post.excerpt}\n\n${postUrl}`;

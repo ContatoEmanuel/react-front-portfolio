@@ -459,6 +459,6 @@ export const getVisibleBlogPosts = () => {
       const postDate = new Date(post.publishedAt + 'T00:00:00');
       return postDate <= now;
     })
-    // Also ensure they are sorted by date (newest first)
-    .sort((a, b) => new Date(b.publishedAt + 'T00:00:00').getTime() - new Date(a.publishedAt + 'T00:00:00').getTime());
+    // Ensure they are sorted by ID from highest to lowest
+    .sort((a, b) => b.id - a.id);
 };
