@@ -170,6 +170,30 @@ export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
         </Container>
       </article>
 
+      {/* Comments Section */}
+      <section className="py-12 bg-white">
+        <Container>
+          <div className="max-w-3xl mx-auto border-t border-gray-200 pt-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-8">Comentários e Discussões</h3>
+            <Giscus
+              id="comments"
+              repo="ContatoEmanuel/react-front-portfolio"
+              repoId="R_kgDOQfgGQA"
+              category="Announcements"
+              categoryId=""
+              mapping="pathname"
+              term="Welcome to @giscus/react component!"
+              reactionsEnabled="1"
+              emitMetadata="0"
+              inputPosition="top"
+              theme="light"
+              lang="pt"
+              loading="lazy"
+            />
+          </div>
+        </Container>
+      </section>
+
       {/* Author Card */}
       <section className="py-12 bg-gray-50 border-t border-gray-200">
         <Container>
@@ -222,30 +246,6 @@ export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Comments Section */}
-      <section className="py-12 bg-white">
-        <Container>
-          <div className="max-w-3xl mx-auto border-t border-gray-200 pt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">Comentários e Discussões</h3>
-            <Giscus
-              id="comments"
-              repo="ContatoEmanuel/react-front-portfolio"
-              repoId="R_kgDOQfgGQA"
-              category="Announcements"
-              categoryId=""
-              mapping="pathname"
-              term="Welcome to @giscus/react component!"
-              reactionsEnabled="1"
-              emitMetadata="0"
-              inputPosition="top"
-              theme="light"
-              lang="pt"
-              loading="lazy"
-            />
           </div>
         </Container>
       </section>
