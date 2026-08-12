@@ -240,9 +240,96 @@ public void Execute(IServiceProvider serviceProvider)
 }
 </code></pre>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Pipeline Comparativa]</strong><br/>
-        <em>Comparativo visual lado a lado: De um lado a requisição batendo no "Workflow Engine -> Plugin" (Custom Action), e do outro a requisição indo "OData Endpoint -> Plugin" (Custom API), destacando o atalho de performance.</em>
+      <div class="my-8">
+        <div style="text-align:center; margin-bottom:12px;">
+          <strong style="font-size:1.1rem; color:#1e293b;">Pipeline Comparativa: Custom Action vs Custom API</strong>
+        </div>
+        <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:860px;margin:0 auto;display:block;font-family:system-ui,-apple-system,sans-serif;">
+          <!-- Background -->
+          <rect width="860" height="340" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+          <!-- ===== LEFT SIDE: Custom Action ===== -->
+          <rect x="20" y="16" width="400" height="308" rx="12" fill="#fff5f5" stroke="#fecaca" stroke-width="1.5" stroke-dasharray="6 3"/>
+          <text x="220" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">CUSTOM ACTION</text>
+          <text x="220" y="60" text-anchor="middle" font-size="10" fill="#dc2626" font-style="italic">Overhead do Motor de Workflow</text>
+
+          <!-- Step 1: Request -->
+          <rect x="135" y="76" width="170" height="40" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+          <text x="220" y="101" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">📨 Requisição HTTP</text>
+
+          <!-- Arrow 1→2 -->
+          <line x1="220" y1="116" x2="220" y2="140" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 2: Workflow Engine (overhead) -->
+          <rect x="115" y="140" width="210" height="48" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+          <text x="220" y="161" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="700">⚙️ Workflow Engine</text>
+          <text x="220" y="178" text-anchor="middle" font-size="10" fill="#dc2626">(overhead de serialização)</text>
+
+          <!-- Arrow 2→3 -->
+          <line x1="220" y1="188" x2="220" y2="212" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 3: Plugin -->
+          <rect x="135" y="212" width="170" height="40" rx="8" fill="#6366f1" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="220" y="237" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">🔌 Plugin (C#)</text>
+
+          <!-- Arrow 3→4 -->
+          <line x1="220" y1="252" x2="220" y2="276" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 4: Response -->
+          <rect x="135" y="276" width="170" height="40" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+          <text x="220" y="301" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">📤 Resposta</text>
+
+          <!-- Latency badge -->
+          <rect x="330" y="156" width="80" height="24" rx="12" fill="#fecaca"/>
+          <text x="370" y="172" text-anchor="middle" font-size="10" fill="#b91c1c" font-weight="700">+ Latência</text>
+
+
+          <!-- ===== RIGHT SIDE: Custom API ===== -->
+          <rect x="440" y="16" width="400" height="308" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" stroke-dasharray="6 3"/>
+          <text x="640" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="#15803d">CUSTOM API</text>
+          <text x="640" y="60" text-anchor="middle" font-size="10" fill="#16a34a" font-style="italic">Atalho de Performance ⚡</text>
+
+          <!-- Step 1: Request -->
+          <rect x="555" y="76" width="170" height="40" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+          <text x="640" y="101" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">📨 Requisição HTTP</text>
+
+          <!-- Arrow 1→2 -->
+          <line x1="640" y1="116" x2="640" y2="140" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 2: OData Endpoint (direto) -->
+          <rect x="535" y="140" width="210" height="48" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+          <text x="640" y="161" text-anchor="middle" font-size="12" fill="#15803d" font-weight="700">🌐 OData Endpoint</text>
+          <text x="640" y="178" text-anchor="middle" font-size="10" fill="#16a34a">(roteamento direto)</text>
+
+          <!-- Arrow 2→3 -->
+          <line x1="640" y1="188" x2="640" y2="212" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 3: Plugin -->
+          <rect x="555" y="212" width="170" height="40" rx="8" fill="#6366f1" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="640" y="237" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">🔌 Plugin (C#)</text>
+
+          <!-- Arrow 3→4 -->
+          <line x1="640" y1="252" x2="640" y2="276" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+          <!-- Step 4: Response -->
+          <rect x="555" y="276" width="170" height="40" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+          <text x="640" y="301" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">📤 Resposta</text>
+
+          <!-- Performance badge -->
+          <rect x="450" y="156" width="80" height="24" rx="12" fill="#bbf7d0"/>
+          <text x="490" y="172" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">– Latência</text>
+
+          <!-- VS divider -->
+          <circle cx="430" cy="170" r="18" fill="#1e293b"/>
+          <text x="430" y="175" text-anchor="middle" font-size="12" fill="#fff" font-weight="800">VS</text>
+
+          <!-- Arrow marker definition -->
+          <defs>
+            <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+            </marker>
+          </defs>
+        </svg>
       </div>
 
       <h2>Conclusão</h2>
