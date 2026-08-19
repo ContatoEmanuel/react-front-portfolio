@@ -186,9 +186,65 @@ steps:
       <h2>4. Pipeline de Release (CD) e Connection References</h2>
       <p>Na entrega (Release), reempacote a solução como <em>Managed</em>. O grande segredo em enterprise é gerenciar variáveis de ambiente e <em>Connection References</em>. Utilize o arquivo de configurações de deployment (Deployment Settings) para mapear dinamicamente conexões do DEV para STG/PROD sem interagir com a interface.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Fluxo de CI/CD]</strong><br/>
-        <em>Um fluxograma mostrando o caminho do código: O dev altera em DEV -> Pipeline de CI extrai e faz commit no Repo Git -> O Pull Request é aprovado -> Pipeline de CD empacota como Managed -> Aplica Deployment Settings -> Implanta em PROD.</em>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Fluxo de CI/CD — Power Platform + Azure DevOps</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 170" style="width:100%;max-width:960px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do fluxo de CI/CD: Dev altera em DEV, Pipeline CI extrai e commita, PR aprovado, Pipeline CD empacota Managed, aplica Deployment Settings e implanta em PROD.">
+            <defs>
+              <linearGradient id="cicd-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="cicd-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+              <linearGradient id="cicd-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="cicd-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+              <linearGradient id="cicd-g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <linearGradient id="cicd-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/></linearGradient>
+              <filter id="cicd-shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+              <marker id="cicd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+            </defs>
+            <!-- Step 1 -->
+            <rect x="10" y="40" width="130" height="90" rx="14" fill="url(#cicd-g1)" filter="url(#cicd-shadow)"/>
+            <text x="75" y="75" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="700" font-family="Inter,system-ui,sans-serif">Dev altera</text>
+            <text x="75" y="95" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Inter,system-ui,sans-serif">em DEV</text>
+            <!-- Arrow 1→2 -->
+            <line x1="140" y1="85" x2="160" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#cicd-arrow)"/>
+            <!-- Step 2 -->
+            <rect x="162" y="40" width="140" height="90" rx="14" fill="url(#cicd-g2)" filter="url(#cicd-shadow)"/>
+            <text x="232" y="70" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">Pipeline CI</text>
+            <text x="232" y="88" text-anchor="middle" fill="#e0e7ff" font-size="10.5" font-family="Inter,system-ui,sans-serif">Extrai e faz commit</text>
+            <text x="232" y="104" text-anchor="middle" fill="#e0e7ff" font-size="10.5" font-family="Inter,system-ui,sans-serif">no Repo Git</text>
+            <!-- Arrow 2→3 -->
+            <line x1="302" y1="85" x2="322" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#cicd-arrow)"/>
+            <!-- Step 3 -->
+            <rect x="324" y="40" width="130" height="90" rx="14" fill="url(#cicd-g3)" filter="url(#cicd-shadow)"/>
+            <text x="389" y="75" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">Pull Request</text>
+            <text x="389" y="95" text-anchor="middle" fill="#d1fae5" font-size="11" font-family="Inter,system-ui,sans-serif">✓ Aprovado</text>
+            <!-- Arrow 3→4 -->
+            <line x1="454" y1="85" x2="474" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#cicd-arrow)"/>
+            <!-- Step 4 -->
+            <rect x="476" y="40" width="140" height="90" rx="14" fill="url(#cicd-g4)" filter="url(#cicd-shadow)"/>
+            <text x="546" y="70" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">Pipeline CD</text>
+            <text x="546" y="88" text-anchor="middle" fill="#ede9fe" font-size="10.5" font-family="Inter,system-ui,sans-serif">Empacota como</text>
+            <text x="546" y="104" text-anchor="middle" fill="#ede9fe" font-size="10.5" font-family="Inter,system-ui,sans-serif">Managed</text>
+            <!-- Arrow 4→5 -->
+            <line x1="616" y1="85" x2="636" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#cicd-arrow)"/>
+            <!-- Step 5 -->
+            <rect x="638" y="40" width="140" height="90" rx="14" fill="url(#cicd-g5)" filter="url(#cicd-shadow)"/>
+            <text x="708" y="70" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">Deployment</text>
+            <text x="708" y="88" text-anchor="middle" fill="#fef3c7" font-size="10.5" font-family="Inter,system-ui,sans-serif">Aplica Settings</text>
+            <text x="708" y="104" text-anchor="middle" fill="#fef3c7" font-size="10.5" font-family="Inter,system-ui,sans-serif">& Variáveis</text>
+            <!-- Arrow 5→6 -->
+            <line x1="778" y1="85" x2="798" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#cicd-arrow)"/>
+            <!-- Step 6 -->
+            <rect x="800" y="40" width="140" height="90" rx="14" fill="url(#cicd-g6)" filter="url(#cicd-shadow)"/>
+            <text x="870" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" font-family="Inter,system-ui,sans-serif">🚀 PROD</text>
+            <text x="870" y="90" text-anchor="middle" fill="#fee2e2" font-size="10.5" font-family="Inter,system-ui,sans-serif">Implantação</text>
+            <text x="870" y="106" text-anchor="middle" fill="#fee2e2" font-size="10.5" font-family="Inter,system-ui,sans-serif">em Produção</text>
+            <!-- CI / CD Labels -->
+            <rect x="162" y="142" width="292" height="24" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+            <text x="308" y="158" text-anchor="middle" fill="#4338ca" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Continuous Integration (CI)</text>
+            <rect x="476" y="142" width="464" height="24" rx="6" fill="#faf5ff" stroke="#8b5cf6" stroke-width="1"/>
+            <text x="708" y="158" text-anchor="middle" fill="#6d28d9" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Continuous Delivery (CD)</text>
+          </svg>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
@@ -383,9 +439,65 @@ builder.Services.AddHttpClient("EnterpriseAPI", client =>
       <h2>4. Fallbacks Estratégicos</h2>
       <p>Para dados não críticos, o <em>Fallback</em> é a cereja do bolo. Se a API externa de cotação cair, retorne o último dado armazenado em cache (Redis) em vez de lançar um erro 500 para o front-end.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Funil de Resiliência]</strong><br/>
-        <em>Desenho de um funil de resiliência: Request -> [Fallback] -> [Circuit Breaker] -> [Retry] -> [Timeout] -> API de Destino. Demonstra como a requisição passa pelas blindagens.</em>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Funil de Resiliência — Polly / ASP.NET Core</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" style="width:100%;max-width:700px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do funil de resiliência: Request entra e passa por Fallback, Circuit Breaker, Retry e Timeout antes de chegar na API de Destino.">
+            <defs>
+              <linearGradient id="res-g0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="res-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+              <linearGradient id="res-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/></linearGradient>
+              <linearGradient id="res-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <linearGradient id="res-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#0891b2"/></linearGradient>
+              <linearGradient id="res-g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <filter id="res-shadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.18"/></filter>
+              <marker id="res-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+            </defs>
+
+            <!-- REQUEST (top) -->
+            <rect x="250" y="8" width="200" height="48" rx="24" fill="url(#res-g0)" filter="url(#res-shadow)"/>
+            <text x="350" y="38" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,system-ui,sans-serif">📨 Request</text>
+            <line x1="350" y1="56" x2="350" y2="78" stroke="#94a3b8" stroke-width="2" marker-end="url(#res-arrow)"/>
+
+            <!-- Funnel Layer 1: Fallback -->
+            <polygon points="120,82 580,82 540,148 160,148" fill="url(#res-g1)" filter="url(#res-shadow)" rx="8"/>
+            <rect x="120" y="82" width="460" height="66" rx="10" fill="url(#res-g1)" filter="url(#res-shadow)" opacity="0"/>
+            <text x="350" y="108" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">🛡️ Fallback</text>
+            <text x="350" y="128" text-anchor="middle" fill="#ede9fe" font-size="11" font-family="Inter,system-ui,sans-serif">Retorna dados em cache se tudo falhar</text>
+            <line x1="350" y1="148" x2="350" y2="168" stroke="#94a3b8" stroke-width="2" marker-end="url(#res-arrow)"/>
+
+            <!-- Funnel Layer 2: Circuit Breaker -->
+            <polygon points="160,172 540,172 500,238 200,238" fill="url(#res-g2)" filter="url(#res-shadow)"/>
+            <text x="350" y="198" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">⚡ Circuit Breaker</text>
+            <text x="350" y="218" text-anchor="middle" fill="#fee2e2" font-size="11" font-family="Inter,system-ui,sans-serif">Abre após N falhas consecutivas (fail-fast)</text>
+            <line x1="350" y1="238" x2="350" y2="258" stroke="#94a3b8" stroke-width="2" marker-end="url(#res-arrow)"/>
+
+            <!-- Funnel Layer 3: Retry -->
+            <polygon points="200,262 500,262 460,328 240,328" fill="url(#res-g3)" filter="url(#res-shadow)"/>
+            <text x="350" y="288" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">🔄 Retry</text>
+            <text x="350" y="308" text-anchor="middle" fill="#fef3c7" font-size="11" font-family="Inter,system-ui,sans-serif">Exponential Backoff (2s, 4s, 8s…)</text>
+            <line x1="350" y1="328" x2="350" y2="348" stroke="#94a3b8" stroke-width="2" marker-end="url(#res-arrow)"/>
+
+            <!-- Funnel Layer 4: Timeout -->
+            <polygon points="240,352 460,352 430,400 270,400" fill="url(#res-g4)" filter="url(#res-shadow)"/>
+            <text x="350" y="378" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">⏱️ Timeout</text>
+
+            <!-- Arrow to API -->
+            <line x1="350" y1="400" x2="350" y2="390" stroke="none"/>
+            <path d="M350,400 L350,412" stroke="#94a3b8" stroke-width="2"/>
+            <polygon points="344,412 356,412 350,420" fill="#94a3b8"/>
+
+            <!-- Brace / Shield label on left -->
+            <text x="82" y="215" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif" transform="rotate(-90,82,215)">BLINDAGENS DE RESILIÊNCIA</text>
+            <line x1="102" y1="82" x2="102" y2="400" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+            <!-- API box at bottom -->
+            <rect x="270" y="418" width="160" height="0" fill="none"/>
+          </svg>
+          <div style="text-align:center;margin-top:0.5rem;">
+            <span style="display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:0.95rem;padding:0.6rem 2rem;border-radius:999px;box-shadow:0 2px 8px rgba(16,185,129,0.3);">✅ API de Destino</span>
+          </div>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
