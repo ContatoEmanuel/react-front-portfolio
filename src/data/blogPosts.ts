@@ -552,9 +552,81 @@ if(serviceClient.IsReady)
       <h2>4. Controle de Concorrência (Rate Limits)</h2>
       <p>Se você enviar 10.000 mensagens na fila e a Function escalar para 100 instâncias simultâneas processando no CRM de volta, você sofrerá <em>API Limits</em> do Dataverse (erros 429). Use a configuração de <code>batchSize</code> do Service Bus no <em>host.json</em> da Function para domar a escalabilidade de acordo com a saúde do Dataverse.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Arquitetura Event-Driven]</strong><br/>
-        <em>Dynamics 365 envia dados para o Service Bus (via Webhook ou Plugin) -> O Azure Functions é triggado pelo barramento, processa dados externamente e atualiza o D365 de forma segura usando Azure Active Directory.</em>
+      <div class="my-8 p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl border border-blue-200 shadow-sm">
+        <h3 class="text-center text-lg font-bold text-gray-800 mb-1">Arquitetura Event-Driven</h3>
+        <p class="text-center text-sm text-gray-500 mb-4">Fluxo de integração serverless entre Dynamics 365 e Azure Functions</p>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" style="width:100%;max-width:900px;margin:0 auto;display:block;" role="img" aria-label="Diagrama da Arquitetura Event-Driven: Dynamics 365 envia dados via Plugin/Webhook para o Azure Service Bus, que dispara o Azure Functions, que se autentica via Azure Active Directory e atualiza o Dynamics 365.">
+            <defs>
+              <linearGradient id="gD365" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#005A9E"/></linearGradient>
+              <linearGradient id="gBus" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
+              <linearGradient id="gFunc" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#D97706"/></linearGradient>
+              <linearGradient id="gAAD" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
+              <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6366F1"/></marker>
+              <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/></marker>
+              <marker id="arrowAmber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#D97706"/></marker>
+            </defs>
+
+            <!-- Box 1: Dynamics 365 -->
+            <g filter="url(#shadow)">
+              <rect x="30" y="100" width="170" height="100" rx="16" fill="url(#gD365)"/>
+              <text x="115" y="145" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Dynamics 365</text>
+              <text x="115" y="168" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">Plugin / Webhook</text>
+            </g>
+
+            <!-- Arrow 1 -->
+            <line x1="200" y1="150" x2="278" y2="150" stroke="#6366F1" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#arrowBlue)"/>
+            <text x="240" y="140" text-anchor="middle" fill="#6366F1" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Publica msg</text>
+
+            <!-- Box 2: Service Bus -->
+            <g filter="url(#shadow)">
+              <rect x="280" y="100" width="170" height="100" rx="16" fill="url(#gBus)"/>
+              <text x="365" y="145" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Service Bus</text>
+              <text x="365" y="168" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">Fila / Tópico</text>
+            </g>
+
+            <!-- Arrow 2 -->
+            <line x1="450" y1="150" x2="528" y2="150" stroke="#D97706" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#arrowAmber)"/>
+            <text x="490" y="140" text-anchor="middle" fill="#D97706" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Trigger</text>
+
+            <!-- Box 3: Azure Functions -->
+            <g filter="url(#shadow)">
+              <rect x="530" y="100" width="170" height="100" rx="16" fill="url(#gFunc)"/>
+              <text x="615" y="145" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Azure Functions</text>
+              <text x="615" y="168" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">Processamento</text>
+            </g>
+
+            <!-- Box 4: Azure AD -->
+            <g filter="url(#shadow)">
+              <rect x="680" y="230" width="180" height="70" rx="14" fill="url(#gAAD)"/>
+              <text x="770" y="262" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">Azure Active Directory</text>
+              <text x="770" y="280" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10" font-family="system-ui,sans-serif">Managed Identity</text>
+            </g>
+
+            <!-- Arrow: Functions -> AAD -->
+            <line x1="660" y1="200" x2="720" y2="230" stroke="#10B981" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrowGreen)"/>
+            <text x="670" y="218" text-anchor="middle" fill="#10B981" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Autentica</text>
+
+            <!-- Arrow: Functions -> back to D365 (curved) -->
+            <path d="M 615 200 C 615 280, 300 290, 115 200" stroke="#0078D4" stroke-width="2.5" fill="none" stroke-dasharray="6 3" marker-end="url(#arrowBlue)"/>
+            <text x="380" y="275" text-anchor="middle" fill="#0078D4" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Atualiza D365 (seguro, sem senhas)</text>
+
+            <!-- Step labels -->
+            <g font-family="system-ui,sans-serif" font-size="11">
+              <circle cx="215" cy="120" r="10" fill="#6366F1"/><text x="215" y="124" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1</text>
+              <circle cx="465" cy="120" r="10" fill="#D97706"/><text x="465" y="124" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2</text>
+              <circle cx="640" cy="215" r="10" fill="#10B981"/><text x="640" y="219" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3</text>
+              <circle cx="365" cy="260" r="10" fill="#0078D4"/><text x="365" y="264" text-anchor="middle" fill="white" font-size="10" font-weight="bold">4</text>
+            </g>
+          </svg>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:12px;color:#4B5563;font-family:system-ui,sans-serif;">
+          <span><strong style="color:#6366F1">①</strong> Plugin/Webhook publica mensagem</span>
+          <span><strong style="color:#D97706">②</strong> Service Bus dispara a Function</span>
+          <span><strong style="color:#10B981">③</strong> Autentica via Managed Identity</span>
+          <span><strong style="color:#0078D4">④</strong> Atualiza D365 sem credenciais</span>
+        </div>
       </div>
 
       <h2>Conclusão</h2>

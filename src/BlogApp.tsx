@@ -61,6 +61,7 @@ function BlogApp() {
           <BlogPost 
             post={selectedPost} 
             onBack={handleBack} 
+            onNavigateToPost={handlePostClick}
             allPosts={getVisibleBlogPosts()} 
           />
         ) : (

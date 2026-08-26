@@ -6,10 +6,11 @@ import { IBlogPost } from '../../types';
 interface BlogPostProps {
   post: IBlogPost;
   onBack: () => void;
+  onNavigateToPost: (post: IBlogPost) => void;
   allPosts: IBlogPost[];
 }
 
-export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
+export default function BlogPost({ post, onBack, onNavigateToPost, allPosts }: BlogPostProps) {
   const [linkCopied, setLinkCopied] = useState(false);
 
   const formatDate = (dateStr: string) => {
@@ -265,16 +266,7 @@ export default function BlogPost({ post, onBack, allPosts }: BlogPostProps) {
             </button>
             {nextPost && (
               <button
-                onClick={() => {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  // Small delay to let scroll happen, then parent will re-render
-                  setTimeout(() => {
-                    onBack();
-                    setTimeout(() => {
-                      document.querySelector(`[data-post-id="${nextPost.id}"]`)?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  }, 300);
-                }}
+                onClick={() => onNavigateToPost(nextPost)}
                 className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2 group"
               >
                 Próximo artigo

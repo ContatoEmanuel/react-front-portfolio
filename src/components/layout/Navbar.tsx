@@ -35,7 +35,14 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
+  const isBlogPage = window.location.pathname.includes('blog');
+
   const scrollToSection = (id: string) => {
+    if (isBlogPage) {
+      // On /blog.html, sections like #about don't exist — navigate to main page
+      window.location.href = id === 'hero' ? '/' : `/#${id}`;
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
