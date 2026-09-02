@@ -699,9 +699,95 @@ while (moreRecords)
       <h2>4. Use <code>no-lock="true"</code> para Grandes Consultas</h2>
       <p>Se você está fazendo consultas de leitura massiva e tem certeza de que não necessita de travas de concorrência nos registros consultados (por exemplo, relatórios noturnos), adicione o atributo <code>no-lock="true"</code> à tag <code>&lt;fetch&gt;</code>. Isso diz ao SQL do Dataverse para usar a diretiva <code>(NOLOCK)</code>, evitando deadlocks graves durante a operação de usuários no dia.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Paging Loop]</strong><br/>
-        <em>Desenho do mecanismo de paginação iterativo: Requisição Inicial (1..5000) -> Retorna Registros + Paging Cookie -> Injeta Cookie na Query (Página 2) -> Pede de 5001..10000.</em>
+      <div class="my-8 p-6 bg-gradient-to-br from-slate-50 to-emerald-50 rounded-2xl border border-emerald-200 shadow-sm">
+        <h3 class="text-center text-lg font-bold text-gray-800 mb-1">Paging Loop — Paginação com Cookie</h3>
+        <p class="text-center text-sm text-gray-500 mb-4">Mecanismo iterativo de paginação FetchXML no Dataverse</p>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 380" style="width:100%;max-width:940px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do Paging Loop: Cliente envia FetchXML pedindo registros 1 a 5000, Dataverse retorna registros mais Paging Cookie, Cliente injeta cookie na próxima query e pede registros 5001 a 10000, e o ciclo se repete.">
+            <defs>
+              <linearGradient id="gClient8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0EA5E9"/><stop offset="100%" stop-color="#0369A1"/></linearGradient>
+              <linearGradient id="gDataverse8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#6D28D9"/></linearGradient>
+              <linearGradient id="gCookie8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#D97706"/></linearGradient>
+              <linearGradient id="gInject8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <filter id="sh8"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
+              <marker id="arr8Blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0EA5E9"/></marker>
+              <marker id="arr8Purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/></marker>
+              <marker id="arr8Amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#D97706"/></marker>
+              <marker id="arr8Green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/></marker>
+            </defs>
+
+            <!-- Box 1: Cliente / App -->
+            <g filter="url(#sh8)">
+              <rect x="30" y="90" width="180" height="110" rx="16" fill="url(#gClient8)"/>
+              <text x="120" y="132" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Cliente / App</text>
+              <text x="120" y="155" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">FetchXML Request</text>
+              <text x="120" y="175" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10" font-family="system-ui,sans-serif">page="1"  count="5000"</text>
+            </g>
+
+            <!-- Arrow 1: Client -> Dataverse -->
+            <line x1="210" y1="145" x2="298" y2="145" stroke="#0EA5E9" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#arr8Blue)"/>
+            <text x="255" y="135" text-anchor="middle" fill="#0EA5E9" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Req 1..5000</text>
+
+            <!-- Box 2: Dataverse -->
+            <g filter="url(#sh8)">
+              <rect x="300" y="90" width="180" height="110" rx="16" fill="url(#gDataverse8)"/>
+              <text x="390" y="132" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Dataverse</text>
+              <text x="390" y="155" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">SQL Server</text>
+              <text x="390" y="175" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10" font-family="system-ui,sans-serif">Processa & retorna</text>
+            </g>
+
+            <!-- Arrow 2: Dataverse -> Cookie -->
+            <line x1="480" y1="145" x2="568" y2="145" stroke="#8B5CF6" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#arr8Purple)"/>
+            <text x="525" y="135" text-anchor="middle" fill="#8B5CF6" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Retorna</text>
+
+            <!-- Box 3: Paging Cookie -->
+            <g filter="url(#sh8)">
+              <rect x="570" y="90" width="180" height="110" rx="16" fill="url(#gCookie8)"/>
+              <text x="660" y="128" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">Registros</text>
+              <text x="660" y="150" text-anchor="middle" fill="white" font-size="15" font-weight="bold" font-family="system-ui,sans-serif">+ Paging Cookie</text>
+              <text x="660" y="175" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10" font-family="system-ui,sans-serif">5000 rows + cursor XML</text>
+            </g>
+
+            <!-- Arrow 3: Cookie down to Inject -->
+            <line x1="660" y1="200" x2="660" y2="248" stroke="#D97706" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#arr8Amber)"/>
+            <text x="695" y="230" text-anchor="start" fill="#D97706" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Extrai cookie</text>
+
+            <!-- Box 4: Inject Cookie -->
+            <g filter="url(#sh8)">
+              <rect x="570" y="250" width="180" height="80" rx="14" fill="url(#gInject8)"/>
+              <text x="660" y="282" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Injeta Cookie</text>
+              <text x="660" y="305" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10" font-family="system-ui,sans-serif">paging-cookie="..." page="2"</text>
+            </g>
+
+            <!-- Arrow 4: Curved return arrow from Inject back to Client (loop) -->
+            <path d="M 570 290 C 400 340, 200 340, 120 200" stroke="#10B981" stroke-width="2.5" fill="none" stroke-dasharray="6 3" marker-end="url(#arr8Green)"/>
+            <text x="340" y="340" text-anchor="middle" fill="#059669" font-size="11" font-weight="600" font-family="system-ui,sans-serif">Próxima página → 5001..10000  (repete até morerecords = false)</text>
+
+            <!-- Loop icon -->
+            <g transform="translate(345, 305)">
+              <circle cx="0" cy="0" r="14" fill="#059669" opacity="0.15"/>
+              <path d="M -6 0 A 6 6 0 1 1 0 6" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arr8Green)"/>
+            </g>
+
+            <!-- Step badges -->
+            <g font-family="system-ui,sans-serif" font-size="11">
+              <circle cx="222" cy="115" r="10" fill="#0EA5E9"/><text x="222" y="119" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1</text>
+              <circle cx="492" cy="115" r="10" fill="#8B5CF6"/><text x="492" y="119" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2</text>
+              <circle cx="690" cy="215" r="10" fill="#D97706"/><text x="690" y="219" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3</text>
+              <circle cx="555" cy="320" r="10" fill="#10B981"/><text x="555" y="324" text-anchor="middle" fill="white" font-size="10" font-weight="bold">4</text>
+            </g>
+
+            <!-- Title badge -->
+            <rect x="350" y="15" width="240" height="32" rx="16" fill="#0F172A" opacity="0.07"/>
+            <text x="470" y="37" text-anchor="middle" fill="#1E293B" font-size="12" font-weight="bold" font-family="system-ui,sans-serif">♻ Iterative Paging Loop</text>
+          </svg>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:12px;color:#4B5563;font-family:system-ui,sans-serif;">
+          <span><strong style="color:#0EA5E9">①</strong> Cliente envia FetchXML (page 1, count 5000)</span>
+          <span><strong style="color:#8B5CF6">②</strong> Dataverse retorna registros + cookie</span>
+          <span><strong style="color:#D97706">③</strong> Extrai o paging-cookie do XML</span>
+          <span><strong style="color:#10B981">④</strong> Injeta cookie e solicita próxima página</span>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
