@@ -803,6 +803,640 @@ while (moreRecords)
     readTimeMinutes: 7,
     imageGradient: 'from-emerald-600 to-teal-500',
   },
+  {
+    id: 9,
+    slug: 'autenticacao-spa-react-dotnet-api',
+    title: 'Comunicação Segura: Padrões de Autenticação entre SPAs (React) e APIs .NET',
+    excerpt: 'Tokens, cookies, PKCE e refresh silencioso — como blindar a comunicação entre seu front-end React e a API .NET sem comprometer a UX.',
+    content: `
+      <p class="lead">Quando seu SPA React consome uma API .NET protegida pelo Azure AD (ou qualquer Identity Provider compatível com OAuth 2.0), o fluxo de autenticação precisa ser à prova de interceptação, roubo de token e replay attack. Em projetos Enterprise como os que conduzi no Itaú e Bradesco Seguros, um token mal gerenciado pode significar exposição de dados financeiros de milhões de clientes. Aqui compartilho os padrões que aplico para garantir segurança sem degradar a experiência do usuário.</p>
+
+      <h2>1. Authorization Code Flow com PKCE — O Padrão Obrigatório</h2>
+      <p>O fluxo <strong>Implicit Grant</strong> está oficialmente desaconselhado pela RFC 9207. Em SPAs, o padrão correto é o <strong>Authorization Code Flow com PKCE</strong> (Proof Key for Code Exchange). Ele evita que tokens trafeguem na URL e adiciona um <code>code_verifier</code> que garante que apenas o cliente legítimo troque o authorization code por tokens.</p>
+      <p>Na prática, isso significa: o React gera um <code>code_verifier</code> aleatório (SHA-256), envia o <code>code_challenge</code> ao IdP, recebe um <code>authorization_code</code> e troca esse código por tokens no backend — sem expor o access token na URL do navegador.</p>
+
+<pre><code class="language-typescript">// React — Configuração MSAL com PKCE (msal-react)
+import { PublicClientApplication } from '@azure/msal-browser';
+
+const msalConfig = {
+  auth: {
+    clientId: 'YOUR_CLIENT_ID',
+    authority: 'https://login.microsoftonline.com/YOUR_TENANT_ID',
+    redirectUri: 'https://app.eamcompany.com',
+  },
+  cache: {
+    cacheLocation: 'sessionStorage', // Nunca localStorage em cenários bancários
+    storeAuthStateInCookie: false,
+  },
+};
+
+export const msalInstance = new PublicClientApplication(msalConfig);
+
+// Adquirir token silenciosamente
+export async function getAccessToken(scopes: string[]): Promise&lt;string&gt; {
+  const accounts = msalInstance.getAllAccounts();
+  if (accounts.length === 0) throw new Error('Nenhuma conta autenticada');
+
+  const response = await msalInstance.acquireTokenSilent({
+    scopes,
+    account: accounts[0],
+  });
+  return response.accessToken;
+}
+</code></pre>
+
+      <h2>2. Validação de Token na API .NET — Não Confie, Valide</h2>
+      <p>Do lado da API, o <code>access_token</code> JWT recebido no header <code>Authorization: Bearer ...</code> deve ser validado em cada request. O middleware <code>AddMicrosoftIdentityWebApiAuthentication</code> do pacote <strong>Microsoft.Identity.Web</strong> faz isso com poucas linhas, validando issuer, audience, assinatura e expiração automaticamente.</p>
+
+<pre><code class="language-csharp">// Program.cs — .NET 8 Minimal API
+using Microsoft.Identity.Web;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
+
+builder.Services.AddAuthorization(options =&gt;
+{
+    options.AddPolicy("ReadData", policy =&gt;
+        policy.RequireClaim("scp", "Data.Read"));
+});
+
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapGet("/api/accounts", [Authorize(Policy = "ReadData")] async () =&gt;
+{
+    // Só chega aqui com token válido + scope Data.Read
+    return Results.Ok(new { status = "secure" });
+});
+
+app.Run();
+</code></pre>
+
+      <h2>3. Refresh Silencioso e Sessão do Usuário</h2>
+      <p>O <code>access_token</code> tem vida curta (geralmente 1h). O MSAL gerencia a renovação silenciosa via iframe oculto, usando o <code>refresh_token</code> armazenado em <code>sessionStorage</code>. Em cenários bancários, recomendo configurar <strong>Conditional Access Policies</strong> no Azure AD para forçar re-autenticação completa a cada 8h de sessão ativa — um equilíbrio entre segurança e UX que negociamos diretamente com as áreas de compliance.</p>
+
+      <h2>4. CORS, CSRF e Headers de Segurança</h2>
+      <p>Nunca configure CORS como <code>AllowAnyOrigin()</code>. Restrinja ao domínio exato do SPA. Além disso, adicione headers de segurança obrigatórios na API:</p>
+      <ul>
+        <li><code>X-Content-Type-Options: nosniff</code></li>
+        <li><code>X-Frame-Options: DENY</code></li>
+        <li><code>Strict-Transport-Security: max-age=31536000</code></li>
+        <li><code>Content-Security-Policy</code> restritivo</li>
+      </ul>
+      <p>Se a API utiliza cookies (cenário BFF — Backend for Frontend), o atributo <code>SameSite=Strict</code> com <code>Secure</code> e <code>HttpOnly</code> é mandatório para mitigar CSRF.</p>
+
+      <h2>5. Padrão BFF como Alternativa ao Token no Browser</h2>
+      <p>Para organizações com exigências regulatórias extremas (LGPD, PCI-DSS), o padrão <strong>Backend for Frontend</strong> (BFF) elimina completamente o token do lado do browser. O React faz login via cookie httpOnly gerenciado por um servidor intermediário (.NET), e todas as chamadas à API downstream são autenticadas server-side. O usuário nunca vê um JWT no DevTools. Este é o padrão que adotamos em aplicações de open banking.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Fluxo Authorization Code + PKCE]</strong><br/>
+        <em>SPA (React) gera code_verifier → Redireciona ao IdP com code_challenge → Recebe authorization_code → Troca por tokens no /token endpoint → API .NET valida JWT em cada request. Variante BFF: React → Cookie → BFF (.NET) → API downstream.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Segurança de autenticação entre SPAs e APIs é uma responsabilidade arquitetural, não um detalhe de implementação. PKCE, validação rigorosa de tokens, refresh silencioso e headers de segurança formam a base. Para cenários regulados, o padrão BFF oferece a camada adicional que auditores exigem. O custo de implementar corretamente é zero se comparado ao custo de um vazamento de dados.</p>
+
+      <hr class="my-8" />
+      <p><strong>Você usa Implicit Flow em produção ou já migrou para PKCE? Tem experiência com o padrão BFF em aplicações financeiras? Compartilhe sua abordagem nos comentários ou no LinkedIn!</strong></p>
+    `,
+    category: blogCategories[2],
+    tags: ['Autenticação', 'React', '.NET', 'OAuth 2.0', 'Segurança'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-09-09',
+    readTimeMinutes: 8,
+    imageGradient: 'from-sky-600 to-blue-700',
+  },
+  {
+    id: 10,
+    slug: 'design-patterns-strategy-factory-microsoft',
+    title: 'Design Patterns na Prática: Aplicando Strategy e Factory para Resolver Regras de Negócio Complexas no Ecossistema Microsoft',
+    excerpt: 'Chega de if/else gigantes em plugins e fluxos. Veja como Strategy e Factory tornam seu código Dynamics 365 e .NET extensível, testável e sustentável.',
+    content: `
+      <p class="lead">Todo projeto Dynamics 365 de longo prazo acumula regras de negócio. O que começa como um <code>if/else</code> inocente em um plugin vira um monstro de 800 linhas que ninguém quer tocar. Em clientes Enterprise, onde novas filiais, produtos ou regulações surgem a cada trimestre, a ausência de padrões estruturais condena o código a morrer de complexidade acidental. Dois patterns resolvem isso de forma elegante: <strong>Strategy</strong> e <strong>Factory</strong>.</p>
+
+      <h2>1. O Problema — O Plugin Monolítico</h2>
+      <p>Cenário real: um plugin de cálculo de comissão no Dynamics que precisa aplicar regras diferentes para 12 tipos de produto. A solução ingênua é um <code>switch/case</code> com 12 branches, cada um com lógica de negócio inline. O resultado? Testes unitários impossíveis, violação do princípio Open/Closed (OCP), e cada nova regra requer alteração no mesmo arquivo — introduzindo regressões.</p>
+
+<pre><code class="language-csharp">// ❌ Anti-pattern: switch monolítico no plugin
+public void Execute(IServiceProvider serviceProvider)
+{
+    var target = (Entity)context.InputParameters["Target"];
+    var productType = target.GetAttributeValue&lt;OptionSetValue&gt;("eam_producttype").Value;
+
+    decimal commission;
+    switch (productType)
+    {
+        case 100000001: commission = CalculateAuto(target); break;
+        case 100000002: commission = CalculateLife(target); break;
+        case 100000003: commission = CalculateHealth(target); break;
+        // ... mais 9 cases
+        default: throw new InvalidPluginExecutionException("Tipo desconhecido");
+    }
+    target["eam_commission"] = new Money(commission);
+}
+</code></pre>
+
+      <h2>2. Strategy Pattern — Isolar Cada Regra</h2>
+      <p>O <strong>Strategy</strong> encapsula cada algoritmo de cálculo em uma classe independente que implementa uma interface comum. Isso permite que cada regra seja testada isoladamente e que novas regras sejam adicionadas sem modificar código existente.</p>
+
+<pre><code class="language-csharp">// ✅ Interface Strategy
+public interface ICommissionStrategy
+{
+    decimal Calculate(Entity policy);
+}
+
+// Implementação para Auto
+public class AutoCommissionStrategy : ICommissionStrategy
+{
+    public decimal Calculate(Entity policy)
+    {
+        var premium = policy.GetAttributeValue&lt;Money&gt;("eam_premium").Value;
+        var riskFactor = policy.GetAttributeValue&lt;decimal&gt;("eam_riskfactor");
+        return premium * 0.08m * (1 + riskFactor);
+    }
+}
+
+// Implementação para Vida
+public class LifeCommissionStrategy : ICommissionStrategy
+{
+    public decimal Calculate(Entity policy)
+    {
+        var premium = policy.GetAttributeValue&lt;Money&gt;("eam_premium").Value;
+        var age = policy.GetAttributeValue&lt;int&gt;("eam_insuredage");
+        return premium * (age > 60 ? 0.12m : 0.06m);
+    }
+}
+</code></pre>
+
+      <h2>3. Factory Pattern — Resolver a Strategy Correta</h2>
+      <p>A <strong>Factory</strong> centraliza a lógica de resolução: dado o tipo de produto, ela retorna a Strategy correta. Isso desacopla o plugin da decisão de qual algoritmo usar.</p>
+
+<pre><code class="language-csharp">// Factory que resolve a Strategy pelo OptionSet
+public static class CommissionStrategyFactory
+{
+    private static readonly Dictionary&lt;int, ICommissionStrategy&gt; _strategies = new()
+    {
+        { 100_000_001, new AutoCommissionStrategy() },
+        { 100_000_002, new LifeCommissionStrategy() },
+        { 100_000_003, new HealthCommissionStrategy() },
+        // Adicionar novos sem tocar no plugin ✔
+    };
+
+    public static ICommissionStrategy Resolve(int productType)
+    {
+        if (!_strategies.TryGetValue(productType, out var strategy))
+            throw new InvalidPluginExecutionException(
+                $"Nenhuma estratégia de comissão para tipo {productType}");
+        return strategy;
+    }
+}
+
+// Plugin limpo — 3 linhas de lógica
+public void Execute(IServiceProvider serviceProvider)
+{
+    var target = (Entity)context.InputParameters["Target"];
+    var productType = target.GetAttributeValue&lt;OptionSetValue&gt;("eam_producttype").Value;
+
+    var strategy = CommissionStrategyFactory.Resolve(productType);
+    target["eam_commission"] = new Money(strategy.Calculate(target));
+}
+</code></pre>
+
+      <h2>4. Testabilidade — O Verdadeiro Ganho</h2>
+      <p>Com cada Strategy isolada, seus testes unitários ficam cirúrgicos. Você testa o cálculo de comissão Auto sem precisar mockar todo o pipeline do Dynamics. Testa a Factory sem depender de nenhuma Strategy concreta. E testa o Plugin apenas verificando que ele chama a Factory e aplica o resultado. <strong>SRP</strong> na prática.</p>
+
+      <h2>5. Extensão para Power Automate e Azure Functions</h2>
+      <p>Esse mesmo padrão se aplica fora de plugins. Em Azure Functions que processam mensagens do Service Bus, a Factory pode resolver o handler correto baseado no <code>MessageType</code>. Em Power Automate, você pode expor cada Strategy como uma <strong>Custom API</strong> separada, permitindo que o citizen developer selecione a regra de negócio por meio de um dropdown na action — sem escrever uma linha de código.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Strategy + Factory Pattern]</strong><br/>
+        <em>Plugin recebe Entity → Chama CommissionStrategyFactory.Resolve(type) → Factory retorna ICommissionStrategy concreto (Auto, Life, Health...) → Strategy executa Calculate(entity) → Retorna valor ao Plugin.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Strategy e Factory não são padrões acadêmicos — são ferramentas de sobrevivência para projetos Enterprise de longo prazo. Eles transformam código monolítico em módulos extensíveis que respeitam OCP, SRP e facilitam testes unitários. O investimento de refatoração é pequeno e o retorno em manutenibilidade é exponencial.</p>
+
+      <hr class="my-8" />
+      <p><strong>Quantos switches gigantes existem no seu plugin principal? Já aplicou Strategy em Dynamics 365 ou prefere outra abordagem? Vamos debater nos comentários!</strong></p>
+    `,
+    category: blogCategories[2],
+    tags: ['Design Patterns', 'C#', 'Strategy', 'Factory', 'Dynamics 365'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-09-16',
+    readTimeMinutes: 9,
+    imageGradient: 'from-violet-600 to-purple-700',
+  },
+  {
+    id: 11,
+    slug: 'gestao-debito-tecnico-dynamics-power-platform',
+    title: 'Gestão de Débito Técnico: Como Negociar e Pagar Dívidas Técnicas em Projetos Longos de Dynamics 365 e Power Platform',
+    excerpt: 'Débito técnico não é bug — é decisão de negócio. Aprenda a mapear, priorizar e negociar o pagamento de dívidas técnicas sem travar entregas.',
+    content: `
+      <p class="lead">Todo projeto Enterprise de Dynamics 365 que passa de 2 anos acumula débito técnico. Não é negligência — é consequência de entregas sob pressão, mudanças de escopo e rotatividade de equipe. O erro grave não é acumular dívida; é fingir que ela não existe. Nos meus anos conduzindo projetos para grandes seguradoras e bancos, aprendi que débito técnico não se resolve com "sprint de refatoração" — se resolve com gestão, negociação e priorização contínua. Aqui compartilho o framework que utilizo.</p>
+
+      <h2>1. Identifique e Classifique o Débito</h2>
+      <p>Nem todo débito é igual. Classifique em categorias para priorizar o pagamento:</p>
+      <ul>
+        <li><strong>Débito Prudente e Deliberado:</strong> "Sabemos que essa solução não escala, mas precisamos entregar até sexta." — Aceitável desde que documentado.</li>
+        <li><strong>Débito Imprudente e Deliberado:</strong> "Não temos tempo para testes." — Perigoso. Gera custo exponencial.</li>
+        <li><strong>Débito Prudente e Inadvertido:</strong> "Agora que entendemos o domínio, percebemos que o modelo de dados está errado." — Inevitável e natural.</li>
+        <li><strong>Débito Imprudente e Inadvertido:</strong> "Não sabíamos que existiam boas práticas." — Problema de formação.</li>
+      </ul>
+      <p>Crie um backlog específico de débito técnico no Azure DevOps com Work Items do tipo <strong>Technical Debt</strong> (custom). Cada item deve conter: impacto atual, custo estimado de correção e risco de não corrigir.</p>
+
+      <h2>2. Quantifique o Custo para o Negócio</h2>
+      <p>A linguagem da liderança é dinheiro e risco, não "código sujo". Traduza débito técnico em métricas de negócio:</p>
+
+<pre><code class="language-markdown">## Exemplo de Apresentação para Stakeholders
+
+| Débito Técnico               | Impacto Atual                        | Custo de Correção | Risco se Ignorado            |
+|------------------------------|--------------------------------------|--------------------|------------------------------|
+| Plugins sem tratamento       | 3 incidentes/mês em PROD             | 40h dev            | Perda de dados em transações |
+| de exceção                   | (2h de indisponibilidade cada)       |                    | financeiras                  |
+| Soluções Default poluídas    | Deploy leva 4h (deveria levar 15min) | 80h dev            | Impossibilidade de CI/CD     |
+| Fluxos Power Automate        | 15 fluxos duplicados por filial      | 60h dev + negócio  | Custo de licença 3x maior    |
+| sem parametrização           |                                      |                    | que o necessário             |
+</code></pre>
+
+      <h2>3. Negocie o Pagamento com a Regra 20/80</h2>
+      <p>Propor "2 sprints de refatoração" é pedir para ser ignorado. Em vez disso, negocie que <strong>20% da capacidade de cada sprint</strong> seja alocada para pagamento de débito técnico. Em um time de 5 desenvolvedores com sprints de 2 semanas, isso equivale a 2 devs/dia — suficiente para migrar um plugin legado ou separar uma solução poluída por sprint.</p>
+      <p>Documente o acordo e torne o progresso visível no dashboard do Azure DevOps. O Product Owner precisa ver o backlog de débito encolhendo, assim como vê features sendo entregues.</p>
+
+      <h2>4. Ferramentas de Detecção Contínua</h2>
+      <p>Não espere uma auditoria para descobrir débito. Configure guardrails automatizados:</p>
+      <ul>
+        <li><strong>Solution Checker:</strong> Execute em cada PR do Azure DevOps. Bloqueia merge se houver violações de nível Critical.</li>
+        <li><strong>SonarQube/SonarCloud:</strong> Para código C# de plugins e Azure Functions. Monitore code smells, duplicações e cobertura de testes.</li>
+        <li><strong>Power Platform CoE Kit:</strong> O Center of Excellence Starter Kit identifica automaticamente fluxos não utilizados, apps sem dono e conectores proibidos.</li>
+      </ul>
+
+<pre><code class="language-yaml"># Pipeline Gate: Solution Checker obrigatório antes de merge
+- task: PowerPlatformChecker@2
+  inputs:
+    authenticationType: 'PowerPlatformSPN'
+    PowerPlatformSPN: 'ServiceConnection-DEV'
+    FilesToAnalyze: '$(Build.ArtifactStagingDirectory)/*.zip'
+    RuleSet: 'Solution Checker'
+    ErrorLevel: 'CriticalIssueCount'
+    ErrorThreshold: 0   # Zero tolerância para Critical
+</code></pre>
+
+      <h2>5. Padrão "Strangler Fig" para Legados no Dynamics</h2>
+      <p>Quando o débito é estrutural (ex: modelo de dados errado, integrações acopladas), a refatoração big-bang é suicídio. Aplique o padrão <strong>Strangler Fig</strong>: construa o novo ao lado do velho, redirecione gradualmente e desligue o legado quando o novo estiver maduro. Isso se traduz em:</p>
+      <ul>
+        <li>Criar novas entidades com o modelo correto</li>
+        <li>Fazer plugins novos lerem do novo modelo, com fallback para o antigo</li>
+        <li>Migrar dados em lotes (usando Dataflows ou Azure Functions)</li>
+        <li>Desativar o modelo antigo somente quando 100% dos fluxos estiverem migrados</li>
+      </ul>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Quadrante de Débito Técnico]</strong><br/>
+        <em>Matriz 2x2: Eixo X = Prudente vs Imprudente, Eixo Y = Deliberado vs Inadvertido. Cada quadrante com exemplos reais e ação recomendada (Documentar, Corrigir Urgente, Aprender, Treinar).</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Débito técnico não é um problema de engenharia — é um problema de gestão. Identificar, classificar, quantificar em linguagem de negócio e negociar pagamento contínuo são as habilidades que separam o desenvolvedor sênior do pleno. O código mais caro é aquele que ninguém quer manter.</p>
+
+      <hr class="my-8" />
+      <p><strong>Qual é o débito técnico mais doloroso do seu projeto Dynamics 365 atual? Você conseguiu negociar tempo com o PO para pagar? Compartilhe sua experiência nos comentários!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Débito Técnico', 'Dynamics 365', 'Power Platform', 'Gestão', 'Arquitetura'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-09-23',
+    readTimeMinutes: 9,
+    imageGradient: 'from-amber-600 to-orange-600',
+  },
+  {
+    id: 12,
+    slug: 'pcf-react-dataverse-ux',
+    title: 'Estendendo a UX do Dataverse com PCF e React: Quando o Out-of-the-Box Não Atende ao Negócio',
+    excerpt: 'Formulários padrão do Dynamics limitam a UX? Veja como criar componentes PCF com React que se integram nativamente ao Model-Driven App.',
+    content: `
+      <p class="lead">O Dynamics 365 oferece formulários razoáveis out-of-the-box, mas "razoável" não é suficiente quando o negócio exige uma experiência visual rica — tabelas editáveis com inline validation, dashboards interativos embarcados no formulário ou seletores multi-nível com busca fuzzy. É aí que o <strong>Power Apps Component Framework (PCF)</strong> entra em cena, permitindo que você construa componentes em React (ou qualquer framework) que rodam nativamente dentro do Model-Driven App, com acesso completo ao Dataverse SDK.</p>
+
+      <h2>1. Anatomia de um Componente PCF</h2>
+      <p>Um componente PCF é composto por 4 elementos obrigatórios:</p>
+      <ul>
+        <li><code>ControlManifest.Input.xml</code> — Declaração de inputs, outputs e tipos suportados (field-level ou dataset)</li>
+        <li><code>index.ts</code> — Lifecycle hooks: <code>init()</code>, <code>updateView()</code>, <code>getOutputs()</code>, <code>destroy()</code></li>
+        <li>Componente React — A UI propriamente dita, montada via <code>ReactDOM.createRoot</code></li>
+        <li><code>CSS/SCSS</code> — Estilos encapsulados (não poluem o formulário host)</li>
+      </ul>
+
+<pre><code class="language-xml">&lt;!-- ControlManifest.Input.xml — Componente de Rating Visual --&gt;
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest&gt;
+  &lt;control namespace="EAM" constructor="StarRating"
+           version="1.0.0" display-name-key="Star Rating"
+           description-key="Rating visual interativo"
+           control-type="standard"&gt;
+    &lt;property name="ratingValue" display-name-key="Rating"
+              of-type="Whole.None" usage="bound"
+              required="true" /&gt;
+    &lt;property name="maxStars" display-name-key="Max Stars"
+              of-type="Whole.None" usage="input"
+              required="false" default-value="5" /&gt;
+    &lt;resources&gt;
+      &lt;code path="index.ts" order="1" /&gt;
+      &lt;css path="css/StarRating.css" order="1" /&gt;
+      &lt;resx path="strings/StarRating.1033.resx" version="1.0.0" /&gt;
+    &lt;/resources&gt;
+  &lt;/control&gt;
+&lt;/manifest&gt;
+</code></pre>
+
+      <h2>2. Integrando React no Lifecycle do PCF</h2>
+      <p>O truque é montar o React no <code>init()</code> e atualizar via <code>updateView()</code>. O PCF gerencia o container DOM — você só precisa renderizar dentro dele.</p>
+
+<pre><code class="language-typescript">// index.ts — Montagem do React no PCF
+import { IInputs, IOutputs } from "./generated/ManifestTypes";
+import * as React from "react";
+import { createRoot, Root } from "react-dom/client";
+import { StarRatingApp } from "./StarRatingApp";
+
+export class StarRating implements ComponentFramework.StandardControl&lt;IInputs, IOutputs&gt; {
+  private _root: Root;
+  private _currentValue: number;
+  private _notifyOutputChanged: () =&gt; void;
+
+  public init(
+    context: ComponentFramework.Context&lt;IInputs&gt;,
+    notifyOutputChanged: () =&gt; void,
+    state: ComponentFramework.Dictionary,
+    container: HTMLDivElement
+  ): void {
+    this._notifyOutputChanged = notifyOutputChanged;
+    this._root = createRoot(container);
+    this._currentValue = context.parameters.ratingValue.raw ?? 0;
+    this.renderReact();
+  }
+
+  public updateView(context: ComponentFramework.Context&lt;IInputs&gt;): void {
+    this._currentValue = context.parameters.ratingValue.raw ?? 0;
+    this.renderReact();
+  }
+
+  private renderReact(): void {
+    this._root.render(
+      React.createElement(StarRatingApp, {
+        value: this._currentValue,
+        max: 5,
+        onChange: (newVal: number) =&gt; {
+          this._currentValue = newVal;
+          this._notifyOutputChanged();
+        },
+      })
+    );
+  }
+
+  public getOutputs(): IOutputs {
+    return { ratingValue: this._currentValue };
+  }
+
+  public destroy(): void {
+    this._root.unmount();
+  }
+}
+</code></pre>
+
+      <h2>3. Componente React — Star Rating</h2>
+      <p>O componente React é isolado e reutilizável. Note o uso de <code>aria-label</code> para acessibilidade — requisito obrigatório em clientes Enterprise que seguem WCAG 2.1.</p>
+
+<pre><code class="language-tsx">// StarRatingApp.tsx
+import React from "react";
+
+interface Props {
+  value: number;
+  max: number;
+  onChange: (value: number) =&gt; void;
+}
+
+export const StarRatingApp: React.FC&lt;Props&gt; = ({ value, max, onChange }) =&gt; (
+  &lt;div role="radiogroup" aria-label="Rating" style={{ display: "flex", gap: 4 }}&gt;
+    {Array.from({ length: max }, (_, i) =&gt; {
+      const starValue = i + 1;
+      const filled = starValue &lt;= value;
+      return (
+        &lt;button
+          key={i}
+          role="radio"
+          aria-checked={filled}
+          aria-label={\`\${starValue} de \${max} estrelas\`}
+          onClick={() =&gt; onChange(starValue)}
+          style={{
+            fontSize: 28, cursor: "pointer", border: "none",
+            background: "transparent", color: filled ? "#F59E0B" : "#D1D5DB",
+            transition: "transform 0.15s, color 0.2s",
+          }}
+          onMouseEnter={(e) =&gt; (e.currentTarget.style.transform = "scale(1.25)")}
+          onMouseLeave={(e) =&gt; (e.currentTarget.style.transform = "scale(1)")}
+        &gt;
+          ★
+        &lt;/button&gt;
+      );
+    })}
+  &lt;/div&gt;
+);
+</code></pre>
+
+      <h2>4. Build, Empacotamento e Deploy</h2>
+      <p>O PCF usa <code>pac pcf push</code> para desenvolvimento local (hot reload dentro do Dynamics) e <code>pac solution</code> para empacotar como Solution para deploy via pipeline CI/CD. Sempre empacote como <strong>Managed</strong> para ambientes de staging/produção.</p>
+
+<pre><code class="language-bash"># Desenvolvimento local — push direto para o ambiente DEV
+pac pcf push --publisher-prefix eam
+
+# Empacotar como Solution Managed para CD
+pac solution init --publisher-name EAMCompany --publisher-prefix eam
+pac solution add-reference --path ./StarRating
+cd StarRating &amp;&amp; npm run build
+pac solution pack --zipfile StarRating_managed.zip --type Managed
+</code></pre>
+
+      <h2>5. Quando Usar PCF vs Web Resource</h2>
+      <p>PCF é a escolha correta para componentes reutilizáveis que precisam se integrar ao ciclo de dados do formulário (bind a campos, datasets). <strong>Web Resources</strong> ainda fazem sentido para páginas inteiras embedadas (ex: uma SPA completa dentro de um iframe). A regra é: se o componente precisa ler/escrever campos do registro, PCF. Se é uma UI isolada, Web Resource.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Arquitetura PCF no Model-Driven App]</strong><br/>
+        <em>Model-Driven Form → Container DOM → PCF Lifecycle (init → updateView → getOutputs) → React Component → Dataverse SDK (leitura/escrita de campos).</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>PCF com React transforma formulários do Dynamics 365 de "funcionais" em "excepcionais". O framework é maduro, integra-se ao pipeline de CI/CD existente e permite reutilização de componentes React entre Model-Driven Apps e Canvas Apps. Quando o out-of-the-box limita o negócio, PCF é a resposta — sem gambiarras, sem iframes desnecessários.</p>
+
+      <hr class="my-8" />
+      <p><strong>Você já criou componentes PCF em produção? Qual foi o maior desafio — performance, build, ou convencer o time a sair do out-of-the-box? Compartilhe nos comentários!</strong></p>
+    `,
+    category: blogCategories[1],
+    tags: ['PCF', 'React', 'Dataverse', 'Power Apps', 'UX'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-09-30',
+    readTimeMinutes: 10,
+    imageGradient: 'from-rose-600 to-pink-600',
+  },
+  {
+    id: 13,
+    slug: 'observabilidade-telemetria-plugins-application-insights',
+    title: 'Observabilidade e Telemetria em Produção: Monitorando Plugins e APIs com Application Insights',
+    excerpt: 'Se você não mede, não gerencia. Aprenda a instrumentar plugins do Dynamics 365 e APIs .NET com Application Insights para diagnósticos em tempo real.',
+    content: `
+      <p class="lead">Um plugin que funciona perfeitamente em DEV e explode em PROD é o pesadelo de toda equipe Dynamics 365. O problema raramente é o código — é a falta de visibilidade. Sem telemetria estruturada, você descobre incidentes quando o usuário liga reclamando, não quando o sistema emite o primeiro sinal. Em projetos Enterprise, <strong>Application Insights</strong> (App Insights) é a ferramenta que transforma operação reativa em operação proativa. Aqui mostro como instrumentar plugins, Custom APIs e Azure Functions de forma que seu time de operações durma tranquilo.</p>
+
+      <h2>1. ILogger nos Plugins — Telemetria Nativa do Dataverse</h2>
+      <p>Desde 2023, o Dataverse suporta <code>ILogger</code> injetado diretamente no construtor do plugin. Os logs são enviados automaticamente para o Application Insights configurado no ambiente (Power Platform Admin Center → Ambientes → Editar → Application Insights). Sem SDKs extras, sem NuGet adicional.</p>
+
+<pre><code class="language-csharp">// Plugin com ILogger nativo do Dataverse
+public class CalculateCommissionPlugin : IPlugin
+{
+    private readonly ILogger _logger;
+
+    // ILogger injetado via construtor pelo runtime do Dataverse
+    public CalculateCommissionPlugin(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public void Execute(IServiceProvider serviceProvider)
+    {
+        var context = (IPluginExecutionContext)serviceProvider
+            .GetService(typeof(IPluginExecutionContext));
+        var target = (Entity)context.InputParameters["Target"];
+
+        _logger.LogInformation(
+            "Plugin CalculateCommission iniciado | EntityId={EntityId} | UserId={UserId}",
+            target.Id, context.InitiatingUserId);
+
+        try
+        {
+            var result = PerformCalculation(target);
+            _logger.LogInformation(
+                "Cálculo concluído | Commission={Commission} | Duration={Duration}ms",
+                result.Commission, result.ElapsedMs);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex,
+                "Falha no cálculo de comissão | EntityId={EntityId}", target.Id);
+            throw new InvalidPluginExecutionException(
+                "Erro interno no cálculo de comissão. Contate o suporte.", ex);
+        }
+    }
+}
+</code></pre>
+
+      <h2>2. Telemetria Customizada na API .NET</h2>
+      <p>Para APIs .NET que consomem ou são consumidas pelo Dynamics, o pacote <code>Microsoft.ApplicationInsights.AspNetCore</code> oferece telemetria automática de requests, dependências e exceções. Mas o diferencial está nos <strong>custom events</strong> e <strong>custom metrics</strong> que contextualizam o diagnóstico.</p>
+
+<pre><code class="language-csharp">// API .NET 8 — Telemetria customizada com TelemetryClient
+using Microsoft.ApplicationInsights;
+
+public class PolicyService
+{
+    private readonly TelemetryClient _telemetry;
+    private readonly IOrganizationService _crmService;
+
+    public PolicyService(TelemetryClient telemetry, IOrganizationService crmService)
+    {
+        _telemetry = telemetry;
+        _crmService = crmService;
+    }
+
+    public async Task&lt;PolicyResult&gt; ProcessPolicyAsync(Guid policyId)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        _telemetry.TrackEvent("PolicyProcessing.Started", new Dictionary&lt;string, string&gt;
+        {
+            ["PolicyId"] = policyId.ToString(),
+            ["Environment"] = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!
+        });
+
+        try
+        {
+            var result = await ExecuteBusinessLogic(policyId);
+            stopwatch.Stop();
+
+            // Métrica customizada para dashboards
+            _telemetry.TrackMetric("PolicyProcessing.DurationMs", stopwatch.ElapsedMilliseconds);
+            _telemetry.TrackEvent("PolicyProcessing.Completed", new Dictionary&lt;string, string&gt;
+            {
+                ["PolicyId"] = policyId.ToString(),
+                ["Status"] = result.Status.ToString()
+            });
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _telemetry.TrackException(ex, new Dictionary&lt;string, string&gt;
+            {
+                ["PolicyId"] = policyId.ToString(),
+                ["Phase"] = "BusinessLogic"
+            });
+            throw;
+        }
+    }
+}
+</code></pre>
+
+      <h2>3. KQL — Consultando Logs como um Profissional</h2>
+      <p>Os dados no Application Insights são consultados via <strong>Kusto Query Language (KQL)</strong>. Dominar KQL é o que separa o dev que "olha logs" do engenheiro que diagnostica root causes em minutos.</p>
+
+<pre><code class="language-sql">// KQL — Top 10 plugins mais lentos nas últimas 24h
+customEvents
+| where timestamp > ago(24h)
+| where name == "PluginExecution"
+| extend durationMs = toreal(customDimensions["Duration"])
+| summarize
+    avg_duration = avg(durationMs),
+    p95_duration = percentile(durationMs, 95),
+    count = count()
+  by pluginName = tostring(customDimensions["PluginName"])
+| order by p95_duration desc
+| take 10
+
+// KQL — Taxa de erro por hora nos últimos 7 dias
+exceptions
+| where timestamp > ago(7d)
+| summarize error_count = count() by bin(timestamp, 1h)
+| render timechart
+</code></pre>
+
+      <h2>4. Alertas Proativos e Smart Detection</h2>
+      <p>Configure alertas no Azure Monitor integrados ao App Insights para ser notificado antes que o incidente se torne um chamado:</p>
+      <ul>
+        <li><strong>Taxa de exceção:</strong> Alerta quando exceptions/5min supera threshold (ex: >10 em 5 minutos)</li>
+        <li><strong>Degradação de performance:</strong> p95 de duration de um plugin específico ultrapassa 2s</li>
+        <li><strong>Anomaly Detection:</strong> O Smart Detection do App Insights identifica automaticamente picos anormais de falhas — sem configuração manual</li>
+      </ul>
+      <p>Roteie alertas para o Microsoft Teams via Action Groups para que o time de operações reaja em tempo real.</p>
+
+      <h2>5. Distributed Tracing — End-to-End entre Dynamics, API e Azure Functions</h2>
+      <p>Quando uma operação atravessa Plugin → API .NET → Azure Function → Service Bus, o <strong>Distributed Tracing</strong> do App Insights correlaciona todos os spans com um único <code>operation_id</code>. Isso significa que você pode clicar em um request na API e ver toda a cadeia de chamadas até o plugin que originou a operação — em um único mapa de transação. Para isso, garanta que o header <code>traceparent</code> (W3C Trace Context) é propagado em todas as chamadas HTTP.</p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+        <strong>[Sugestão de Diagrama: Pipeline de Observabilidade]</strong><br/>
+        <em>Plugin (ILogger) → Application Insights ← API .NET (TelemetryClient) ← Azure Functions (auto-instrumentation). Application Insights → KQL Queries → Dashboards Azure → Alertas → Microsoft Teams.</em>
+      </div>
+
+      <h2>Conclusão</h2>
+      <p>Observabilidade não é luxo — é infraestrutura básica para operações Enterprise. O ILogger nativo do Dataverse, combinado com TelemetryClient nas APIs e KQL para análise, cria um pipeline de diagnóstico que transforma incidentes em dados acionáveis. O custo de instrumentar é irrisório; o custo de operar às cegas é incalculável.</p>
+
+      <hr class="my-8" />
+      <p><strong>Você já integrou Application Insights ao seu ambiente Dynamics 365? Qual query KQL mais te salvou em produção? Compartilhe sua experiência nos comentários ou no LinkedIn!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Application Insights', 'Observabilidade', 'Plugins', 'Telemetria', '.NET'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-10-07',
+    readTimeMinutes: 10,
+    imageGradient: 'from-cyan-600 to-teal-600',
+  },
 ];
 
 // Helper to filter out posts scheduled for the future
