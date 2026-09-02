@@ -67,7 +67,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
 
         {/* Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post, index) => (
+          {(isDedicatedPage ? filteredPosts : filteredPosts.slice(0, 3)).map((post, index) => (
             <article
               key={post.id}
               className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover-lift opacity-0 animate-fade-in"

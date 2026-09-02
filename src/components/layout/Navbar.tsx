@@ -10,15 +10,16 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 
-      // Detect active section
-      const sections = ['hero', 'about', 'projects', 'experience', 'blog', 'contact'];
-      for (const id of sections.reverse()) {
+      // Detect active section — order MUST match DOM rendering order
+      const sections = ['hero', 'about', 'blog', 'experience', 'projects', 'contact'];
+      let currentSection = 'hero';
+      for (const id of sections) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= 200) {
-          setActiveSection(id);
-          break;
+          currentSection = id;
         }
       }
+      setActiveSection(currentSection);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -39,8 +40,9 @@ export default function Navbar() {
 
   const scrollToSection = (id: string) => {
     if (isBlogPage) {
-      // On /blog.html, sections like #about don't exist — navigate to main page
-      window.location.href = id === 'hero' ? '/' : `/#${id}`;
+      // Navigate back to the home page with the section hash
+      const base = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+      window.location.href = id === 'hero' ? `${base}index.html` : `${base}index.html#${id}`;
       return;
     }
     const element = document.getElementById(id);
