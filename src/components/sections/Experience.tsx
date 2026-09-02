@@ -31,7 +31,8 @@ export default function Experience() {
               {experiences.map((exp, index) => (
                 <div 
                   key={exp.id} 
-                  className="relative pl-20 opacity-0 animate-fade-in"
+                  id={`experience-${exp.id}`}
+                  className="relative pl-20 opacity-0 animate-fade-in transition-all duration-500"
                   style={{ animationDelay: `${index * 0.15}s`, animationFillMode: 'forwards' }}
                 >
                   {/* Marcador na linha do tempo */}

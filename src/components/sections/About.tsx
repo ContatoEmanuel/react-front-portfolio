@@ -74,11 +74,19 @@ export default function About() {
   ];
 
   const clients = [
-    { name: 'Itaú', sector: 'Financeiro', icon: '🏦' },
-    { name: 'Bradesco Seguros', sector: 'Seguros', icon: '🛡️' },
-    { name: 'Alesat', sector: 'Varejo', icon: '⛽' },
-    { name: 'Cogna', sector: 'Educação', icon: '🎓' },
+    { name: 'Itaú', sector: 'Financeiro', icon: '🏦', experienceId: 3 },
+    { name: 'Bradesco Seguros', sector: 'Seguros', icon: '🛡️', experienceId: 1 },
+    { name: 'Alesat', sector: 'Varejo', icon: '⛽', experienceId: 2 },
+    { name: 'Cogna', sector: 'Educação', icon: '🎓', experienceId: 4 },
   ];
+
+  const scrollToExperience = (experienceId: number) => {
+    const el = document.getElementById(`experience-${experienceId}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('ring-2', 'ring-blue-400', 'ring-offset-2');
+    setTimeout(() => el.classList.remove('ring-2', 'ring-blue-400', 'ring-offset-2'), 2000);
+  };
 
   return (
     <section id="about" className="py-24 bg-white">
@@ -122,7 +130,7 @@ export default function About() {
             {clients.map((client, index) => (
               <button 
                 key={index}
-                onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => scrollToExperience(client.experienceId)}
                 className="text-center p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-blue-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group w-full cursor-pointer"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 flex justify-center">{client.icon}</div>
