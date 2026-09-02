@@ -35,16 +35,6 @@ export const certifications: ICertification[] = [
     type: 'certified',
   },
   {
-    id: 4,
-    title: 'CEFR Level A1',
-    issuer: 'EF English Live',
-    date: 'abr/2023',
-    description: 'Certificação de proficiência em inglês como segunda língua - Nível A1 (Iniciante).',
-    technologies: ['ESL (Inglês como segunda língua)'],
-    icon: 'ef',
-    type: 'other',
-  },
-  {
     id: 5,
     title: 'Microsoft Applied Skills: Criar e gerenciar aplicativos baseados em modelo',
     issuer: 'Microsoft',
@@ -76,5 +66,15 @@ export const certifications: ICertification[] = [
     technologies: ['Microsoft Power Apps'],
     icon: 'microsoft',
     type: 'applied-skill',
+  },
+  {
+    id: 4,
+    title: 'CEFR Level A1',
+    issuer: 'EF English Live',
+    date: 'abr/2023',
+    description: 'Certificação de proficiência em inglês como segunda língua - Nível A1 (Iniciante).',
+    technologies: ['ESL (Inglês como segunda língua)'],
+    icon: 'ef',
+    type: 'other',
   },
 ];
