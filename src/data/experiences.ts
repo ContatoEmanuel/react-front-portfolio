@@ -1,11 +1,28 @@
 import { IExperience } from '../types';
 
+// Calcula dinamicamente a duração entre duas datas
+function calculateDuration(startYear: number, startMonth: number, endYear?: number, endMonth?: number): string {
+  const now = new Date();
+  const eYear = endYear ?? now.getFullYear();
+  const eMonth = endMonth ?? now.getMonth() + 1;
+
+  let totalMonths = (eYear - startYear) * 12 + (eMonth - startMonth) + 1; // +1 inclui o mês atual
+  if (totalMonths < 0) totalMonths = 0;
+
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  if (years === 0) return `${months} ${months === 1 ? 'mês' : 'meses'}`;
+  if (months === 0) return `${years} ${years === 1 ? 'ano' : 'anos'}`;
+  return `${years} ${years === 1 ? 'ano' : 'anos'} e ${months} ${months === 1 ? 'mês' : 'meses'}`;
+}
+
 export const experiences: IExperience[] = [
   {
     id: 1,
     position: 'Senior Software Engineer I',
     company: 'Solutis Tecnologias',
-    period: 'abril de 2025 - Atual',
+    period: `abril de 2025 - Atual (${calculateDuration(2025, 4)})`,  
     location: 'Salvador, BA',
     client: 'Bradesco Seguros',
     description: 'Especialista técnico responsável por projetos e sustentação em ambientes Dynamics 2016 (On-Premise v. 8.2). Foco em estabilidade da plataforma e evolução de funcionalidades através de customizações complexas, gerenciamento de segurança e automação de processos de negócio.',
@@ -20,7 +37,7 @@ export const experiences: IExperience[] = [
     id: 2,
     position: 'Analista de Automação de Processos III',
     company: 'GFT Technologies Brasil',
-    period: 'novembro de 2024 - março de 2025',
+    period: 'novembro de 2024 - março de 2025 (5 meses)',
     location: 'Barueri, SP',
     client: 'Alesat Combustíveis S.A.',
     description: 'Projeto de escopo fechado para digitalização e gerenciamento de dados de campo. Responsável pela arquitetura e implementação de solução completa com Power Platform e Azure, desde coleta de dados até integração e visualização gerencial.',
@@ -36,7 +53,7 @@ export const experiences: IExperience[] = [
     id: 3,
     position: 'Analista de Sistemas PL',
     company: 'BRQ Digital Solutions',
-    period: 'novembro de 2023 - outubro de 2024',
+    period: 'novembro de 2023 - outubro de 2024 (1 ano)',
     location: 'São Paulo, SP',
     client: 'Itaú',
     description: 'Desenvolvimento e manutenção de soluções no Dynamics 365 com foco em customizações de back-end e otimização de processos. Tradução de requisitos de negócio em implementações técnicas em ambiente financeiro de alta demanda.',
