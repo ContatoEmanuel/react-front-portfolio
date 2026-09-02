@@ -53,3 +53,16 @@ export interface IBlogPost {
   readTimeMinutes: number;
   imageGradient?: string;
 }
+
+// Tipagem para Certificações
+export interface ICertification {
+  id: number;
+  title: string;
+  issuer: string;
+  date: string;
+  credentialId?: string;
+  description: string;
+  technologies: string[];
+  icon: string;
+  type?: 'certified' | 'applied-skill' | 'other';
+}
