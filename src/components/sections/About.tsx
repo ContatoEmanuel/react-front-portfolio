@@ -5,8 +5,8 @@ import { profile } from '../../data/profile';
 export default function About() {
   const stats = [
     { number: '5+', label: 'Anos de Experiência' },
+    { number: '3x', label: 'Certificado Microsoft' },
     { number: '4+', label: 'Grandes Clientes' },
-    { number: '12+', label: 'Tecnologias' },
   ];
 
   const expertise = [
@@ -91,10 +91,8 @@ export default function About() {
   return (
     <section id="about" className="py-24 bg-white">
       <Container>
-        <SectionTitle
-          subtitle="Engenheiro de Software Sênior especializado no ecossistema Microsoft"
-        >
-          Sobre Mim
+        <SectionTitle>
+          Sobre
         </SectionTitle>
         
         {/* Biografia */}
