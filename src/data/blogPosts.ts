@@ -892,9 +892,142 @@ app.Run();
       <h2>5. Padrão BFF como Alternativa ao Token no Browser</h2>
       <p>Para organizações com exigências regulatórias extremas (LGPD, PCI-DSS), o padrão <strong>Backend for Frontend</strong> (BFF) elimina completamente o token do lado do browser. O React faz login via cookie httpOnly gerenciado por um servidor intermediário (.NET), e todas as chamadas à API downstream são autenticadas server-side. O usuário nunca vê um JWT no DevTools. Este é o padrão que adotamos em aplicações de open banking.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Fluxo Authorization Code + PKCE]</strong><br/>
-        <em>SPA (React) gera code_verifier → Redireciona ao IdP com code_challenge → Recebe authorization_code → Troca por tokens no /token endpoint → API .NET valida JWT em cada request. Variante BFF: React → Cookie → BFF (.NET) → API downstream.</em>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Fluxo Authorization Code + PKCE</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 400" style="width:100%;max-width:980px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do fluxo Authorization Code com PKCE: SPA React gera code_verifier, redireciona ao IdP com code_challenge, recebe authorization_code, troca por tokens no endpoint /token, e a API .NET valida o JWT em cada request.">
+            <defs>
+              <linearGradient id="pkce-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="pkce-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+              <linearGradient id="pkce-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <linearGradient id="pkce-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="pkce-g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#0891b2"/></linearGradient>
+              <linearGradient id="pkce-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/></linearGradient>
+              <linearGradient id="pkce-gbff1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+              <linearGradient id="pkce-gbff2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#0d9488"/></linearGradient>
+              <linearGradient id="pkce-gbff3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient>
+              <filter id="pkce-shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+              <marker id="pkce-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+              <marker id="pkce-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker>
+              <marker id="pkce-arrow-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8b5cf6"/></marker>
+              <marker id="pkce-arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/></marker>
+              <marker id="pkce-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/></marker>
+            </defs>
+
+            <!-- ===== FLUXO PRINCIPAL: Authorization Code + PKCE ===== -->
+            <!-- Background panel -->
+            <rect x="8" y="8" width="964" height="205" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+            <text x="490" y="32" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif" letter-spacing="1">AUTHORIZATION CODE + PKCE</text>
+
+            <!-- Step 1: SPA React -->
+            <rect x="20" y="50" width="130" height="80" rx="14" fill="url(#pkce-g1)" filter="url(#pkce-shadow)"/>
+            <text x="85" y="82" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">⚛️ SPA React</text>
+            <text x="85" y="100" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="Inter,system-ui,sans-serif">Gera code_verifier</text>
+            <text x="85" y="114" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="Inter,system-ui,sans-serif">(SHA-256)</text>
+
+            <!-- Arrow 1→2 -->
+            <line x1="150" y1="90" x2="178" y2="90" stroke="#3b82f6" stroke-width="2" marker-end="url(#pkce-arrow-blue)"/>
+
+            <!-- Step 2: Redirect with code_challenge -->
+            <rect x="180" y="50" width="145" height="80" rx="14" fill="url(#pkce-g2)" filter="url(#pkce-shadow)"/>
+            <text x="252" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter,system-ui,sans-serif">🔀 Redirect</text>
+            <text x="252" y="95" text-anchor="middle" fill="#e0e7ff" font-size="10" font-family="Inter,system-ui,sans-serif">Envia code_challenge</text>
+            <text x="252" y="109" text-anchor="middle" fill="#e0e7ff" font-size="10" font-family="Inter,system-ui,sans-serif">ao /authorize</text>
+
+            <!-- Arrow 2→3 -->
+            <line x1="325" y1="90" x2="353" y2="90" stroke="#8b5cf6" stroke-width="2" marker-end="url(#pkce-arrow-violet)"/>
+
+            <!-- Step 3: Identity Provider -->
+            <rect x="355" y="50" width="135" height="80" rx="14" fill="url(#pkce-g3)" filter="url(#pkce-shadow)"/>
+            <text x="422" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter,system-ui,sans-serif">🔐 IdP</text>
+            <text x="422" y="95" text-anchor="middle" fill="#fef3c7" font-size="10" font-family="Inter,system-ui,sans-serif">Autentica usuário</text>
+            <text x="422" y="109" text-anchor="middle" fill="#fef3c7" font-size="10" font-family="Inter,system-ui,sans-serif">Retorna auth_code</text>
+
+            <!-- Arrow 3→4 -->
+            <line x1="490" y1="90" x2="518" y2="90" stroke="#d97706" stroke-width="2" marker-end="url(#pkce-arrow-amber)"/>
+
+            <!-- Step 4: Token Exchange -->
+            <rect x="520" y="50" width="145" height="80" rx="14" fill="url(#pkce-g4)" filter="url(#pkce-shadow)"/>
+            <text x="592" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter,system-ui,sans-serif">🔄 /token</text>
+            <text x="592" y="95" text-anchor="middle" fill="#d1fae5" font-size="10" font-family="Inter,system-ui,sans-serif">Troca auth_code +</text>
+            <text x="592" y="109" text-anchor="middle" fill="#d1fae5" font-size="10" font-family="Inter,system-ui,sans-serif">code_verifier → JWT</text>
+
+            <!-- Arrow 4→5 -->
+            <line x1="665" y1="90" x2="693" y2="90" stroke="#10b981" stroke-width="2" marker-end="url(#pkce-arrow-green)"/>
+
+            <!-- Step 5: API Request with Bearer -->
+            <rect x="695" y="50" width="130" height="80" rx="14" fill="url(#pkce-g5)" filter="url(#pkce-shadow)"/>
+            <text x="760" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter,system-ui,sans-serif">📡 API Request</text>
+            <text x="760" y="95" text-anchor="middle" fill="#cffafe" font-size="10" font-family="Inter,system-ui,sans-serif">Authorization:</text>
+            <text x="760" y="109" text-anchor="middle" fill="#cffafe" font-size="10" font-family="Inter,system-ui,sans-serif">Bearer {JWT}</text>
+
+            <!-- Arrow 5→6 -->
+            <line x1="825" y1="90" x2="843" y2="90" stroke="#94a3b8" stroke-width="2" marker-end="url(#pkce-arrow)"/>
+
+            <!-- Step 6: API .NET Validates -->
+            <rect x="845" y="50" width="118" height="80" rx="14" fill="url(#pkce-g6)" filter="url(#pkce-shadow)"/>
+            <text x="904" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Inter,system-ui,sans-serif">🛡️ API .NET</text>
+            <text x="904" y="95" text-anchor="middle" fill="#fce7f3" font-size="10" font-family="Inter,system-ui,sans-serif">Valida JWT</text>
+            <text x="904" y="109" text-anchor="middle" fill="#fce7f3" font-size="10" font-family="Inter,system-ui,sans-serif">(issuer, aud, exp)</text>
+
+            <!-- PKCE labels -->
+            <rect x="55" y="145" width="96" height="22" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+            <text x="103" y="160" text-anchor="middle" fill="#1d4ed8" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">code_verifier</text>
+            <rect x="215" y="145" width="100" height="22" rx="6" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1"/>
+            <text x="265" y="160" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">code_challenge</text>
+            <rect x="388" y="145" width="80" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+            <text x="428" y="160" text-anchor="middle" fill="#b45309" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">auth_code</text>
+            <rect x="558" y="145" width="80" height="22" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+            <text x="598" y="160" text-anchor="middle" fill="#047857" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">access_token</text>
+            <rect x="845" y="145" width="118" height="22" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="1"/>
+            <text x="904" y="160" text-anchor="middle" fill="#be185d" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">✓ 200 OK / ✗ 401</text>
+
+            <!-- Security note -->
+            <rect x="200" y="182" width="580" height="24" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+            <text x="490" y="198" text-anchor="middle" fill="#166534" font-size="10" font-weight="600" font-family="Inter,system-ui,sans-serif">🔒 Tokens NUNCA trafegam na URL — code_verifier garante que só o cliente legítimo troca o código</text>
+
+            <!-- ===== VARIANTE BFF ===== -->
+            <rect x="8" y="230" width="964" height="160" rx="14" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5"/>
+            <text x="490" y="254" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif" letter-spacing="1">VARIANTE BFF (BACKEND FOR FRONTEND)</text>
+
+            <!-- BFF Step 1: React -->
+            <rect x="50" y="270" width="160" height="80" rx="14" fill="url(#pkce-g1)" filter="url(#pkce-shadow)"/>
+            <text x="130" y="300" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">⚛️ React</text>
+            <text x="130" y="318" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="Inter,system-ui,sans-serif">Sem token no browser</text>
+            <text x="130" y="332" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="Inter,system-ui,sans-serif">Cookie httpOnly</text>
+
+            <!-- Arrow BFF 1→2 -->
+            <path d="M210,310 L280,310" stroke="#6366f1" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#pkce-arrow-violet)"/>
+            <text x="245" y="300" text-anchor="middle" fill="#6366f1" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">Cookie</text>
+
+            <!-- BFF Step 2: BFF .NET -->
+            <rect x="282" y="270" width="200" height="80" rx="14" fill="url(#pkce-gbff1)" filter="url(#pkce-shadow)"/>
+            <text x="382" y="296" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">🖥️ BFF (.NET)</text>
+            <text x="382" y="314" text-anchor="middle" fill="#e0e7ff" font-size="10" font-family="Inter,system-ui,sans-serif">Gerencia sessão server-side</text>
+            <text x="382" y="328" text-anchor="middle" fill="#e0e7ff" font-size="10" font-family="Inter,system-ui,sans-serif">Armazena tokens com segurança</text>
+
+            <!-- Arrow BFF 2→3 (up to IdP) -->
+            <path d="M382,270 L382,220" stroke="#14b8a6" stroke-width="2" stroke-dasharray="5 3"/>
+            <text x="395" y="245" fill="#0d9488" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">OAuth server-side</text>
+            <polygon points="378,222 386,222 382,215" fill="#14b8a6"/>
+
+            <!-- Arrow BFF 2→4 -->
+            <path d="M482,310 L568,310" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#pkce-arrow-amber)"/>
+            <text x="525" y="300" text-anchor="middle" fill="#ea580c" font-size="9" font-weight="600" font-family="Inter,system-ui,sans-serif">Bearer JWT</text>
+
+            <!-- BFF Step 3: API Downstream -->
+            <rect x="570" y="270" width="175" height="80" rx="14" fill="url(#pkce-gbff3)" filter="url(#pkce-shadow)"/>
+            <text x="657" y="300" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">🌐 API Downstream</text>
+            <text x="657" y="318" text-anchor="middle" fill="#fed7aa" font-size="10" font-family="Inter,system-ui,sans-serif">Recebe JWT validado</text>
+            <text x="657" y="332" text-anchor="middle" fill="#fed7aa" font-size="10" font-family="Inter,system-ui,sans-serif">server-to-server</text>
+
+            <!-- BFF Security badge -->
+            <rect x="790" y="282" width="160" height="56" rx="12" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+            <text x="870" y="303" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700" font-family="Inter,system-ui,sans-serif">🔐 Zero tokens</text>
+            <text x="870" y="318" text-anchor="middle" fill="#dc2626" font-size="9" font-family="Inter,system-ui,sans-serif">expostos no DevTools</text>
+            <text x="870" y="331" text-anchor="middle" fill="#dc2626" font-size="9" font-family="Inter,system-ui,sans-serif">Ideal: LGPD / PCI-DSS</text>
+          </svg>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
