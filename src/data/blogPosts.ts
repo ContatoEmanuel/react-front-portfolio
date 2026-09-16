@@ -1145,9 +1145,21 @@ public void Execute(IServiceProvider serviceProvider)
       <h2>5. Extensão para Power Automate e Azure Functions</h2>
       <p>Esse mesmo padrão se aplica fora de plugins. Em Azure Functions que processam mensagens do Service Bus, a Factory pode resolver o handler correto baseado no <code>MessageType</code>. Em Power Automate, você pode expor cada Strategy como uma <strong>Custom API</strong> separada, permitindo que o citizen developer selecione a regra de negócio por meio de um dropdown na action — sem escrever uma linha de código.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Strategy + Factory Pattern]</strong><br/>
-        <em>Plugin recebe Entity → Chama CommissionStrategyFactory.Resolve(type) → Factory retorna ICommissionStrategy concreto (Auto, Life, Health...) → Strategy executa Calculate(entity) → Retorna valor ao Plugin.</em>
+      <div class="my-6">
+        <h3 class="text-xl font-bold mb-4">Fluxo de Execução: Strategy + Factory Pattern</h3>
+<pre><code class="language-mermaid">sequenceDiagram
+    autonumber
+    participant Plugin
+    participant Factory as CommissionStrategyFactory
+    participant Strategy as ICommissionStrategy (Concreto)
+    
+    Note over Plugin: 1. Plugin recebe Entity
+    Plugin->>Factory: 2. Resolve(type)
+    Note over Factory: Avalia o tipo e cria<br/>a estratégia correta
+    Factory-->>Plugin: 3. Retorna ICommissionStrategy (Auto, Life, Health...)
+    Plugin->>Strategy: 4. Calculate(entity)
+    Strategy-->>Plugin: 5. Retorna valor
+</code></pre>
       </div>
 
       <h2>Conclusão</h2>
