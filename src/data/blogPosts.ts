@@ -1145,21 +1145,63 @@ public void Execute(IServiceProvider serviceProvider)
       <h2>5. Extensão para Power Automate e Azure Functions</h2>
       <p>Esse mesmo padrão se aplica fora de plugins. Em Azure Functions que processam mensagens do Service Bus, a Factory pode resolver o handler correto baseado no <code>MessageType</code>. Em Power Automate, você pode expor cada Strategy como uma <strong>Custom API</strong> separada, permitindo que o citizen developer selecione a regra de negócio por meio de um dropdown na action — sem escrever uma linha de código.</p>
 
-      <div class="my-6">
-        <h3 class="text-xl font-bold mb-4">Fluxo de Execução: Strategy + Factory Pattern</h3>
-<pre><code class="language-mermaid">sequenceDiagram
-    autonumber
-    participant Plugin
-    participant Factory as CommissionStrategyFactory
-    participant Strategy as ICommissionStrategy (Concreto)
-    
-    Note over Plugin: 1. Plugin recebe Entity
-    Plugin->>Factory: 2. Resolve(type)
-    Note over Factory: Avalia o tipo e cria<br/>a estratégia correta
-    Factory-->>Plugin: 3. Retorna ICommissionStrategy (Auto, Life, Health...)
-    Plugin->>Strategy: 4. Calculate(entity)
-    Strategy-->>Plugin: 5. Retorna valor
-</code></pre>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Fluxo de Execução: Strategy + Factory Pattern</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 170" style="width:100%;max-width:860px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do fluxo Strategy + Factory: Plugin chama Factory, Factory retorna Strategy concreta, Plugin executa Strategy e obtém resultado.">
+            <defs>
+              <linearGradient id="sf-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="sf-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+              <linearGradient id="sf-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="sf-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <filter id="sf-shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+              <marker id="sf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+            </defs>
+            
+            <!-- Step 1 -->
+            <rect x="60" y="40" width="140" height="90" rx="14" fill="url(#sf-g1)" filter="url(#sf-shadow)"/>
+            <text x="130" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">1. Plugin</text>
+            <text x="130" y="90" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Inter,system-ui,sans-serif">Recebe Entity</text>
+            <text x="130" y="106" text-anchor="middle" fill="#dbeafe" font-size="11" font-family="Inter,system-ui,sans-serif">(Contexto)</text>
+            
+            <!-- Arrow 1->2 -->
+            <line x1="200" y1="85" x2="250" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#sf-arrow)"/>
+            <text x="225" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Chama</text>
+            
+            <!-- Step 2 -->
+            <rect x="260" y="40" width="140" height="90" rx="14" fill="url(#sf-g2)" filter="url(#sf-shadow)"/>
+            <text x="330" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">2. Factory</text>
+            <text x="330" y="90" text-anchor="middle" fill="#e0e7ff" font-size="11" font-family="Inter,system-ui,sans-serif">Resolve(type)</text>
+            <text x="330" y="106" text-anchor="middle" fill="#e0e7ff" font-size="11" font-family="Inter,system-ui,sans-serif">Instancia Strategy</text>
+            
+            <!-- Arrow 2->3 -->
+            <line x1="400" y1="85" x2="450" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#sf-arrow)"/>
+            <text x="425" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Retorna</text>
+
+            <!-- Step 3 -->
+            <rect x="460" y="40" width="140" height="90" rx="14" fill="url(#sf-g3)" filter="url(#sf-shadow)"/>
+            <text x="530" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">3. Strategy</text>
+            <text x="530" y="90" text-anchor="middle" fill="#d1fae5" font-size="11" font-family="Inter,system-ui,sans-serif">Estratégia</text>
+            <text x="530" y="106" text-anchor="middle" fill="#d1fae5" font-size="11" font-family="Inter,system-ui,sans-serif">Calculate()</text>
+
+            <!-- Arrow 3->4 -->
+            <line x1="600" y1="85" x2="650" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#sf-arrow)"/>
+            <text x="625" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Gera</text>
+
+            <!-- Step 4 -->
+            <rect x="660" y="40" width="140" height="90" rx="14" fill="url(#sf-g4)" filter="url(#sf-shadow)"/>
+            <text x="730" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">4. Resultado</text>
+            <text x="730" y="90" text-anchor="middle" fill="#fef3c7" font-size="11" font-family="Inter,system-ui,sans-serif">Retorna valor</text>
+            <text x="730" y="106" text-anchor="middle" fill="#fef3c7" font-size="11" font-family="Inter,system-ui,sans-serif">ao Plugin</text>
+
+            <!-- Group labels -->
+            <rect x="60" y="142" width="340" height="24" rx="6" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+            <text x="230" y="158" text-anchor="middle" fill="#4338ca" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Plugin &amp; Factory (Acoplado ao Dynamics)</text>
+            
+            <rect x="460" y="142" width="340" height="24" rx="6" fill="#f0fdf4" stroke="#10b981" stroke-width="1"/>
+            <text x="630" y="158" text-anchor="middle" fill="#047857" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Strategy (Regras de Negócio Isoladas)</text>
+          </svg>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
