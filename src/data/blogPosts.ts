@@ -1238,16 +1238,141 @@ public void Execute(IServiceProvider serviceProvider)
       <h2>2. Quantifique o Custo para o Negócio</h2>
       <p>A linguagem da liderança é dinheiro e risco, não "código sujo". Traduza débito técnico em métricas de negócio:</p>
 
-<pre><code class="language-markdown">## Exemplo de Apresentação para Stakeholders
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Exemplo de Apresentação para Stakeholders</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" style="width:100%;max-width:920px;margin:0 auto;display:block;" role="img" aria-label="Dashboard de Débito Técnico para Stakeholders: três itens de débito com impacto atual, custo de correção e risco se ignorado.">
+            <defs>
+              <linearGradient id="stk-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+              <linearGradient id="stk-card1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#1a2e4a"/></linearGradient>
+              <linearGradient id="stk-card2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#1a2e4a"/></linearGradient>
+              <linearGradient id="stk-card3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#1a2e4a"/></linearGradient>
+              <linearGradient id="stk-red" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/></linearGradient>
+              <linearGradient id="stk-amber" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <linearGradient id="stk-orange" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/></linearGradient>
+              <filter id="stk-shadow"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/></filter>
+              <filter id="stk-glow-red"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ef4444" flood-opacity="0.4"/></filter>
+              <filter id="stk-glow-amber"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f59e0b" flood-opacity="0.4"/></filter>
+              <filter id="stk-glow-orange"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f97316" flood-opacity="0.4"/></filter>
+            </defs>
 
-| Débito Técnico               | Impacto Atual                        | Custo de Correção | Risco se Ignorado            |
-|------------------------------|--------------------------------------|--------------------|------------------------------|
-| Plugins sem tratamento       | 3 incidentes/mês em PROD             | 40h dev            | Perda de dados em transações |
-| de exceção                   | (2h de indisponibilidade cada)       |                    | financeiras                  |
-| Soluções Default poluídas    | Deploy leva 4h (deveria levar 15min) | 80h dev            | Impossibilidade de CI/CD     |
-| Fluxos Power Automate        | 15 fluxos duplicados por filial      | 60h dev + negócio  | Custo de licença 3x maior    |
-| sem parametrização           |                                      |                    | que o necessário             |
-</code></pre>
+            <!-- Background -->
+            <rect x="0" y="0" width="920" height="520" rx="16" fill="url(#stk-bg)"/>
+
+            <!-- Header -->
+            <text x="460" y="38" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif" letter-spacing="2">DASHBOARD DE DÉBITO TÉCNICO</text>
+            <line x1="60" y1="52" x2="860" y2="52" stroke="#334155" stroke-width="1"/>
+
+            <!-- Column Headers -->
+            <text x="80" y="78" fill="#64748b" font-size="10.5" font-weight="700" font-family="Inter,system-ui,sans-serif" letter-spacing="1">DÉBITO TÉCNICO</text>
+            <text x="340" y="78" fill="#64748b" font-size="10.5" font-weight="700" font-family="Inter,system-ui,sans-serif" letter-spacing="1">IMPACTO ATUAL</text>
+            <text x="590" y="78" fill="#64748b" font-size="10.5" font-weight="700" font-family="Inter,system-ui,sans-serif" letter-spacing="1">CUSTO CORREÇÃO</text>
+            <text x="750" y="78" fill="#64748b" font-size="10.5" font-weight="700" font-family="Inter,system-ui,sans-serif" letter-spacing="1">RISCO SE IGNORADO</text>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- Row 1: Plugins sem tratamento de exceção       -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <rect x="30" y="94" width="860" height="130" rx="12" fill="url(#stk-card1)" filter="url(#stk-shadow)" stroke="#334155" stroke-width="1"/>
+
+            <!-- Severity indicator bar -->
+            <rect x="30" y="94" width="5" height="130" rx="2" fill="url(#stk-red)"/>
+
+            <!-- Title + Icon -->
+            <text x="80" y="124" fill="#f8fafc" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">🔌 Plugins sem tratamento</text>
+            <text x="80" y="144" fill="#cbd5e1" font-size="13" font-weight="600" font-family="Inter,system-ui,sans-serif">de exceção</text>
+
+            <!-- Severity badge -->
+            <rect x="80" y="160" width="72" height="22" rx="11" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1"/>
+            <text x="116" y="175" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700" font-family="Inter,system-ui,sans-serif">CRÍTICO</text>
+
+            <!-- Impact -->
+            <text x="340" y="124" fill="#fca5a5" font-size="22" font-weight="800" font-family="Inter,system-ui,sans-serif">3</text>
+            <text x="360" y="124" fill="#94a3b8" font-size="12" font-family="Inter,system-ui,sans-serif">incidentes/mês</text>
+            <text x="340" y="146" fill="#94a3b8" font-size="11.5" font-family="Inter,system-ui,sans-serif">em PROD</text>
+            <text x="340" y="170" fill="#64748b" font-size="11" font-family="Inter,system-ui,sans-serif">2h de indisponibilidade cada</text>
+
+            <!-- Cost -->
+            <rect x="590" y="108" width="100" height="36" rx="8" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+            <text x="640" y="132" text-anchor="middle" fill="#fca5a5" font-size="16" font-weight="800" font-family="Inter,system-ui,sans-serif">40h</text>
+            <text x="640" y="160" text-anchor="middle" fill="#64748b" font-size="11" font-family="Inter,system-ui,sans-serif">dev</text>
+
+            <!-- Risk -->
+            <rect x="750" y="106" width="120" height="50" rx="8" fill="rgba(239,68,68,0.1)"/>
+            <text x="810" y="126" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Perda de dados</text>
+            <text x="810" y="142" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">em transações</text>
+            <text x="810" y="158" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">financeiras</text>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- Row 2: Soluções Default poluídas               -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <rect x="30" y="238" width="860" height="130" rx="12" fill="url(#stk-card2)" filter="url(#stk-shadow)" stroke="#334155" stroke-width="1"/>
+
+            <!-- Severity indicator bar -->
+            <rect x="30" y="238" width="5" height="130" rx="2" fill="url(#stk-orange)"/>
+
+            <!-- Title + Icon -->
+            <text x="80" y="268" fill="#f8fafc" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">📦 Soluções Default</text>
+            <text x="80" y="288" fill="#cbd5e1" font-size="13" font-weight="600" font-family="Inter,system-ui,sans-serif">poluídas</text>
+
+            <!-- Severity badge -->
+            <rect x="80" y="304" width="56" height="22" rx="11" fill="rgba(249,115,22,0.2)" stroke="#f97316" stroke-width="1"/>
+            <text x="108" y="319" text-anchor="middle" fill="#fdba74" font-size="10" font-weight="700" font-family="Inter,system-ui,sans-serif">ALTO</text>
+
+            <!-- Impact -->
+            <text x="340" y="268" fill="#fdba74" font-size="22" font-weight="800" font-family="Inter,system-ui,sans-serif">4h</text>
+            <text x="372" y="268" fill="#94a3b8" font-size="12" font-family="Inter,system-ui,sans-serif">por deploy</text>
+            <text x="340" y="290" fill="#64748b" font-size="11.5" font-family="Inter,system-ui,sans-serif">Deveria levar 15min</text>
+            <!-- Impact bar visual -->
+            <rect x="340" y="304" width="160" height="6" rx="3" fill="#334155"/>
+            <rect x="340" y="304" width="144" height="6" rx="3" fill="url(#stk-orange)"/>
+            <text x="340" y="324" fill="#64748b" font-size="9.5" font-family="Inter,system-ui,sans-serif">93% mais lento que o ideal</text>
+
+            <!-- Cost -->
+            <rect x="590" y="252" width="100" height="36" rx="8" fill="rgba(249,115,22,0.12)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+            <text x="640" y="276" text-anchor="middle" fill="#fdba74" font-size="16" font-weight="800" font-family="Inter,system-ui,sans-serif">80h</text>
+            <text x="640" y="304" text-anchor="middle" fill="#64748b" font-size="11" font-family="Inter,system-ui,sans-serif">dev</text>
+
+            <!-- Risk -->
+            <rect x="750" y="250" width="120" height="50" rx="8" fill="rgba(249,115,22,0.1)"/>
+            <text x="810" y="270" text-anchor="middle" fill="#fdba74" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Impossibilidade</text>
+            <text x="810" y="286" text-anchor="middle" fill="#fdba74" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">de CI/CD</text>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- Row 3: Fluxos Power Automate sem parametrização -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <rect x="30" y="382" width="860" height="130" rx="12" fill="url(#stk-card3)" filter="url(#stk-shadow)" stroke="#334155" stroke-width="1"/>
+
+            <!-- Severity indicator bar -->
+            <rect x="30" y="382" width="5" height="130" rx="2" fill="url(#stk-amber)"/>
+
+            <!-- Title + Icon -->
+            <text x="80" y="412" fill="#f8fafc" font-size="14" font-weight="700" font-family="Inter,system-ui,sans-serif">⚡ Fluxos Power Automate</text>
+            <text x="80" y="432" fill="#cbd5e1" font-size="13" font-weight="600" font-family="Inter,system-ui,sans-serif">sem parametrização</text>
+
+            <!-- Severity badge -->
+            <rect x="80" y="448" width="66" height="22" rx="11" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1"/>
+            <text x="113" y="463" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="700" font-family="Inter,system-ui,sans-serif">MÉDIO</text>
+
+            <!-- Impact -->
+            <text x="340" y="412" fill="#fcd34d" font-size="22" font-weight="800" font-family="Inter,system-ui,sans-serif">15</text>
+            <text x="368" y="412" fill="#94a3b8" font-size="12" font-family="Inter,system-ui,sans-serif">fluxos duplicados</text>
+            <text x="340" y="434" fill="#64748b" font-size="11.5" font-family="Inter,system-ui,sans-serif">por filial</text>
+
+            <!-- Cost -->
+            <rect x="590" y="396" width="100" height="36" rx="8" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+            <text x="640" y="420" text-anchor="middle" fill="#fcd34d" font-size="16" font-weight="800" font-family="Inter,system-ui,sans-serif">60h</text>
+            <text x="640" y="448" text-anchor="middle" fill="#64748b" font-size="11" font-family="Inter,system-ui,sans-serif">dev + negócio</text>
+
+            <!-- Risk -->
+            <rect x="750" y="394" width="120" height="50" rx="8" fill="rgba(245,158,11,0.1)"/>
+            <text x="810" y="414" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">Custo de licença</text>
+            <text x="810" y="430" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">3x maior que</text>
+            <text x="810" y="446" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="600" font-family="Inter,system-ui,sans-serif">o necessário</text>
+
+          </svg>
+        </div>
+      </div>
+
 
       <h2>3. Negocie o Pagamento com a Regra 20/80</h2>
       <p>Propor "2 sprints de refatoração" é pedir para ser ignorado. Em vez disso, negocie que <strong>20% da capacidade de cada sprint</strong> seja alocada para pagamento de débito técnico. Em um time de 5 desenvolvedores com sprints de 2 semanas, isso equivale a 2 devs/dia — suficiente para migrar um plugin legado ou separar uma solução poluída por sprint.</p>
