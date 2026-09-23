@@ -1281,9 +1281,117 @@ public void Execute(IServiceProvider serviceProvider)
         <li>Desativar o modelo antigo somente quando 100% dos fluxos estiverem migrados</li>
       </ul>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Quadrante de Débito Técnico]</strong><br/>
-        <em>Matriz 2x2: Eixo X = Prudente vs Imprudente, Eixo Y = Deliberado vs Inadvertido. Cada quadrante com exemplos reais e ação recomendada (Documentar, Corrigir Urgente, Aprender, Treinar).</em>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Quadrante de Débito Técnico</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 520" style="width:100%;max-width:820px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do Quadrante de Débito Técnico: Matriz 2x2 com eixo X Prudente vs Imprudente e eixo Y Deliberado vs Inadvertido. Quadrantes: Prudente+Deliberado = Documentar, Imprudente+Deliberado = Corrigir Urgente, Prudente+Inadvertido = Aprender, Imprudente+Inadvertido = Treinar.">
+            <defs>
+              <linearGradient id="dt-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+              <linearGradient id="dt-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#b91c1c"/></linearGradient>
+              <linearGradient id="dt-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/></linearGradient>
+              <linearGradient id="dt-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+              <filter id="dt-shadow"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.18"/></filter>
+              <filter id="dt-shadow-sm"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+            </defs>
+
+            <!-- Background -->
+            <rect x="0" y="0" width="820" height="520" rx="16" fill="#f8fafc"/>
+
+            <!-- Title area (axis labels) -->
+            <!-- Y-axis label: DELIBERADO (top) / INADVERTIDO (bottom) -->
+            <text x="95" y="130" text-anchor="middle" fill="#475569" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif" transform="rotate(-90,95,130)">DELIBERADO</text>
+            <text x="95" y="390" text-anchor="middle" fill="#475569" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif" transform="rotate(-90,95,390)">INADVERTIDO</text>
+
+            <!-- Y-axis arrow -->
+            <line x1="110" y1="480" x2="110" y2="50" stroke="#94a3b8" stroke-width="2.5"/>
+            <polygon points="110,46 104,58 116,58" fill="#94a3b8"/>
+
+            <!-- X-axis label: PRUDENTE (left) / IMPRUDENTE (right) -->
+            <text x="300" y="505" text-anchor="middle" fill="#475569" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">PRUDENTE</text>
+            <text x="640" y="505" text-anchor="middle" fill="#475569" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">IMPRUDENTE</text>
+
+            <!-- X-axis arrow -->
+            <line x1="110" y1="480" x2="790" y2="480" stroke="#94a3b8" stroke-width="2.5"/>
+            <polygon points="794,480 782,474 782,486" fill="#94a3b8"/>
+
+            <!-- Dividers -->
+            <line x1="450" y1="60" x2="450" y2="475" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+            <line x1="115" y1="268" x2="785" y2="268" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8,4"/>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- Q1: Prudente + Deliberado (top-left) BLUE -->
+            <!-- ═══════════════════════════════════════════ -->
+            <rect x="130" y="72" width="300" height="180" rx="14" fill="url(#dt-g1)" filter="url(#dt-shadow)"/>
+            <!-- Action badge -->
+            <rect x="150" y="86" width="108" height="26" rx="13" fill="rgba(255,255,255,0.22)"/>
+            <text x="204" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">📋 Documentar</text>
+            <!-- Quadrant label -->
+            <text x="280" y="132" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,system-ui,sans-serif">Prudente &amp; Deliberado</text>
+            <!-- Divider line -->
+            <line x1="165" y1="144" x2="395" y2="144" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <!-- Example text -->
+            <text x="280" y="168" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Inter,system-ui,sans-serif">&quot;Sabemos que não escala, mas</text>
+            <text x="280" y="184" text-anchor="middle" fill="#dbeafe" font-size="11.5" font-family="Inter,system-ui,sans-serif">precisamos entregar até sexta.&quot;</text>
+            <!-- Risk indicator -->
+            <rect x="205" y="200" width="150" height="24" rx="12" fill="rgba(255,255,255,0.15)"/>
+            <text x="280" y="216" text-anchor="middle" fill="#bfdbfe" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">⚡ Risco Controlado</text>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- Q2: Imprudente + Deliberado (top-right) RED -->
+            <!-- ═══════════════════════════════════════════ -->
+            <rect x="470" y="72" width="300" height="180" rx="14" fill="url(#dt-g2)" filter="url(#dt-shadow)"/>
+            <!-- Action badge -->
+            <rect x="490" y="86" width="130" height="26" rx="13" fill="rgba(255,255,255,0.22)"/>
+            <text x="555" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">🚨 Corrigir Urgente</text>
+            <!-- Quadrant label -->
+            <text x="620" y="132" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,system-ui,sans-serif">Imprudente &amp; Deliberado</text>
+            <!-- Divider line -->
+            <line x1="505" y1="144" x2="735" y2="144" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <!-- Example text -->
+            <text x="620" y="168" text-anchor="middle" fill="#fecaca" font-size="11.5" font-family="Inter,system-ui,sans-serif">&quot;Não temos tempo para testes,</text>
+            <text x="620" y="184" text-anchor="middle" fill="#fecaca" font-size="11.5" font-family="Inter,system-ui,sans-serif">vamos direto para produção.&quot;</text>
+            <!-- Risk indicator -->
+            <rect x="545" y="200" width="150" height="24" rx="12" fill="rgba(255,255,255,0.15)"/>
+            <text x="620" y="216" text-anchor="middle" fill="#fca5a5" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">🔥 Custo Exponencial</text>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- Q3: Prudente + Inadvertido (bottom-left) GREEN -->
+            <!-- ═══════════════════════════════════════════ -->
+            <rect x="130" y="284" width="300" height="180" rx="14" fill="url(#dt-g3)" filter="url(#dt-shadow)"/>
+            <!-- Action badge -->
+            <rect x="150" y="298" width="100" height="26" rx="13" fill="rgba(255,255,255,0.22)"/>
+            <text x="200" y="316" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">📚 Aprender</text>
+            <!-- Quadrant label -->
+            <text x="280" y="344" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,system-ui,sans-serif">Prudente &amp; Inadvertido</text>
+            <!-- Divider line -->
+            <line x1="165" y1="356" x2="395" y2="356" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <!-- Example text -->
+            <text x="280" y="380" text-anchor="middle" fill="#d1fae5" font-size="11.5" font-family="Inter,system-ui,sans-serif">&quot;Agora que entendemos o domínio,</text>
+            <text x="280" y="396" text-anchor="middle" fill="#d1fae5" font-size="11.5" font-family="Inter,system-ui,sans-serif">o modelo de dados está errado.&quot;</text>
+            <!-- Risk indicator -->
+            <rect x="205" y="412" width="150" height="24" rx="12" fill="rgba(255,255,255,0.15)"/>
+            <text x="280" y="428" text-anchor="middle" fill="#a7f3d0" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">🌱 Evolução Natural</text>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- Q4: Imprudente + Inadvertido (bottom-right) AMBER -->
+            <!-- ═══════════════════════════════════════════ -->
+            <rect x="470" y="284" width="300" height="180" rx="14" fill="url(#dt-g4)" filter="url(#dt-shadow)"/>
+            <!-- Action badge -->
+            <rect x="490" y="298" width="94" height="26" rx="13" fill="rgba(255,255,255,0.22)"/>
+            <text x="537" y="316" text-anchor="middle" fill="#fff" font-size="12" font-weight="700" font-family="Inter,system-ui,sans-serif">🎓 Treinar</text>
+            <!-- Quadrant label -->
+            <text x="620" y="344" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,system-ui,sans-serif">Imprudente &amp; Inadvertido</text>
+            <!-- Divider line -->
+            <line x1="505" y1="356" x2="735" y2="356" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <!-- Example text -->
+            <text x="620" y="380" text-anchor="middle" fill="#fef3c7" font-size="11.5" font-family="Inter,system-ui,sans-serif">&quot;Não sabíamos que existiam</text>
+            <text x="620" y="396" text-anchor="middle" fill="#fef3c7" font-size="11.5" font-family="Inter,system-ui,sans-serif">boas práticas para plugins.&quot;</text>
+            <!-- Risk indicator -->
+            <rect x="545" y="412" width="150" height="24" rx="12" fill="rgba(255,255,255,0.15)"/>
+            <text x="620" y="428" text-anchor="middle" fill="#fde68a" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">⚠️ Problema de Formação</text>
+
+          </svg>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
