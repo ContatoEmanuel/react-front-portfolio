@@ -1681,9 +1681,63 @@ pac solution pack --zipfile StarRating_managed.zip --type Managed
       <h2>5. Quando Usar PCF vs Web Resource</h2>
       <p>PCF é a escolha correta para componentes reutilizáveis que precisam se integrar ao ciclo de dados do formulário (bind a campos, datasets). <strong>Web Resources</strong> ainda fazem sentido para páginas inteiras embedadas (ex: uma SPA completa dentro de um iframe). A regra é: se o componente precisa ler/escrever campos do registro, PCF. Se é uma UI isolada, Web Resource.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Arquitetura PCF no Model-Driven App]</strong><br/>
-        <em>Model-Driven Form → Container DOM → PCF Lifecycle (init → updateView → getOutputs) → React Component → Dataverse SDK (leitura/escrita de campos).</em>
+      <div class="my-10">
+        <h3 style="text-align:center;font-size:1.15rem;font-weight:700;color:#1e3a5f;margin-bottom:1.2rem;">Arquitetura PCF no Model-Driven App</h3>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 170" style="width:100%;max-width:960px;margin:0 auto;display:block;" role="img" aria-label="Diagrama da Arquitetura PCF no Model-Driven App: Model-Driven Form envia para Container DOM, que gerencia o PCF Lifecycle (init, updateView, getOutputs), que renderiza o React Component e usa Dataverse SDK para leitura e escrita de campos.">
+            <defs>
+              <linearGradient id="pcf-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="pcf-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+              <linearGradient id="pcf-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+              <linearGradient id="pcf-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+              <linearGradient id="pcf-g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <filter id="pcf-shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+              <marker id="pcf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+            </defs>
+            
+            <!-- Step 1 -->
+            <rect x="20" y="40" width="130" height="90" rx="14" fill="url(#pcf-g1)" filter="url(#pcf-shadow)"/>
+            <text x="85" y="75" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">Model-Driven</text>
+            <text x="85" y="95" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">Form</text>
+            
+            <!-- Arrow 1->2 -->
+            <line x1="160" y1="85" x2="200" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#pcf-arrow)"/>
+            <text x="180" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Carrega</text>
+            
+            <!-- Step 2 -->
+            <rect x="210" y="40" width="120" height="90" rx="14" fill="url(#pcf-g2)" filter="url(#pcf-shadow)"/>
+            <text x="270" y="75" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">Container</text>
+            <text x="270" y="95" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">DOM</text>
+            
+            <!-- Arrow 2->3 -->
+            <line x1="340" y1="85" x2="380" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#pcf-arrow)"/>
+            <text x="360" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Gerencia</text>
+
+            <!-- Step 3 -->
+            <rect x="390" y="40" width="160" height="90" rx="14" fill="url(#pcf-g3)" filter="url(#pcf-shadow)"/>
+            <text x="470" y="70" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">PCF Lifecycle</text>
+            <text x="470" y="90" text-anchor="middle" fill="#fef3c7" font-size="11" font-family="Inter,system-ui,sans-serif">init(), updateView()</text>
+            <text x="470" y="106" text-anchor="middle" fill="#fef3c7" font-size="11" font-family="Inter,system-ui,sans-serif">getOutputs()</text>
+
+            <!-- Arrow 3->4 -->
+            <line x1="560" y1="85" x2="600" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#pcf-arrow)"/>
+            <text x="580" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Renderiza</text>
+
+            <!-- Step 4 -->
+            <rect x="610" y="40" width="130" height="90" rx="14" fill="url(#pcf-g4)" filter="url(#pcf-shadow)"/>
+            <text x="675" y="75" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">React</text>
+            <text x="675" y="95" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">Component</text>
+
+            <!-- Arrow 4->5 -->
+            <line x1="750" y1="85" x2="790" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#pcf-arrow)"/>
+            <text x="770" y="75" text-anchor="middle" fill="#64748b" font-size="10.5" font-weight="600" font-family="Inter,system-ui,sans-serif">Interage</text>
+
+            <!-- Step 5 -->
+            <rect x="800" y="40" width="140" height="90" rx="14" fill="url(#pcf-g5)" filter="url(#pcf-shadow)"/>
+            <text x="870" y="75" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,system-ui,sans-serif">Dataverse SDK</text>
+            <text x="870" y="95" text-anchor="middle" fill="#d1fae5" font-size="11" font-family="Inter,system-ui,sans-serif">Leitura/Escrita</text>
+          </svg>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
