@@ -1893,9 +1893,137 @@ exceptions
       <h2>5. Distributed Tracing — End-to-End entre Dynamics, API e Azure Functions</h2>
       <p>Quando uma operação atravessa Plugin → API .NET → Azure Function → Service Bus, o <strong>Distributed Tracing</strong> do App Insights correlaciona todos os spans com um único <code>operation_id</code>. Isso significa que você pode clicar em um request na API e ver toda a cadeia de chamadas até o plugin que originou a operação — em um único mapa de transação. Para isso, garanta que o header <code>traceparent</code> (W3C Trace Context) é propagado em todas as chamadas HTTP.</p>
 
-      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-        <strong>[Sugestão de Diagrama: Pipeline de Observabilidade]</strong><br/>
-        <em>Plugin (ILogger) → Application Insights ← API .NET (TelemetryClient) ← Azure Functions (auto-instrumentation). Application Insights → KQL Queries → Dashboards Azure → Alertas → Microsoft Teams.</em>
+      <div class="my-8 p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl border border-blue-200 shadow-sm">
+        <h3 class="text-center text-lg font-bold text-gray-800 mb-1">Pipeline de Observabilidade</h3>
+        <p class="text-center text-sm text-gray-500 mb-4">Fontes de telemetria → Application Insights → Ação</p>
+        <div style="overflow-x:auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" style="width:100%;max-width:960px;margin:0 auto;display:block;" role="img" aria-label="Diagrama do Pipeline de Observabilidade: Plugin (ILogger), API .NET (TelemetryClient) e Azure Functions enviam telemetria para o Application Insights, que alimenta KQL Queries, Dashboards Azure, Alertas e Microsoft Teams.">
+            <defs>
+              <linearGradient id="obs-gPlugin" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#005A9E"/></linearGradient>
+              <linearGradient id="obs-gAppIns" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
+              <linearGradient id="obs-gAPI" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="obs-gFunc" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#D97706"/></linearGradient>
+              <linearGradient id="obs-gKQL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient>
+              <linearGradient id="obs-gDash" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="obs-gAlert" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#DC2626"/></linearGradient>
+              <linearGradient id="obs-gTeams" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6264A7"/><stop offset="100%" stop-color="#4B4D8F"/></linearGradient>
+              <filter id="obs-shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
+              <marker id="obs-arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6366F1"/></marker>
+              <marker id="obs-arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94A3B8"/></marker>
+            </defs>
+
+            <!-- ========== ROW 1: Telemetry Sources ========== -->
+
+            <!-- Box: Plugin (ILogger) -->
+            <g filter="url(#obs-shadow)">
+              <rect x="40" y="40" width="170" height="90" rx="16" fill="url(#obs-gPlugin)"/>
+              <text x="125" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Plugin</text>
+              <text x="125" y="97" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">ILogger / Tracing</text>
+            </g>
+
+            <!-- Box: Application Insights (central, larger) -->
+            <g filter="url(#obs-shadow)">
+              <rect x="355" y="30" width="250" height="110" rx="18" fill="url(#obs-gAppIns)"/>
+              <text x="480" y="72" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="system-ui,sans-serif">Application Insights</text>
+              <text x="480" y="96" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11.5" font-family="system-ui,sans-serif">Telemetria centralizada</text>
+              <text x="480" y="115" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10.5" font-family="system-ui,sans-serif">Traces • Exceptions • Metrics</text>
+            </g>
+
+            <!-- Box: API .NET (TelemetryClient) -->
+            <g filter="url(#obs-shadow)">
+              <rect x="750" y="40" width="170" height="90" rx="16" fill="url(#obs-gAPI)"/>
+              <text x="835" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">API .NET</text>
+              <text x="835" y="97" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="11" font-family="system-ui,sans-serif">TelemetryClient</text>
+            </g>
+
+            <!-- Box: Azure Functions -->
+            <g filter="url(#obs-shadow)">
+              <rect x="750" y="155" width="170" height="75" rx="14" fill="url(#obs-gFunc)"/>
+              <text x="835" y="187" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">Azure Functions</text>
+              <text x="835" y="207" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-family="system-ui,sans-serif">Auto-instrumentation</text>
+            </g>
+
+            <!-- Arrow: Plugin → App Insights -->
+            <line x1="210" y1="85" x2="353" y2="85" stroke="#6366F1" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#obs-arrowPurple)"/>
+            <text x="282" y="75" text-anchor="middle" fill="#6366F1" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Telemetria</text>
+
+            <!-- Arrow: API .NET → App Insights -->
+            <line x1="750" y1="85" x2="607" y2="85" stroke="#6366F1" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#obs-arrowPurple)"/>
+            <text x="678" y="75" text-anchor="middle" fill="#6366F1" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Telemetria</text>
+
+            <!-- Arrow: Azure Functions → App Insights -->
+            <path d="M 750 192 C 680 192, 620 160, 605 140" stroke="#6366F1" stroke-width="2.5" fill="none" stroke-dasharray="6 3" marker-end="url(#obs-arrowPurple)"/>
+            <text x="665" y="175" text-anchor="middle" fill="#6366F1" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Telemetria</text>
+
+            <!-- Step badges for sources -->
+            <circle cx="225" cy="75" r="10" fill="#0078D4"/><text x="225" y="79" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">1</text>
+            <circle cx="735" cy="75" r="10" fill="#10B981"/><text x="735" y="79" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">2</text>
+            <circle cx="735" cy="175" r="10" fill="#D97706"/><text x="735" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">3</text>
+
+            <!-- ========== ROW 2: Pipeline ========== -->
+
+            <!-- Vertical arrow: App Insights → KQL -->
+            <line x1="480" y1="140" x2="480" y2="240" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#obs-arrowGray)"/>
+
+            <!-- Box: KQL Queries -->
+            <g filter="url(#obs-shadow)">
+              <rect x="405" y="245" width="150" height="80" rx="14" fill="url(#obs-gKQL)"/>
+              <text x="480" y="280" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">KQL Queries</text>
+              <text x="480" y="300" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-family="system-ui,sans-serif">Análise e diagnóstico</text>
+            </g>
+
+            <!-- Arrow: KQL → Dashboards -->
+            <line x1="555" y1="285" x2="618" y2="285" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#obs-arrowGray)"/>
+
+            <!-- Box: Dashboards Azure -->
+            <g filter="url(#obs-shadow)">
+              <rect x="620" y="245" width="150" height="80" rx="14" fill="url(#obs-gDash)"/>
+              <text x="695" y="280" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">Dashboards</text>
+              <text x="695" y="300" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-family="system-ui,sans-serif">Azure Monitor</text>
+            </g>
+
+            <!-- Arrow: Dashboards → Alertas -->
+            <path d="M 695 325 C 695 355, 580 365, 480 365" stroke="#94A3B8" stroke-width="2.5" fill="none" stroke-dasharray="6 3" marker-end="url(#obs-arrowGray)"/>
+
+            <!-- Box: Alertas -->
+            <g filter="url(#obs-shadow)">
+              <rect x="340" y="345" width="140" height="65" rx="14" fill="url(#obs-gAlert)"/>
+              <text x="410" y="375" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">🔔 Alertas</text>
+              <text x="410" y="395" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-family="system-ui,sans-serif">Action Groups</text>
+            </g>
+
+            <!-- Arrow: Alertas → Teams -->
+            <line x1="340" y1="377" x2="245" y2="377" stroke="#94A3B8" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#obs-arrowGray)"/>
+
+            <!-- Box: Microsoft Teams -->
+            <g filter="url(#obs-shadow)">
+              <rect x="60" y="345" width="185" height="65" rx="14" fill="url(#obs-gTeams)"/>
+              <text x="152" y="375" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="system-ui,sans-serif">Microsoft Teams</text>
+              <text x="152" y="395" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10.5" font-family="system-ui,sans-serif">Notificação em tempo real</text>
+            </g>
+
+            <!-- Step badges for pipeline -->
+            <circle cx="495" cy="230" r="10" fill="#8B5CF6"/><text x="495" y="234" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">4</text>
+            <circle cx="600" cy="270" r="10" fill="#3B82F6"/><text x="600" y="274" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">5</text>
+            <circle cx="500" cy="360" r="10" fill="#EF4444"/><text x="500" y="364" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">6</text>
+            <circle cx="260" cy="360" r="10" fill="#6264A7"/><text x="260" y="364" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="system-ui,sans-serif">7</text>
+
+            <!-- Section labels -->
+            <rect x="40" y="0" width="180" height="22" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+            <text x="130" y="15" text-anchor="middle" fill="#4338CA" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Fontes de Telemetria</text>
+            <rect x="405" y="220" width="180" height="22" rx="6" fill="#FAF5FF" stroke="#8B5CF6" stroke-width="1"/>
+            <text x="495" y="235" text-anchor="middle" fill="#6D28D9" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Pipeline de Ação</text>
+          </svg>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:12px;color:#4B5563;font-family:system-ui,sans-serif;">
+          <span><strong style="color:#0078D4">①</strong> Plugin envia logs via ILogger</span>
+          <span><strong style="color:#10B981">②</strong> API .NET usa TelemetryClient</span>
+          <span><strong style="color:#D97706">③</strong> Functions auto-instrumentação</span>
+          <span><strong style="color:#8B5CF6">④</strong> KQL analisa telemetria</span>
+          <span><strong style="color:#3B82F6">⑤</strong> Dashboards visualizam dados</span>
+          <span><strong style="color:#EF4444">⑥</strong> Alertas detectam anomalias</span>
+          <span><strong style="color:#6264A7">⑦</strong> Teams recebe notificações</span>
+        </div>
       </div>
 
       <h2>Conclusão</h2>
