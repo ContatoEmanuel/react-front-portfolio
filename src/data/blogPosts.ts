@@ -2039,6 +2039,470 @@ exceptions
     readTimeMinutes: 10,
     imageGradient: 'from-cyan-600 to-teal-600',
   },
+  {
+    id: 14,
+    slug: 'modernizacao-legado-strangler-fig-dynamics-365',
+    title: 'Modernização de Legado: Strangler Fig Pattern para Migração Gradual ao Dynamics 365 Cloud',
+    excerpt: 'O custo oculto de manter sistemas on-premise vai muito além da fatura do servidor. Descubra como usar o Strangler Fig Pattern com Azure Service Bus, Dual-Write e Dataverse para migrar sem Big Bang e sem downtime.',
+    content: `
+      <p class="lead">Existe um número que a maioria dos CTOs evita confrontar: em empresas com sistemas on-premise legados, <strong>até 68% do orçamento de TI é consumido apenas para manter a operação existente</strong> (Gartner, 2025). Não é inovação. Não é vantagem competitiva. É sobrevivência. Neste artigo, detalho a estratégia que aplico em projetos reais de modernização: o <strong>Strangler Fig Pattern</strong> adaptado para o ecossistema Dynamics 365 + Power Platform + Azure.</p>
+
+      <h2>1. O Custo Real do Legado: Além da Fatura do Servidor</h2>
+      <p>Antes de falar de solução, precisamos quantificar o problema corretamente. O custo de um sistema legado on-premise <strong>nunca</strong> é apenas o hardware. Existe uma composição de custos que raramente aparece nas planilhas de orçamento:</p>
+
+      <div style="overflow-x:auto;margin:24px 0;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;border-radius:12px;overflow:hidden;">
+          <thead>
+            <tr style="background:linear-gradient(135deg,#0F172A,#1E293B);">
+              <th style="padding:14px 18px;text-align:left;color:#94A3B8;font-weight:600;border-bottom:2px solid #334155;">Categoria</th>
+              <th style="padding:14px 18px;text-align:left;color:#EF4444;font-weight:600;border-bottom:2px solid #334155;">On-Premise Legado</th>
+              <th style="padding:14px 18px;text-align:left;color:#10B981;font-weight:600;border-bottom:2px solid #334155;">Dynamics 365 Cloud</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#0F172A;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Infraestrutura</td>
+              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Servidores físicos, licenças de SO, rede, energia, refrigeração</td>
+              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Pay-as-you-go, escala elástica</td>
+            </tr>
+            <tr style="background:#1E293B;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #0F172A;">Manutenção</td>
+              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #0F172A;">Patches manuais, DBAs dedicados, zero automação</td>
+              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #0F172A;">Updates gerenciados pela Microsoft, SLA 99.9%</td>
+            </tr>
+            <tr style="background:#0F172A;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Segurança</td>
+              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Vulnerabilidades acumuladas, compliance manual</td>
+              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Azure AD, Conditional Access, DLP nativo</td>
+            </tr>
+            <tr style="background:#1E293B;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #0F172A;">Velocidade de Entrega</td>
+              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #0F172A;">Deploys quinzenais ou mensais</td>
+              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #0F172A;">CI/CD com Azure DevOps, deploys em minutos</td>
+            </tr>
+            <tr style="background:#0F172A;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Custo de Oportunidade</td>
+              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Devs mantendo código legado em vez de criar valor</td>
+              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Time focado em features e automação</td>
+            </tr>
+            <tr style="background:#1E293B;">
+              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;">Risco de Negócio</td>
+              <td style="padding:12px 18px;color:#F87171;">Single point of failure, disaster recovery manual</td>
+              <td style="padding:12px 18px;color:#6EE7B7;">Geo-redundância, backup automático</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>O ponto crítico é o <strong>custo de oportunidade</strong>: cada sprint gasto corrigindo bugs em um sistema VB6/WinForms de 2012 é um sprint que <em>não</em> está automatizando processos de negócio com Power Automate ou construindo dashboards em tempo real com Power BI.</p>
+
+      <div style="background:linear-gradient(135deg,#1E1B4B,#312E81);border-radius:12px;padding:20px 24px;margin:24px 0;border-left:4px solid #818CF8;">
+        <p style="margin:0;color:#C7D2FE;font-size:15px;">💡 <strong style="color:#A5B4FC;">Insight Enterprise:</strong> Em um projeto recente para o setor financeiro, identificamos que <strong style="color:#FDE68A;">R$ 2.4M/ano</strong> eram gastos apenas em manutenção de infraestrutura on-premise. Após 8 meses de migração gradual para Dynamics 365, o custo operacional caiu <strong style="color:#6EE7B7;">40%</strong>, liberando budget para inovação.</p>
+      </div>
+
+      <h2>2. Strangler Fig Pattern: Migração Sem Risco de Big Bang</h2>
+      <p>O <strong>Strangler Fig Pattern</strong> (cunhado por Martin Fowler) é uma estratégia onde o novo sistema cresce gradualmente ao redor do legado, substituindo funcionalidades uma a uma, até que o sistema antigo possa ser descomissionado. Adaptado para o ecossistema Microsoft, a implementação segue quatro fases:</p>
+
+      <div style="background:linear-gradient(135deg,#0F172A,#1E293B);border-radius:16px;padding:32px;margin:24px 0;">
+        <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0EA5E9,#0284C7);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">01</div>
+          <div>
+            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Dual-Write: Sincronização Bidirecional</h4>
+            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Configuramos o Dual-Write entre o sistema on-premise (SQL Server) e o Dataverse do Dynamics 365. Ambos os sistemas trabalham com os mesmos dados durante toda a transição — sem inconsistências.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#7C3AED);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">02</div>
+          <div>
+            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Novas Features no Dynamics 365</h4>
+            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Toda nova funcionalidade nasce diretamente no Dynamics 365 e Power Platform. O legado entra em modo de <strong style="color:#FDE68A;">feature freeze</strong> — apenas correções críticas de segurança.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">03</div>
+          <div>
+            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Orquestração com Azure Service Bus</h4>
+            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Para módulos que precisam se comunicar entre o legado e o novo sistema, usamos o Azure Service Bus como broker de mensagens, desacoplando completamente as duas pontas.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">04</div>
+          <div>
+            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Descomissionamento Gradual</h4>
+            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Módulo por módulo, o legado é desligado. Sem Big Bang. Sem downtime. Cada módulo tem seu próprio <em>cutover plan</em> com critérios de go/no-go.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Diagrama de Arquitetura — Strangler Fig Pattern</h3>
+      <div style="background:#0F172A;border-radius:16px;padding:24px;margin:24px 0;overflow-x:auto;">
+        <svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:960px;font-family:system-ui,sans-serif;">
+          <defs>
+            <linearGradient id="sfp-gCloud" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0F172A"/><stop offset="100%" stop-color="#1E3A5F"/></linearGradient>
+            <linearGradient id="sfp-gLegacy" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#2D1B1B"/></linearGradient>
+            <linearGradient id="sfp-gD365" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#005A9E"/></linearGradient>
+            <linearGradient id="sfp-gBus" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#D97706"/></linearGradient>
+            <linearGradient id="sfp-gFunc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#6D28D9"/></linearGradient>
+            <linearGradient id="sfp-gPA" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#742774"/><stop offset="100%" stop-color="#5B1F5B"/></linearGradient>
+            <linearGradient id="sfp-gDevOps" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#106EBE"/></linearGradient>
+            <linearGradient id="sfp-gPBI" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F2C811"/><stop offset="100%" stop-color="#E8A90E"/></linearGradient>
+            <linearGradient id="sfp-gSQL" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#CC2927"/><stop offset="100%" stop-color="#A32122"/></linearGradient>
+            <linearGradient id="sfp-gApp" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6B7280"/><stop offset="100%" stop-color="#4B5563"/></linearGradient>
+            <linearGradient id="sfp-gWin" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#9CA3AF"/><stop offset="100%" stop-color="#6B7280"/></linearGradient>
+            <filter id="sfp-shadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/></filter>
+            <marker id="sfp-arrowBlue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#38BDF8"/></marker>
+            <marker id="sfp-arrowAmber" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#FBBF24"/></marker>
+            <marker id="sfp-arrowGray" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#94A3B8"/></marker>
+          </defs>
+
+          <!-- Cloud Zone -->
+          <rect x="20" y="10" width="920" height="250" rx="16" fill="url(#sfp-gCloud)" stroke="#1E3A5F" stroke-width="1.5"/>
+          <rect x="30" y="15" width="160" height="24" rx="6" fill="#0EA5E9" opacity="0.2"/>
+          <text x="110" y="31" text-anchor="middle" fill="#38BDF8" font-size="11" font-weight="700" font-family="system-ui,sans-serif">☁️ AZURE CLOUD</text>
+
+          <!-- Legacy Zone -->
+          <rect x="20" y="310" width="920" height="160" rx="16" fill="url(#sfp-gLegacy)" stroke="#7F1D1D" stroke-width="1.5" stroke-dasharray="6 3"/>
+          <rect x="30" y="315" width="200" height="24" rx="6" fill="#EF4444" opacity="0.15"/>
+          <text x="130" y="331" text-anchor="middle" fill="#FCA5A5" font-size="11" font-weight="700" font-family="system-ui,sans-serif">🏢 ON-PREMISE (LEGADO)</text>
+
+          <!-- Cloud Boxes -->
+          <g filter="url(#sfp-shadow)">
+            <rect x="50" y="55" width="180" height="75" rx="14" fill="url(#sfp-gD365)"/>
+            <text x="140" y="88" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Dynamics 365</text>
+            <text x="140" y="108" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">+ Dataverse</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="290" y="55" width="180" height="75" rx="14" fill="url(#sfp-gBus)"/>
+            <text x="380" y="88" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Azure Service Bus</text>
+            <text x="380" y="108" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">Message Broker</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="530" y="55" width="180" height="75" rx="14" fill="url(#sfp-gFunc)"/>
+            <text x="620" y="88" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Azure Functions</text>
+            <text x="620" y="108" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">Sync + Triggers</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="50" y="165" width="180" height="75" rx="14" fill="url(#sfp-gPA)"/>
+            <text x="140" y="198" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Power Automate</text>
+            <text x="140" y="218" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">Automações</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="290" y="165" width="180" height="75" rx="14" fill="url(#sfp-gDevOps)"/>
+            <text x="380" y="198" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Azure DevOps</text>
+            <text x="380" y="218" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">CI/CD Pipeline</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="530" y="165" width="180" height="75" rx="14" fill="url(#sfp-gPBI)"/>
+            <text x="620" y="198" text-anchor="middle" fill="#1E293B" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">Power BI</text>
+            <text x="620" y="218" text-anchor="middle" fill="rgba(30,41,59,0.8)" font-size="11" font-family="system-ui,sans-serif">Dashboards</text>
+          </g>
+
+          <!-- Legacy Boxes -->
+          <g filter="url(#sfp-shadow)">
+            <rect x="50" y="355" width="180" height="75" rx="14" fill="url(#sfp-gSQL)"/>
+            <text x="140" y="388" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">SQL Server</text>
+            <text x="140" y="408" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">Database Legado</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="290" y="355" width="180" height="75" rx="14" fill="url(#sfp-gApp)"/>
+            <text x="380" y="388" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">App Server</text>
+            <text x="380" y="408" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">.NET Legacy</text>
+          </g>
+
+          <g filter="url(#sfp-shadow)">
+            <rect x="530" y="355" width="180" height="75" rx="14" fill="url(#sfp-gWin)"/>
+            <text x="620" y="388" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="system-ui,sans-serif">WinForms / Web</text>
+            <text x="620" y="408" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="11" font-family="system-ui,sans-serif">Frontend Legado</text>
+          </g>
+
+          <!-- Feature Freeze Badge -->
+          <rect x="760" y="375" width="160" height="36" rx="8" fill="#7F1D1D" stroke="#FCA5A5" stroke-width="1" stroke-dasharray="4 2"/>
+          <text x="840" y="397" text-anchor="middle" fill="#FCA5A5" font-size="11" font-weight="700" font-family="system-ui,sans-serif">⚠️ FEATURE FREEZE</text>
+
+          <!-- Arrows Cloud ↔ Cloud -->
+          <line x1="230" y1="92" x2="288" y2="92" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#sfp-arrowBlue)"/>
+          <line x1="470" y1="92" x2="528" y2="92" stroke="#FBBF24" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#sfp-arrowAmber)"/>
+
+          <!-- Arrows Cloud → Legacy (Dual-Write) -->
+          <line x1="140" y1="130" x2="140" y2="353" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#sfp-arrowBlue)"/>
+          <text x="155" y="285" fill="#38BDF8" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Dual-Write</text>
+
+          <!-- Arrows Legacy ↔ Legacy -->
+          <line x1="230" y1="392" x2="288" y2="392" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#sfp-arrowGray)"/>
+          <line x1="470" y1="392" x2="528" y2="392" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#sfp-arrowGray)"/>
+
+          <!-- Arrow Service Bus → Legacy -->
+          <line x1="380" y1="130" x2="380" y2="353" stroke="#FBBF24" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#sfp-arrowAmber)"/>
+          <text x="395" y="285" fill="#FBBF24" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Messages</text>
+        </svg>
+      </div>
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:12px;color:#4B5563;font-family:system-ui,sans-serif;">
+        <span><strong style="color:#0078D4">①</strong> Dynamics 365 + Dataverse (novo sistema)</span>
+        <span><strong style="color:#F59E0B">②</strong> Service Bus orquestra mensagens</span>
+        <span><strong style="color:#8B5CF6">③</strong> Azure Functions processam sincronização</span>
+        <span><strong style="color:#38BDF8">④</strong> Dual-Write mantém dados sincronizados</span>
+      </div>
+
+      <h2>3. Implementação: Azure Function de Sincronização (C#)</h2>
+      <p>O coração da estratégia é a camada de sincronização. Abaixo, um <strong>Azure Function</strong> real em C# que escuta eventos do Service Bus (originados no sistema legado) e sincroniza registros para o Dataverse do Dynamics 365:</p>
+
+      <pre><code class="language-csharp">using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using Microsoft.PowerPlatform.Dataverse.Client;
+using Microsoft.Xrm.Sdk;
+using System;
+using System.Text.Json;
+
+namespace EAMCompany.Migration.Functions
+{
+    /// &lt;summary&gt;
+    /// Azure Function: escuta mensagens do Service Bus (legado)
+    /// e sincroniza registros de clientes para o Dataverse.
+    /// Strangler Fig Pattern — Fase 3.
+    /// &lt;/summary&gt;
+    public class SyncLegacyCustomerToDataverse
+    {
+        private readonly ServiceClient _dataverseClient;
+
+        public SyncLegacyCustomerToDataverse(ServiceClient dataverseClient)
+        {
+            _dataverseClient = dataverseClient
+                ?? throw new ArgumentNullException(nameof(dataverseClient));
+        }
+
+        [FunctionName("SyncLegacyCustomer")]
+        public void Run(
+            [ServiceBusTrigger(
+                "legacy-customer-events",
+                Connection = "ServiceBusConnection")] string message,
+            ILogger log)
+        {
+            log.LogInformation("Evento recebido do legado: {Message}", message);
+
+            try
+            {
+                var legacyCustomer = JsonSerializer
+                    .Deserialize&lt;LegacyCustomerEvent&gt;(message);
+
+                if (legacyCustomer is null)
+                {
+                    log.LogWarning("Mensagem null. Ignorando.");
+                    return;
+                }
+
+                // Upsert pattern — verifica existência antes de criar
+                var existing = FindAccountByLegacyId(legacyCustomer.LegacyId);
+
+                var account = new Entity("account")
+                {
+                    ["name"] = legacyCustomer.CompanyName,
+                    ["emailaddress1"] = legacyCustomer.Email,
+                    ["telephone1"] = legacyCustomer.Phone,
+                    // Campo custom para rastreabilidade de migração
+                    ["eam_legacyid"] = legacyCustomer.LegacyId,
+                    ["eam_migrationsource"] = new OptionSetValue(100000001),
+                    ["eam_lastsyncdate"] = DateTime.UtcNow
+                };
+
+                if (existing != null)
+                {
+                    account.Id = existing.Id;
+                    _dataverseClient.Update(account);
+                    log.LogInformation(
+                        "Account atualizado: {Id} (Legacy: {LegacyId})",
+                        account.Id, legacyCustomer.LegacyId);
+                }
+                else
+                {
+                    var newId = _dataverseClient.Create(account);
+                    log.LogInformation(
+                        "Account criado: {Id} (Legacy: {LegacyId})",
+                        newId, legacyCustomer.LegacyId);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex,
+                    "Erro ao sincronizar customer para Dataverse.");
+                // Reenvia para Dead Letter Queue do Service Bus
+                throw;
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Busca Account no Dataverse pelo ID legado via FetchXML.
+        /// &lt;/summary&gt;
+        private Entity? FindAccountByLegacyId(string legacyId)
+        {
+            var fetchXml = $@"
+                &lt;fetch top='1'&gt;
+                    &lt;entity name='account'&gt;
+                        &lt;attribute name='accountid' /&gt;
+                        &lt;attribute name='name' /&gt;
+                        &lt;filter&gt;
+                            &lt;condition attribute='eam_legacyid'
+                                       operator='eq'
+                                       value='{legacyId}' /&gt;
+                        &lt;/filter&gt;
+                    &lt;/entity&gt;
+                &lt;/fetch&gt;";
+
+            var result = _dataverseClient.RetrieveMultiple(
+                new FetchExpression(fetchXml));
+
+            return result.Entities.Count > 0
+                ? result.Entities[0]
+                : null;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Modelo do evento enviado pelo legado via Service Bus.
+    /// &lt;/summary&gt;
+    public record LegacyCustomerEvent(
+        string LegacyId,
+        string CompanyName,
+        string Email,
+        string Phone,
+        string EventType,      // "Created", "Updated", "Deleted"
+        DateTime EventTimestamp
+    );
+}</code></pre>
+
+      <div style="background:linear-gradient(135deg,#064E3B,#065F46);border-radius:12px;padding:20px 24px;margin:24px 0;border-left:4px solid #34D399;">
+        <p style="margin:0 0 12px 0;color:#A7F3D0;font-weight:700;font-size:15px;">🔑 Pontos-chave do código:</p>
+        <ul style="margin:0;padding-left:20px;color:#D1FAE5;font-size:14px;line-height:1.8;">
+          <li><strong style="color:#6EE7B7;">Upsert Pattern:</strong> Verifica existência via <code>eam_legacyid</code> antes de criar ou atualizar — essencial para idempotência.</li>
+          <li><strong style="color:#6EE7B7;">Rastreabilidade:</strong> Os campos <code>eam_migrationsource</code> e <code>eam_lastsyncdate</code> permitem auditar exatamente quais registros vieram do legado.</li>
+          <li><strong style="color:#6EE7B7;">Dead Letter Queue:</strong> O <code>throw</code> reenvia a mensagem para a DLQ do Service Bus — nenhum dado é perdido.</li>
+          <li><strong style="color:#6EE7B7;">FetchXML vs LINQ:</strong> FetchXML por performance e controle explícito — em cenários de migração, evitar abstrações que escondam o custo da query é crítico.</li>
+        </ul>
+      </div>
+
+      <h2>4. Governança da Migração: O que ninguém te conta</h2>
+      <p>A parte mais negligenciada de qualquer migração não é o código — é a <strong>governança</strong>. Sem ela, você acaba com <em>dois</em> sistemas desatualizados em vez de um.</p>
+
+      <div style="background:linear-gradient(135deg,#1E293B,#0F172A);border-radius:16px;padding:28px;margin:24px 0;">
+        <h4 style="margin:0 0 20px 0;color:#F8FAFC;font-size:17px;">📋 Checklist de Governança para Migração Gradual</h4>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <span style="color:#EF4444;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Feature Freeze documentado e assinado</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Pelo Product Owner — sem isso, o legado nunca morre.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <span style="color:#F59E0B;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Data Quality Gate</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Antes de sincronizar: valide duplicados, campos nulos obrigatórios, formatos inconsistentes.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <span style="color:#3B82F6;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Runbook de Rollback</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Para cada módulo migrado, documentar exatamente como reverter em caso de falha.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <span style="color:#10B981;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Métricas de Progresso (Power BI)</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Dashboard mostrando: % registros migrados, taxa de erro, módulos descomissionados vs. pendentes.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <span style="color:#8B5CF6;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Cutover Plan por módulo</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Data definida para desligar cada módulo legado, com critérios de go/no-go.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="color:#EC4899;font-size:18px;flex-shrink:0;">☐</span>
+          <div>
+            <strong style="color:#F1F5F9;font-size:14px;">Treinamento dos usuários</strong>
+            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Dynamics 365 tem UX completamente diferente de WinForms. Não subestime a curva de adoção.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>FetchXML — Dashboard de Progresso da Migração</h3>
+      <p>Essa query agrega dados de migração no Dataverse e alimenta o dashboard Power BI que monitora o progresso em tempo real:</p>
+
+      <pre><code class="language-xml">&lt;!-- FetchXML: Agregação para Dashboard de Progresso --&gt;
+&lt;fetch aggregate="true"&gt;
+    &lt;entity name="account"&gt;
+        &lt;attribute name="eam_migrationsource"
+                   groupby="true"
+                   alias="source" /&gt;
+        &lt;attribute name="accountid"
+                   aggregate="count"
+                   alias="total_records" /&gt;
+        &lt;attribute name="eam_lastsyncdate"
+                   aggregate="max"
+                   alias="last_sync" /&gt;
+        &lt;filter&gt;
+            &lt;condition attribute="statecode"
+                       operator="eq"
+                       value="0" /&gt;
+        &lt;/filter&gt;
+    &lt;/entity&gt;
+&lt;/fetch&gt;</code></pre>
+
+      <p>Essa query retorna quantos registros vieram de cada fonte (migração manual, Service Bus, Dual-Write) e quando foi a última sincronização — dados essenciais para o relatório de progresso do projeto.</p>
+
+      <h2>Conclusão</h2>
+      <p>Migrar de on-premise para Dynamics 365 Cloud não é um projeto de TI — é uma <strong>decisão estratégica de negócio</strong>. O Strangler Fig Pattern remove o maior risco (o Big Bang) e permite que sua empresa continue operando enquanto moderniza. Os pilares são:</p>
+
+      <div style="background:linear-gradient(135deg,#1E293B,#0F172A);border-radius:12px;padding:24px;margin:24px 0;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);border-radius:10px;padding:16px;">
+            <strong style="color:#38BDF8;font-size:14px;">① Dual-Write</strong>
+            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Manter dados sincronizados durante toda a transição.</p>
+          </div>
+          <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:16px;">
+            <strong style="color:#A78BFA;font-size:14px;">② Feature Freeze</strong>
+            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Forçar a adoção do novo sistema pelo time.</p>
+          </div>
+          <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:16px;">
+            <strong style="color:#FBBF24;font-size:14px;">③ Azure Service Bus</strong>
+            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Desacoplar a comunicação entre os dois mundos.</p>
+          </div>
+          <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:16px;">
+            <strong style="color:#34D399;font-size:14px;">④ Governança Rigorosa</strong>
+            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Garantir que a migração tenha fim definido e controlado.</p>
+          </div>
+        </div>
+      </div>
+
+      <blockquote style="border-left:4px solid #8B5CF6;padding:16px 20px;margin:24px 0;background:rgba(139,92,246,0.05);border-radius:0 8px 8px 0;">
+        <p style="margin:0;color:#C4B5FD;font-style:italic;font-size:16px;">"O melhor momento para começar a migração era há 2 anos. O segundo melhor momento é agora."</p>
+      </blockquote>
+
+      <hr class="my-8" />
+      <p><strong>Sua empresa ainda depende de sistemas on-premise legados? Qual é o maior desafio que você enfrenta na migração? Compartilhe sua experiência nos comentários ou me encontre no LinkedIn — vamos trocar ideias!</strong></p>
+    `,
+    category: blogCategories[0],
+    tags: ['Dynamics 365', 'Azure', 'Modernização', 'Cloud Migration', 'Strangler Fig Pattern'],
+    author: 'Emanuel A Macêdo',
+    publishedAt: '2026-10-14',
+    readTimeMinutes: 12,
+    imageGradient: 'from-indigo-600 to-violet-600',
+  },
 ];
 
 // Helper to filter out posts scheduled for the future
