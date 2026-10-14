@@ -6,15 +6,15 @@ export default function Hero() {
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 transition-colors duration-500" />
       
       {/* Decorative Orbs */}
-      <div className="decorative-orb w-96 h-96 bg-blue-400 top-10 -left-20 animate-float" />
-      <div className="decorative-orb w-80 h-80 bg-indigo-400 bottom-10 -right-20 animate-float-delay" />
-      <div className="decorative-orb w-64 h-64 bg-purple-400 top-1/3 right-1/4 animate-float-slow" />
+      <div className="decorative-orb w-96 h-96 bg-blue-400 dark:bg-blue-600 top-10 -left-20 animate-float" />
+      <div className="decorative-orb w-80 h-80 bg-indigo-400 dark:bg-indigo-600 bottom-10 -right-20 animate-float-delay" />
+      <div className="decorative-orb w-64 h-64 bg-purple-400 dark:bg-purple-600 top-1/3 right-1/4 animate-float-slow" />
       
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
+      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.07]" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.3) 1px, transparent 0)',
         backgroundSize: '40px 40px'
       }} />
@@ -27,21 +27,19 @@ export default function Hero() {
               <img
                 src="/assets/profile.jpg"
                 alt={profile.name}
-                className="w-44 h-44 rounded-full mx-auto object-cover border-4 border-white shadow-2xl ring-4 ring-blue-100"
+                className="w-44 h-44 rounded-full mx-auto object-cover border-4 border-white dark:border-slate-800 shadow-2xl ring-4 ring-blue-100 dark:ring-blue-900/40 transition-colors"
                 onError={(e) => {
                   const target = e.currentTarget;
                   target.onerror = null;
-                  target.outerHTML = '<div class="w-44 h-44 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white shadow-2xl ring-4 ring-blue-100"><span class="text-5xl font-bold text-white">EM</span></div>';
+                  target.outerHTML = '<div class="w-44 h-44 rounded-full mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white dark:border-slate-800 shadow-2xl ring-4 ring-blue-100 dark:ring-blue-900/40"><span class="text-5xl font-bold text-white">EM</span></div>';
                 }}
               />
-              <div className="absolute -bottom-1 -right-1 bg-green-500 w-7 h-7 rounded-full border-4 border-white animate-pulse-soft" />
+              <div className="absolute -bottom-1 -right-1 bg-green-500 w-7 h-7 rounded-full border-4 border-white dark:border-slate-800 animate-pulse-soft" />
             </div>
           </div>
 
-
-
           {/* Nome */}
-          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-3 animate-fade-in-delay tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-3 animate-fade-in-delay tracking-tight transition-colors">
             {profile.name}
           </h1>
 
@@ -51,7 +49,7 @@ export default function Hero() {
           </h2>
 
           {/* Stack Subtitle */}
-          <p className="text-lg text-gray-500 font-medium mb-8 animate-fade-in-delay-2">
+          <p className="text-lg text-gray-500 dark:text-gray-400 font-medium mb-8 animate-fade-in-delay-2 transition-colors">
             Dynamics 365 • Power Platform • .NET C# • Azure
           </p>
 

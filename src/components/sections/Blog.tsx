@@ -29,7 +29,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
   };
 
   return (
-    <section id="blog" className="py-24 bg-gray-50">
+    <section id="blog" className="py-24 bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
       <Container>
         <SectionTitle
           subtitle="Artigos sobre Dynamics 365, Power Platform, .NET e tecnologias Microsoft"
@@ -44,7 +44,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
             className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
               activeCategory === 'all'
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300 hover:text-blue-600 hover:shadow-md'
+                : 'bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-md'
             }`}
           >
             Todas
@@ -56,7 +56,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === cat.name
                   ? 'text-white shadow-lg'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300 hover:text-blue-600 hover:shadow-md'
+                  : 'bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-md'
               }`}
               style={activeCategory === cat.name ? { backgroundColor: cat.color } : {}}
             >
@@ -70,7 +70,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
           {(isDedicatedPage ? filteredPosts : filteredPosts.slice(0, 3)).map((post, index) => (
             <article
               key={post.id}
-              className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover-lift opacity-0 animate-fade-in"
+              className="group bg-white dark:bg-slate-900 rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 hover-lift opacity-0 animate-fade-in"
               style={{ animationDelay: `${index * 0.15}s`, animationFillMode: 'forwards' }}
             >
               {/* Post Image / Gradient */}
@@ -78,7 +78,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all duration-500" />
                 <div className="absolute top-4 left-4 z-10">
                   <span
-                    className="px-3 py-1.5 text-xs font-bold rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
+                    className="px-3 py-1.5 text-xs font-bold rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm shadow-sm"
                     style={{ color: post.category.color }}
                   >
                     {post.category.name}
@@ -95,7 +95,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
               {/* Post Content */}
               <div className="p-6">
                 {/* Meta Info */}
-                <div className="flex items-center text-sm text-gray-500 mb-3 gap-3">
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3 gap-3">
                   <span className="flex items-center gap-1">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -112,27 +112,27 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                   {post.title}
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-gray-600 mb-5 line-clamp-3 text-sm leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-5 line-clamp-3 text-sm leading-relaxed">
                   {post.excerpt}
                 </p>
 
                 {/* Author & Read More */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-slate-800">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
                       EM
                     </div>
-                    <span className="text-sm text-gray-700 font-medium">{post.author}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{post.author}</span>
                   </div>
                   {isDedicatedPage ? (
                     <button
                       onClick={() => onPostClick && onPostClick(post)}
-                      className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 group/link"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center gap-1 group/link"
                     >
                       Ler mais
                       <svg className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
                       href={`/blog.html?id=${post.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 group/link"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm flex items-center gap-1 group/link"
                     >
                       Ler mais
                       <svg className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@ export default function Blog({ isDedicatedPage = false, onPostClick }: BlogProps
                 href="/blog.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-2xl hover:bg-gray-800 transition-all font-semibold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-slate-800 text-white rounded-2xl hover:bg-gray-800 dark:hover:bg-slate-700 transition-all font-semibold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border dark:border-slate-700"
               >
                 Acessar Blog Completo
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

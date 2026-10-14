@@ -37,7 +37,7 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="py-24 bg-gray-50">
+    <section id="projects" className="py-24 bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
       <Container>
         <SectionTitle
           subtitle="Soluções desenvolvidas utilizando o ecossistema Microsoft, focadas em integração, automação e modernização de processos empresariais."
@@ -47,7 +47,7 @@ export default function Projects() {
 
         {/* Projetos em Destaque */}
         <div className="mb-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
             <span className="w-8 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full" />
             Projetos em Destaque
           </h3>
@@ -55,7 +55,7 @@ export default function Projects() {
             {projects.filter(p => p.featured).map((project, index) => (
               <div 
                 key={project.id}
-                className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover-lift opacity-0 animate-fade-in"
+                className="group bg-white dark:bg-slate-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-700/50 hover-lift opacity-0 animate-fade-in"
                 style={{ animationDelay: `${index * 0.2}s`, animationFillMode: 'forwards' }}
               >
                 {/* Thumbnail */}
@@ -76,15 +76,15 @@ export default function Projects() {
 
                 {/* Conteúdo */}
                 <div className="p-7">
-                  <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{project.title}</h4>
-                  <p className="text-gray-600 mb-5 leading-relaxed">{project.description}</p>
+                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{project.title}</h4>
+                  <p className="text-gray-600 dark:text-gray-300 mb-5 leading-relaxed">{project.description}</p>
                   
                   {/* Tecnologias */}
                   <div className="flex flex-wrap gap-2 mb-5">
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium border border-blue-100"
+                        className="px-3 py-1 bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium border border-blue-100 dark:border-slate-700"
                       >
                         {tech}
                       </span>
@@ -92,7 +92,7 @@ export default function Projects() {
                   </div>
 
                   {/* Ações */}
-                  <div className="flex gap-3 pt-5 border-t border-gray-100">
+                  <div className="flex gap-3 pt-5 border-t border-gray-100 dark:border-slate-800">
                     {project.liveUrl && (
                       <button
                         onClick={() => window.open(project.liveUrl, '_blank')}
@@ -107,7 +107,7 @@ export default function Projects() {
                     {project.githubUrl && (
                       <button
                         onClick={() => window.open(project.githubUrl, '_blank')}
-                        className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-2.5 bg-gray-900 dark:bg-slate-800 text-white rounded-xl hover:bg-gray-800 dark:hover:bg-slate-700 transition-all font-medium text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 border dark:border-slate-700"
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                           <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
@@ -124,7 +124,7 @@ export default function Projects() {
 
         {/* Outros Projetos */}
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
             <span className="w-8 h-1 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full" />
             Outros Projetos
           </h3>
@@ -132,11 +132,11 @@ export default function Projects() {
             {projects.filter(p => !p.featured).map((project, index) => (
               <div 
                 key={project.id}
-                className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-500 border border-gray-100 hover:border-blue-200 hover-lift opacity-0 animate-fade-in"
+                className="group bg-white dark:bg-slate-900 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-700/50 hover-lift opacity-0 animate-fade-in"
                 style={{ animationDelay: `${(index + 2) * 0.15}s`, animationFillMode: 'forwards' }}
               >
                 {/* Ícone/Thumbnail */}
-                <div className="h-36 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
+                <div className="h-36 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-700/80 to-gray-800/80 group-hover:from-blue-600/80 group-hover:to-indigo-600/80 transition-all duration-500" />
                   <div className="relative z-10 group-hover:scale-110 transition-transform duration-500">
                     {projectIcons[project.id] || <div className="text-5xl">📦</div>}
@@ -145,21 +145,21 @@ export default function Projects() {
 
                 {/* Conteúdo */}
                 <div className="p-5">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{project.title}</h4>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">{project.description}</p>
+                  <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{project.title}</h4>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed">{project.description}</p>
                   
                   {/* Tecnologias */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium"
+                        className="px-2.5 py-1 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium border dark:border-slate-700/50"
                       >
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 3 && (
-                      <span className="px-2.5 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs font-medium">
+                      <span className="px-2.5 py-1 bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 rounded-lg text-xs font-medium border dark:border-slate-700/50">
                         +{project.technologies.length - 3}
                       </span>
                     )}
@@ -169,7 +169,7 @@ export default function Projects() {
                   {project.githubUrl && (
                     <button
                       onClick={() => window.open(project.githubUrl, '_blank')}
-                      className="w-full px-4 py-2.5 bg-gray-50 text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all font-medium text-sm flex items-center justify-center gap-2 border border-gray-200 hover:border-blue-200"
+                      className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800/80 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all font-medium text-sm flex items-center justify-center gap-2 border border-gray-200 dark:border-slate-700 hover:border-blue-200 dark:hover:border-blue-500"
                     >
                       Ver mais
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,7 +187,7 @@ export default function Projects() {
         <div className="text-center mt-16">
           <button
             onClick={() => window.open('https://github.com/ContatoEmanuel', '_blank')}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-2xl hover:bg-gray-800 transition-all font-semibold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-slate-800 text-white rounded-2xl hover:bg-gray-800 dark:hover:bg-slate-700 transition-all font-semibold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border dark:border-slate-700"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
               <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />

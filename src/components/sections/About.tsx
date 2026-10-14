@@ -89,7 +89,7 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="py-24 bg-white">
+    <section id="about" className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
       <Container>
         <SectionTitle>
           Sobre
@@ -97,7 +97,7 @@ export default function About() {
         
         {/* Biografia */}
         <div className="max-w-4xl mx-auto mb-20">
-          <div className="text-lg text-gray-700 leading-relaxed space-y-4">
+          <div className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-4 transition-colors">
             {profile.bio.split('\n\n').map((paragraph, index) => (
               <p key={index} className="text-center">{paragraph}</p>
             ))}
@@ -110,10 +110,10 @@ export default function About() {
             {stats.map((stat, index) => (
               <div 
                 key={index}
-                className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800/60 border border-transparent dark:border-slate-700 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="text-4xl font-extrabold gradient-text mb-2">{stat.number}</div>
-                <p className="text-sm text-gray-600 font-medium">{stat.label}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium transition-colors">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -121,7 +121,7 @@ export default function About() {
 
         {/* Principais Clientes */}
         <div className="max-w-4xl mx-auto mb-20">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8 transition-colors">
             Experiência com Grandes Players
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -129,11 +129,11 @@ export default function About() {
               <button 
                 key={index}
                 onClick={() => scrollToExperience(client.experienceId)}
-                className="text-center p-6 bg-white rounded-2xl border-2 border-gray-100 hover:border-blue-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group w-full cursor-pointer"
+                className="text-center p-6 bg-white dark:bg-slate-800 rounded-2xl border-2 border-gray-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-xl dark:shadow-slate-950/40 transition-all duration-300 hover:-translate-y-1 group w-full cursor-pointer"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300 flex justify-center">{client.icon}</div>
-                <h4 className="font-bold text-gray-900 mb-1">{client.name}</h4>
-                <p className="text-sm text-gray-500">{client.sector}</p>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1 transition-colors">{client.name}</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors">{client.sector}</p>
               </button>
             ))}
           </div>
@@ -141,7 +141,7 @@ export default function About() {
 
         {/* Áreas de Expertise */}
         <div className="max-w-5xl mx-auto mb-20">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8 transition-colors">
             Principais Competências
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -155,8 +155,8 @@ export default function About() {
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-2">{item.title}</h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-2 transition-colors">{item.title}</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed transition-colors">{item.description}</p>
                   </div>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function About() {
 
         {/* Stack Tecnológico */}
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8 transition-colors">
             Stack Tecnológico
           </h3>
           <div className="flex flex-wrap justify-center gap-3">

@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import BlogApp from './BlogApp';
+import { ThemeProvider } from './context/ThemeContext';
 import './styles/index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BlogApp />
+    <ThemeProvider>
+      <BlogApp />
+    </ThemeProvider>
   </React.StrictMode>,
 );
