@@ -2051,44 +2051,44 @@ exceptions
       <p>Antes de falar de solução, precisamos quantificar o problema corretamente. O custo de um sistema legado on-premise <strong>nunca</strong> é apenas o hardware. Existe uma composição de custos que raramente aparece nas planilhas de orçamento:</p>
 
       <div style="overflow-x:auto;margin:24px 0;">
-        <table style="width:100%;border-collapse:collapse;font-size:14px;border-radius:12px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;border-radius:12px;overflow:hidden;border:1px solid #E2E8F0;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
           <thead>
-            <tr style="background:linear-gradient(135deg,#0F172A,#1E293B);">
-              <th style="padding:14px 18px;text-align:left;color:#94A3B8;font-weight:600;border-bottom:2px solid #334155;">Categoria</th>
-              <th style="padding:14px 18px;text-align:left;color:#EF4444;font-weight:600;border-bottom:2px solid #334155;">On-Premise Legado</th>
-              <th style="padding:14px 18px;text-align:left;color:#10B981;font-weight:600;border-bottom:2px solid #334155;">Dynamics 365 Cloud</th>
+            <tr style="background:#F1F5F9;">
+              <th style="padding:14px 18px;text-align:left;color:#334155;font-weight:700;border-bottom:2px solid #CBD5E1;">Categoria</th>
+              <th style="padding:14px 18px;text-align:left;color:#DC2626;font-weight:700;border-bottom:2px solid #CBD5E1;">On-Premise Legado</th>
+              <th style="padding:14px 18px;text-align:left;color:#059669;font-weight:700;border-bottom:2px solid #CBD5E1;">Dynamics 365 Cloud</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background:#0F172A;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Infraestrutura</td>
-              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Servidores físicos, licenças de SO, rede, energia, refrigeração</td>
-              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Pay-as-you-go, escala elástica</td>
+            <tr style="background:#FFFFFF;border-bottom:1px solid #F1F5F9;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Infraestrutura</td>
+              <td style="padding:12px 18px;color:#DC2626;">Servidores físicos, licenças de SO, rede, energia, refrigeração</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">Pay-as-you-go, escala elástica</td>
             </tr>
-            <tr style="background:#1E293B;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #0F172A;">Manutenção</td>
-              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #0F172A;">Patches manuais, DBAs dedicados, zero automação</td>
-              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #0F172A;">Updates gerenciados pela Microsoft, SLA 99.9%</td>
+            <tr style="background:#F8FAFC;border-bottom:1px solid #F1F5F9;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Manutenção</td>
+              <td style="padding:12px 18px;color:#DC2626;">Patches manuais, DBAs dedicados, zero automação</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">Updates gerenciados pela Microsoft, SLA 99.9%</td>
             </tr>
-            <tr style="background:#0F172A;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Segurança</td>
-              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Vulnerabilidades acumuladas, compliance manual</td>
-              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Azure AD, Conditional Access, DLP nativo</td>
+            <tr style="background:#FFFFFF;border-bottom:1px solid #F1F5F9;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Segurança</td>
+              <td style="padding:12px 18px;color:#DC2626;">Vulnerabilidades acumuladas, compliance manual</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">Azure AD, Conditional Access, DLP nativo</td>
             </tr>
-            <tr style="background:#1E293B;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #0F172A;">Velocidade de Entrega</td>
-              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #0F172A;">Deploys quinzenais ou mensais</td>
-              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #0F172A;">CI/CD com Azure DevOps, deploys em minutos</td>
+            <tr style="background:#F8FAFC;border-bottom:1px solid #F1F5F9;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Velocidade de Entrega</td>
+              <td style="padding:12px 18px;color:#DC2626;">Deploys quinzenais ou mensais</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">CI/CD com Azure DevOps, deploys em minutos</td>
             </tr>
-            <tr style="background:#0F172A;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;border-bottom:1px solid #1E293B;">Custo de Oportunidade</td>
-              <td style="padding:12px 18px;color:#F87171;border-bottom:1px solid #1E293B;">Devs mantendo código legado em vez de criar valor</td>
-              <td style="padding:12px 18px;color:#6EE7B7;border-bottom:1px solid #1E293B;">Time focado em features e automação</td>
+            <tr style="background:#FFFFFF;border-bottom:1px solid #F1F5F9;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Custo de Oportunidade</td>
+              <td style="padding:12px 18px;color:#DC2626;">Devs mantendo código legado em vez de criar valor</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">Time focado em features e automação</td>
             </tr>
-            <tr style="background:#1E293B;">
-              <td style="padding:12px 18px;color:#CBD5E1;font-weight:600;">Risco de Negócio</td>
-              <td style="padding:12px 18px;color:#F87171;">Single point of failure, disaster recovery manual</td>
-              <td style="padding:12px 18px;color:#6EE7B7;">Geo-redundância, backup automático</td>
+            <tr style="background:#F8FAFC;">
+              <td style="padding:12px 18px;color:#0F172A;font-weight:600;">Risco de Negócio</td>
+              <td style="padding:12px 18px;color:#DC2626;">Single point of failure, disaster recovery manual</td>
+              <td style="padding:12px 18px;color:#059669;font-weight:500;">Geo-redundância, backup automático</td>
             </tr>
           </tbody>
         </table>
@@ -2096,40 +2096,40 @@ exceptions
 
       <p>O ponto crítico é o <strong>custo de oportunidade</strong>: cada sprint gasto corrigindo bugs em um sistema VB6/WinForms de 2012 é um sprint que <em>não</em> está automatizando processos de negócio com Power Automate ou construindo dashboards em tempo real com Power BI.</p>
 
-      <div style="background:linear-gradient(135deg,#1E1B4B,#312E81);border-radius:12px;padding:20px 24px;margin:24px 0;border-left:4px solid #818CF8;">
-        <p style="margin:0;color:#C7D2FE;font-size:15px;">💡 <strong style="color:#A5B4FC;">Insight Enterprise:</strong> Em um projeto recente para o setor financeiro, identificamos que <strong style="color:#FDE68A;">R$ 2.4M/ano</strong> eram gastos apenas em manutenção de infraestrutura on-premise. Após 8 meses de migração gradual para Dynamics 365, o custo operacional caiu <strong style="color:#6EE7B7;">40%</strong>, liberando budget para inovação.</p>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:20px 24px;margin:24px 0;border-left:5px solid #3B82F6;">
+        <p style="margin:0;color:#1E3A8A;font-size:15px;line-height:1.6;">💡 <strong style="color:#1D4ED8;">Insight Enterprise:</strong> Em um projeto recente para o setor financeiro, identificamos que <strong style="color:#B45309;">R$ 2.4M/ano</strong> eram gastos apenas em manutenção de infraestrutura on-premise. Após 8 meses de migração gradual para Dynamics 365, o custo operacional caiu <strong style="color:#047857;">40%</strong>, liberando budget para inovação.</p>
       </div>
 
       <h2>2. Strangler Fig Pattern: Migração Sem Risco de Big Bang</h2>
       <p>O <strong>Strangler Fig Pattern</strong> (cunhado por Martin Fowler) é uma estratégia onde o novo sistema cresce gradualmente ao redor do legado, substituindo funcionalidades uma a uma, até que o sistema antigo possa ser descomissionado. Adaptado para o ecossistema Microsoft, a implementação segue quatro fases:</p>
 
-      <div style="background:linear-gradient(135deg,#0F172A,#1E293B);border-radius:16px;padding:32px;margin:24px 0;">
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:32px;margin:24px 0;">
         <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
-          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0EA5E9,#0284C7);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">01</div>
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0EA5E9,#0284C7);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">01</div>
           <div>
-            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Dual-Write: Sincronização Bidirecional</h4>
-            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Configuramos o Dual-Write entre o sistema on-premise (SQL Server) e o Dataverse do Dynamics 365. Ambos os sistemas trabalham com os mesmos dados durante toda a transição — sem inconsistências.</p>
+            <h4 style="margin:0 0 4px 0;color:#0F172A;font-size:17px;font-weight:700;">Dual-Write: Sincronização Bidirecional</h4>
+            <p style="margin:0;color:#475569;font-size:14px;line-height:1.6;">Configuramos o Dual-Write entre o sistema on-premise (SQL Server) e o Dataverse do Dynamics 365. Ambos os sistemas trabalham com os mesmos dados durante toda a transição — sem inconsistências.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
-          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#7C3AED);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">02</div>
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#7C3AED);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">02</div>
           <div>
-            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Novas Features no Dynamics 365</h4>
-            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Toda nova funcionalidade nasce diretamente no Dynamics 365 e Power Platform. O legado entra em modo de <strong style="color:#FDE68A;">feature freeze</strong> — apenas correções críticas de segurança.</p>
+            <h4 style="margin:0 0 4px 0;color:#0F172A;font-size:17px;font-weight:700;">Novas Features no Dynamics 365</h4>
+            <p style="margin:0;color:#475569;font-size:14px;line-height:1.6;">Toda nova funcionalidade nasce diretamente no Dynamics 365 e Power Platform. O legado entra em modo de <strong style="color:#B45309;">feature freeze</strong> — apenas correções críticas de segurança.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;">
-          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">03</div>
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">03</div>
           <div>
-            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Orquestração com Azure Service Bus</h4>
-            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Para módulos que precisam se comunicar entre o legado e o novo sistema, usamos o Azure Service Bus como broker de mensagens, desacoplando completamente as duas pontas.</p>
+            <h4 style="margin:0 0 4px 0;color:#0F172A;font-size:17px;font-weight:700;">Orquestração com Azure Service Bus</h4>
+            <p style="margin:0;color:#475569;font-size:14px;line-height:1.6;">Para módulos que precisam se comunicar entre o legado e o novo sistema, usamos o Azure Service Bus como broker de mensagens, desacoplando completamente as duas pontas.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;">04</div>
+          <div style="min-width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:16px;flex-shrink:0;">04</div>
           <div>
-            <h4 style="margin:0 0 4px 0;color:#F0F9FF;font-size:17px;">Descomissionamento Gradual</h4>
-            <p style="margin:0;color:#94A3B8;font-size:14px;line-height:1.6;">Módulo por módulo, o legado é desligado. Sem Big Bang. Sem downtime. Cada módulo tem seu próprio <em>cutover plan</em> com critérios de go/no-go.</p>
+            <h4 style="margin:0 0 4px 0;color:#0F172A;font-size:17px;font-weight:700;">Descomissionamento Gradual</h4>
+            <p style="margin:0;color:#475569;font-size:14px;line-height:1.6;">Módulo por módulo, o legado é desligado. Sem Big Bang. Sem downtime. Cada módulo tem seu próprio <em>cutover plan</em> com critérios de go/no-go.</p>
           </div>
         </div>
       </div>
@@ -2375,67 +2375,67 @@ namespace EAMCompany.Migration.Functions
     );
 }</code></pre>
 
-      <div style="background:linear-gradient(135deg,#064E3B,#065F46);border-radius:12px;padding:20px 24px;margin:24px 0;border-left:4px solid #34D399;">
-        <p style="margin:0 0 12px 0;color:#A7F3D0;font-weight:700;font-size:15px;">🔑 Pontos-chave do código:</p>
-        <ul style="margin:0;padding-left:20px;color:#D1FAE5;font-size:14px;line-height:1.8;">
-          <li><strong style="color:#6EE7B7;">Upsert Pattern:</strong> Verifica existência via <code>eam_legacyid</code> antes de criar ou atualizar — essencial para idempotência.</li>
-          <li><strong style="color:#6EE7B7;">Rastreabilidade:</strong> Os campos <code>eam_migrationsource</code> e <code>eam_lastsyncdate</code> permitem auditar exatamente quais registros vieram do legado.</li>
-          <li><strong style="color:#6EE7B7;">Dead Letter Queue:</strong> O <code>throw</code> reenvia a mensagem para a DLQ do Service Bus — nenhum dado é perdido.</li>
-          <li><strong style="color:#6EE7B7;">FetchXML vs LINQ:</strong> FetchXML por performance e controle explícito — em cenários de migração, evitar abstrações que escondam o custo da query é crítico.</li>
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:22px 24px;margin:24px 0;border-left:5px solid #10B981;">
+        <p style="margin:0 0 14px 0;color:#065F46;font-weight:700;font-size:16px;">🔑 Pontos-chave do código:</p>
+        <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.8;">
+          <li style="color:#1F2937;margin-bottom:8px;"><strong style="color:#047857;">Upsert Pattern:</strong> Verifica existência via <code style="background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:4px;font-size:13px;font-weight:600;">eam_legacyid</code> antes de criar ou atualizar — essencial para idempotência.</li>
+          <li style="color:#1F2937;margin-bottom:8px;"><strong style="color:#047857;">Rastreabilidade:</strong> Os campos <code style="background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:4px;font-size:13px;font-weight:600;">eam_migrationsource</code> e <code style="background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:4px;font-size:13px;font-weight:600;">eam_lastsyncdate</code> permitem auditar exatamente quais registros vieram do legado.</li>
+          <li style="color:#1F2937;margin-bottom:8px;"><strong style="color:#047857;">Dead Letter Queue:</strong> O <code style="background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:4px;font-size:13px;font-weight:600;">throw</code> reenvia a mensagem para a DLQ do Service Bus — nenhum dado é perdido.</li>
+          <li style="color:#1F2937;"><strong style="color:#047857;">FetchXML vs LINQ:</strong> FetchXML por performance e controle explícito — em cenários de migração, evitar abstrações que escondam o custo da query é crítico.</li>
         </ul>
       </div>
 
       <h2>4. Governança da Migração: O que ninguém te conta</h2>
       <p>A parte mais negligenciada de qualquer migração não é o código — é a <strong>governança</strong>. Sem ela, você acaba com <em>dois</em> sistemas desatualizados em vez de um.</p>
 
-      <div style="background:linear-gradient(135deg,#1E293B,#0F172A);border-radius:16px;padding:28px;margin:24px 0;">
-        <h4 style="margin:0 0 20px 0;color:#F8FAFC;font-size:17px;">📋 Checklist de Governança para Migração Gradual</h4>
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:28px;margin:24px 0;">
+        <h4 style="margin:0 0 20px 0;color:#0F172A;font-size:17px;font-weight:700;">📋 Checklist de Governança para Migração Gradual</h4>
 
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-          <span style="color:#EF4444;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#DC2626;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Feature Freeze documentado e assinado</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Pelo Product Owner — sem isso, o legado nunca morre.</p>
+            <strong style="color:#0F172A;font-size:14px;">Feature Freeze documentado e assinado</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Pelo Product Owner — sem isso, o legado nunca morre.</p>
           </div>
         </div>
 
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-          <span style="color:#F59E0B;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#D97706;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Data Quality Gate</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Antes de sincronizar: valide duplicados, campos nulos obrigatórios, formatos inconsistentes.</p>
+            <strong style="color:#0F172A;font-size:14px;">Data Quality Gate</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Antes de sincronizar: valide duplicados, campos nulos obrigatórios, formatos inconsistentes.</p>
           </div>
         </div>
 
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-          <span style="color:#3B82F6;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#2563EB;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Runbook de Rollback</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Para cada módulo migrado, documentar exatamente como reverter em caso de falha.</p>
+            <strong style="color:#0F172A;font-size:14px;">Runbook de Rollback</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Para cada módulo migrado, documentar exatamente como reverter em caso de falha.</p>
           </div>
         </div>
 
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-          <span style="color:#10B981;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#059669;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Métricas de Progresso (Power BI)</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Dashboard mostrando: % registros migrados, taxa de erro, módulos descomissionados vs. pendentes.</p>
+            <strong style="color:#0F172A;font-size:14px;">Métricas de Progresso (Power BI)</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Dashboard mostrando: % registros migrados, taxa de erro, módulos descomissionados vs. pendentes.</p>
           </div>
         </div>
 
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-          <span style="color:#8B5CF6;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#7C3AED;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Cutover Plan por módulo</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Data definida para desligar cada módulo legado, com critérios de go/no-go.</p>
+            <strong style="color:#0F172A;font-size:14px;">Cutover Plan por módulo</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Data definida para desligar cada módulo legado, com critérios de go/no-go.</p>
           </div>
         </div>
 
         <div style="display:flex;align-items:flex-start;gap:12px;">
-          <span style="color:#EC4899;font-size:18px;flex-shrink:0;">☐</span>
+          <span style="color:#DB2777;font-size:18px;flex-shrink:0;">☐</span>
           <div>
-            <strong style="color:#F1F5F9;font-size:14px;">Treinamento dos usuários</strong>
-            <p style="margin:4px 0 0 0;color:#94A3B8;font-size:13px;">Dynamics 365 tem UX completamente diferente de WinForms. Não subestime a curva de adoção.</p>
+            <strong style="color:#0F172A;font-size:14px;">Treinamento dos usuários</strong>
+            <p style="margin:4px 0 0 0;color:#475569;font-size:13px;">Dynamics 365 tem UX completamente diferente de WinForms. Não subestime a curva de adoção.</p>
           </div>
         </div>
       </div>
@@ -2468,29 +2468,29 @@ namespace EAMCompany.Migration.Functions
       <h2>Conclusão</h2>
       <p>Migrar de on-premise para Dynamics 365 Cloud não é um projeto de TI — é uma <strong>decisão estratégica de negócio</strong>. O Strangler Fig Pattern remove o maior risco (o Big Bang) e permite que sua empresa continue operando enquanto moderniza. Os pilares são:</p>
 
-      <div style="background:linear-gradient(135deg,#1E293B,#0F172A);border-radius:12px;padding:24px;margin:24px 0;">
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:24px;margin:24px 0;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);border-radius:10px;padding:16px;">
-            <strong style="color:#38BDF8;font-size:14px;">① Dual-Write</strong>
-            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Manter dados sincronizados durante toda a transição.</p>
+          <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:16px;">
+            <strong style="color:#0369A1;font-size:14px;display:block;">① Dual-Write</strong>
+            <p style="margin:8px 0 0 0;color:#334155;font-size:13px;line-height:1.5;">Manter dados sincronizados durante toda a transição.</p>
           </div>
-          <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:16px;">
-            <strong style="color:#A78BFA;font-size:14px;">② Feature Freeze</strong>
-            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Forçar a adoção do novo sistema pelo time.</p>
+          <div style="background:#FAF5FF;border:1px solid #E9D5FF;border-radius:10px;padding:16px;">
+            <strong style="color:#6D28D9;font-size:14px;display:block;">② Feature Freeze</strong>
+            <p style="margin:8px 0 0 0;color:#334155;font-size:13px;line-height:1.5;">Forçar a adoção do novo sistema pelo time.</p>
           </div>
-          <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:16px;">
-            <strong style="color:#FBBF24;font-size:14px;">③ Azure Service Bus</strong>
-            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Desacoplar a comunicação entre os dois mundos.</p>
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px;">
+            <strong style="color:#B45309;font-size:14px;display:block;">③ Azure Service Bus</strong>
+            <p style="margin:8px 0 0 0;color:#334155;font-size:13px;line-height:1.5;">Desacoplar a comunicação entre os dois mundos.</p>
           </div>
-          <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:16px;">
-            <strong style="color:#34D399;font-size:14px;">④ Governança Rigorosa</strong>
-            <p style="margin:8px 0 0 0;color:#94A3B8;font-size:13px;">Garantir que a migração tenha fim definido e controlado.</p>
+          <div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:16px;">
+            <strong style="color:#047857;font-size:14px;display:block;">④ Governança Rigorosa</strong>
+            <p style="margin:8px 0 0 0;color:#334155;font-size:13px;line-height:1.5;">Garantir que a migração tenha fim definido e controlado.</p>
           </div>
         </div>
       </div>
 
-      <blockquote style="border-left:4px solid #8B5CF6;padding:16px 20px;margin:24px 0;background:rgba(139,92,246,0.05);border-radius:0 8px 8px 0;">
-        <p style="margin:0;color:#C4B5FD;font-style:italic;font-size:16px;">"O melhor momento para começar a migração era há 2 anos. O segundo melhor momento é agora."</p>
+      <blockquote style="border-left:5px solid #7C3AED;padding:18px 24px;margin:28px 0;background:#F5F3FF;border-radius:0 12px 12px 0;">
+        <p style="margin:0;color:#4C1D95;font-style:italic;font-size:17px;font-weight:600;line-height:1.6;">"O melhor momento para começar a migração era há 2 anos. O segundo melhor momento é agora."</p>
       </blockquote>
 
       <hr class="my-8" />
