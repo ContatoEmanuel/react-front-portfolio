@@ -133,7 +133,83 @@
     @apply px-2 py-1 bg-gray-100 text-blue-700 rounded text-sm font-mono transition-colors;
   }
   .dark .prose-blog code {
-    @apply bg-slate-800 text-blue-400;
+    @apply bg-slate-800 text-blue-300;
+  }
+
+  /* Pre / Code Blocks */
+  .prose-blog pre {
+    @apply bg-slate-900 text-slate-100 p-5 rounded-2xl overflow-x-auto my-6 border border-slate-800 shadow-xl;
+  }
+  .dark .prose-blog pre {
+    @apply bg-slate-950 border-slate-800 text-slate-200;
+  }
+  .prose-blog pre code {
+    @apply bg-transparent text-slate-200 p-0 text-sm leading-relaxed;
+  }
+  .dark .prose-blog pre code {
+    @apply bg-transparent text-slate-200;
+  }
+
+  /* Tables in dark mode */
+  .dark .prose-blog table {
+    border-color: #334155 !important;
+  }
+  .dark .prose-blog thead tr {
+    background-color: #1e293b !important;
+  }
+  .dark .prose-blog th {
+    border-color: #334155 !important;
+  }
+  .dark .prose-blog tbody tr {
+    background-color: #0f172a !important;
+    border-color: #1e293b !important;
+  }
+  .dark .prose-blog tbody tr:nth-child(even) {
+    background-color: #141e33 !important;
+  }
+  .dark .prose-blog td {
+    color: #e2e8f0 !important;
+  }
+
+  /* Blockquotes in dark mode */
+  .dark .prose-blog blockquote {
+    background-color: rgba(30, 41, 59, 0.7) !important;
+    border-color: #3b82f6 !important;
+  }
+  .dark .prose-blog blockquote p {
+    color: #93c5fd !important;
+  }
+
+  /* Custom Callout & Stat cards rendered via inline style */
+  .dark .prose-blog div[style*="background:#EFF6FF"],
+  .dark .prose-blog div[style*="background: #EFF6FF"],
+  .dark .prose-blog div[style*="background:#ECFDF5"],
+  .dark .prose-blog div[style*="background: #ECFDF5"],
+  .dark .prose-blog div[style*="background:#F5F3FF"],
+  .dark .prose-blog div[style*="background: #F5F3FF"],
+  .dark .prose-blog div[style*="background:#FFFBEB"],
+  .dark .prose-blog div[style*="background: #FFFBEB"] {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+  }
+  .dark .prose-blog div[style*="background"] strong,
+  .dark .prose-blog div[style*="background"] p,
+  .dark .prose-blog div[style*="background"] span {
+    color: #f1f5f9 !important;
+  }
+
+  /* Diagrams & SVG containers */
+  .dark .prose-blog div[style*="overflow-x:auto"] {
+    border-radius: 12px;
+  }
+  .dark .prose-blog svg {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+  }
+  .dark .prose-blog h3[style*="color:#1e3a5f"] {
+    color: #93c5fd !important;
+  }
+  .dark .prose-blog div[style*="color:#4B5563"] {
+    color: #94a3b8 !important;
   }
 
   /* Decorative orb */
